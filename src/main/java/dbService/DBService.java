@@ -10,13 +10,17 @@ import dbService.dataSets.UsersDataSet;
 import dbService.dataSets.RolesDataset;
 import dbService.dataSets.UserRolesDataset;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 
 public class DBService {
     private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "create";
+    private static final String hibernate_hbm2ddl_auto = "update";
 
     private final SessionFactory sessionFactory;
 
@@ -31,30 +35,15 @@ public class DBService {
 
     private Configuration getPostgresConfiguration() {
         Configuration configuration = new Configuration();
-
         addTables(configuration);
-
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/postgres");
-        configuration.setProperty("hibernate.connection.username", "leo");
-        configuration.setProperty("hibernate.connection.password", "leo");
-        configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
-        configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
+        setConfigurationProperties(configuration, "properties/hibernate_Postgres.properties");
         return configuration;
     }
 
     private Configuration getOracleConfiguration() {
         Configuration configuration = new Configuration();
-
         addTables(configuration);
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-        configuration.setProperty("hibernate.connection.driver_class", "oracle.jdbc.OracleDriver");
-        configuration.setProperty("hibernate.connection.url", "jdbc:oracle:thin:@//localhost:1521/orcl");
-        configuration.setProperty("hibernate.connection.username", "project_manager");
-        configuration.setProperty("hibernate.connection.password", "pass");
-        configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
-        configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
+        setConfigurationProperties(configuration, "properties/hibernate_Oracle.properties");
         return configuration;
     }
 
@@ -62,6 +51,24 @@ public class DBService {
         configuration.addAnnotatedClass(UsersDataSet.class);
         configuration.addAnnotatedClass(RolesDataset.class);
         configuration.addAnnotatedClass(UserRolesDataset.class);
+    }
+
+    private void setConfigurationProperties(Configuration configuration, String propertiesFilePath) {
+        Properties properties = new Properties();
+        try (InputStream inputStream = new FileInputStream(propertiesFilePath)) {
+            properties.load(inputStream);
+            configuration.setProperty("hibernate.dialect", properties.getProperty("hibernate.dialect"));
+            configuration.setProperty("hibernate.connection.driver_class", properties.getProperty("hibernate.connection.driver_class"));
+            configuration.setProperty("hibernate.connection.url", properties.getProperty("hibernate.connection.url"));
+            configuration.setProperty("hibernate.connection.username", properties.getProperty("hibernate.connection.username"));
+            configuration.setProperty("hibernate.connection.password", properties.getProperty("hibernate.connection.password"));
+            configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
+            configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void printConnectInfo() {
