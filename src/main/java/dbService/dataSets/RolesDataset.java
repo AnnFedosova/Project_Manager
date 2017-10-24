@@ -10,6 +10,7 @@ public class RolesDataset implements Serializable {
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     @Column(name = "role_name", unique = true)

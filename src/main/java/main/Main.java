@@ -16,6 +16,7 @@ public class Main {
         ctx.setResourceBase("src/main/html");
 
         JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Postgres.properties");
+        //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Oracle.properties");
 
 //        HashLoginService loginService = new HashLoginService("JCGRealm");
 //        loginService.setConfig("jcgrealm.txt");

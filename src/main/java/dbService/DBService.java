@@ -32,9 +32,7 @@ public class DBService {
     private Configuration getPostgresConfiguration() {
         Configuration configuration = new Configuration();
 
-        configuration.addAnnotatedClass(UsersDataSet.class);
-        configuration.addAnnotatedClass(RolesDataset.class);
-        configuration.addAnnotatedClass(UserRolesDataset.class);
+        addTables(configuration);
 
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         configuration.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
@@ -44,6 +42,26 @@ public class DBService {
         configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
         configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
         return configuration;
+    }
+
+    private Configuration getOracleConfiguration() {
+        Configuration configuration = new Configuration();
+
+        addTables(configuration);
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+        configuration.setProperty("hibernate.connection.driver_class", "oracle.jdbc.OracleDriver");
+        configuration.setProperty("hibernate.connection.url", "jdbc:oracle:thin:@//localhost:1521/orcl");
+        configuration.setProperty("hibernate.connection.username", "project_manager");
+        configuration.setProperty("hibernate.connection.password", "pass");
+        configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
+        configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
+        return configuration;
+    }
+
+    private void addTables(Configuration configuration) {
+        configuration.addAnnotatedClass(UsersDataSet.class);
+        configuration.addAnnotatedClass(RolesDataset.class);
+        configuration.addAnnotatedClass(UserRolesDataset.class);
     }
 
     public void printConnectInfo() {
