@@ -16,7 +16,7 @@ public class Main {
         Server server = new Server(8080);
 
         WebAppContext context = new WebAppContext();
-        context.setResourceBase("src/main/html");
+        context.setResourceBase("src/main/assets");
 
         JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Postgres.properties");
         //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Oracle.properties");
