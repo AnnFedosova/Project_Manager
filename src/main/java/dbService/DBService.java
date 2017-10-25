@@ -1,6 +1,12 @@
 package dbService;
 
+import dbService.dao.RolesDAO;
+import dbService.dao.UserRolesDAO;
+import dbService.dao.UsersDAO;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
@@ -90,4 +96,42 @@ public class DBService {
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
+
+
+    //Work with DAO below
+
+    public int addNewUser(String login, String password, String firstName, String lastName) throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            UsersDAO usersDAO = new UsersDAO(session);
+            int id = usersDAO.addUser(login, password, firstName, lastName);
+            transaction.commit();
+            session.close();
+            return id;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public int addNewUser(String login, String password, String firstName, String lastName, String patronymic) throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            UsersDAO usersDAO = new UsersDAO(session);
+            RolesDAO rolesDAO = new RolesDAO(session);
+            UserRolesDAO userRolesDAO = new UserRolesDAO(session);
+            int userId = usersDAO.addUser(login, password, firstName, lastName, patronymic);
+            int roleId = rolesDAO.getRoleId("user");
+            userRolesDAO.addUserRole(userId, roleId);
+            transaction.commit();
+            session.close();
+            return userId;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
 }

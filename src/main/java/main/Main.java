@@ -7,6 +7,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import servlets.LogoutServlet;
+import servlets.SignUpServlet;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -21,13 +22,18 @@ public class Main {
         JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Postgres.properties");
         //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Oracle.properties");
 
-        context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
 
+        addServlets(dbService, context);
 
 
         server.addBean(loginService);
         server.setHandler(context);
         server.start();
         server.join();
+    }
+
+    private static void addServlets(DBService dbService, ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new SignUpServlet(dbService)), SignUpServlet.PAGE_URL);
     }
 }

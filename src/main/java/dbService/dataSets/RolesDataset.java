@@ -28,6 +28,10 @@ public class RolesDataset implements Serializable {
         this.roleName = roleName;
     }
 
+    public RolesDataset(String roleName) {
+        this.roleName = roleName;
+    }
+
 
     public int getId() {
         return id;
