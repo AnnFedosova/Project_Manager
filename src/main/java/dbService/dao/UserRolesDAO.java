@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.UserRolesDataset;
+import dbService.dataSets.UserRoleDataset;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -11,7 +11,7 @@ public class UserRolesDAO {
         this.session = session;
     }
 
-    public void addUserRole(int userId, int roleId) throws HibernateException {
-        session.save(new UserRolesDataset(userId, roleId));
+    public void addUserRole(long userId, long roleId) throws HibernateException {
+        session.save(new UserRoleDataset(userId, roleId));
     }
 }

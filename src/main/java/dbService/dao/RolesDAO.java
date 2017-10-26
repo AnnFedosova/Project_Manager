@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.RolesDataset;
+import dbService.dataSets.RoleDataSet;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,17 +13,17 @@ public class RolesDAO {
         this.session = session;
     }
 
-    public RolesDataset get(int id) throws HibernateException {
-        return (RolesDataset) session.get(RolesDataset.class, id);
+    public RoleDataSet get(long id) throws HibernateException {
+        return (RoleDataSet) session.get(RoleDataSet.class, id);
     }
 
-    public int getRoleId(String roleName) throws HibernateException {
-        Criteria criteria = session.createCriteria(RolesDataset.class);
-        return ((RolesDataset) criteria.add(Restrictions.eq("role_name", roleName)).uniqueResult()).getId();
+    public long getRoleId(String roleName) throws HibernateException {
+        Criteria criteria = session.createCriteria(RoleDataSet.class);
+        return ((RoleDataSet) criteria.add(Restrictions.eq("roleName", roleName)).uniqueResult()).getId();
     }
 
-    public int addRole(String roleName) throws HibernateException {
-        return (int) session.save(new RolesDataset(roleName));
+    public long addRole(String roleName) throws HibernateException {
+        return (long) session.save(new RoleDataSet(roleName));
     }
 
 }

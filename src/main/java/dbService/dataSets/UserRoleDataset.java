@@ -5,50 +5,50 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
-public class UserRolesDataset implements Serializable {
-    private static final long serialVersionUID = 24102017L;
+public class UserRoleDataset implements Serializable {
+    private static final long serialVersionUID = 25102017L;
 
     @Id
     @Column(name = "user_id")
-    private int userId;
+    private long userId;
 
     @Id
     @Column(name = "role_id")
-    private int roleId;
+    private long roleId;
 
 
     //Important to Hibernate!
     @SuppressWarnings("UnusedDeclaration")
-    public UserRolesDataset() {
+    public UserRoleDataset() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public UserRolesDataset(int userId, int roleId) {
+    public UserRoleDataset(long userId, long roleId) {
         this.userId = userId;
         this.roleId = roleId;
     }
 
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public int getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
 
     @Override
     public String toString() {
-        return "UserRolesDataset{" +
+        return "UserRoleDataset{" +
                 "user_id=" + userId +
                 ", role_id='" + roleId + '\'' +
                 '}';

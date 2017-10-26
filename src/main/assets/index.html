@@ -3,9 +3,13 @@
     <meta charset="utf-8">
     <title>Home page</title>
     <link rel="stylesheet" media="all" href="/css/login-style.css" data-turbolinks-track="true"/>
+    <META HTTP-EQUIV="REFRESH" CONTENT="0; URL=/auth">
 </head>
 
 <body>
+<script type="text/javascript">
+    window.location = "/auth";
+</script>
 <H1>Home page</H1>
 <form>
     <input value="Login" type="button" class="button_active" onclick="location.href='/auth';"/>

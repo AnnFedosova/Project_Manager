@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "roles")
-public class RolesDataset implements Serializable {
-    private static final long serialVersionUID = 24102017L;
+public class RoleDataSet implements Serializable {
+    private static final long serialVersionUID = 25102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private long id;
 
     @Column(name = "role_name", unique = true)
     private String roleName;
@@ -19,21 +19,21 @@ public class RolesDataset implements Serializable {
 
     //Important to Hibernate!
     @SuppressWarnings("UnusedDeclaration")
-    public RolesDataset() {
+    public RoleDataSet() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public RolesDataset(int id, String roleName) {
+    public RoleDataSet(long id, String roleName) {
         this.id = id;
         this.roleName = roleName;
     }
 
-    public RolesDataset(String roleName) {
+    public RoleDataSet(String roleName) {
         this.roleName = roleName;
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -41,7 +41,7 @@ public class RolesDataset implements Serializable {
         return roleName;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -51,7 +51,7 @@ public class RolesDataset implements Serializable {
 
     @Override
     public String toString() {
-        return "RolesDataset{" +
+        return "RoleDataSet{" +
                 "id=" + id +
                 ", role_name='" + roleName + '\'' +
                 '}';

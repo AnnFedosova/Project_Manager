@@ -2,19 +2,20 @@ package dbService.dataSets;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 
 @Entity
 @Table(name = "users")
-public class UsersDataSet implements Serializable {
-    private static final long serialVersionUID = 24102017L;
+public class UserDataSet implements Serializable {
+    private static final long serialVersionUID = 25102017L;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", unique = true, updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+    private long id;
 
-    @Column(name = "login", unique = true, updatable = false)
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "password")
@@ -29,13 +30,16 @@ public class UsersDataSet implements Serializable {
     @Column(name = "patronymic")
     private String patronymic;
 
+    @OneToMany(mappedBy = "user")
+    private Set<RequestPositionDataSet> requestPositionDataSets;
+
     //Important to Hibernate!
     @SuppressWarnings("UnusedDeclaration")
-    public UsersDataSet() {
+    public UserDataSet() {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public UsersDataSet(int id, String login, String password, String firstName, String lastName) {
+    public UserDataSet(long id, String login, String password, String firstName, String lastName) {
         this.setId(id);
         this.setLogin(login);
         this.setPassword(password);
@@ -43,14 +47,14 @@ public class UsersDataSet implements Serializable {
         this.setLastName(lastName);
     }
 
-    public UsersDataSet(String login, String password, String firstName, String lastName) {
+    public UserDataSet(String login, String password, String firstName, String lastName) {
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
     }
 
-    public UsersDataSet(String login, String password, String firstName, String lastName, String patronymic) {
+    public UserDataSet(String login, String password, String firstName, String lastName, String patronymic) {
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
@@ -72,11 +76,11 @@ public class UsersDataSet implements Serializable {
         return password;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

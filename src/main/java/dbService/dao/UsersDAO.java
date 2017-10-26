@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.UsersDataSet;
+import dbService.dataSets.UserDataSet;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,25 +13,25 @@ public class UsersDAO {
         this.session = session;
     }
 
-    public UsersDataSet get(int id) throws HibernateException {
-        return (UsersDataSet) session.get(UsersDataSet.class, id);
+    public UserDataSet get(long id) throws HibernateException {
+        return (UserDataSet) session.get(UserDataSet.class, id);
     }
 
-    public UsersDataSet get(String login) throws HibernateException {
-        Criteria criteria = session.createCriteria(UsersDataSet.class);
-        return (UsersDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult();
+    public UserDataSet get(String login) throws HibernateException {
+        Criteria criteria = session.createCriteria(UserDataSet.class);
+        return (UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult();
     }
 
-    public int getUserId(String login) throws HibernateException {
-        Criteria criteria = session.createCriteria(UsersDataSet.class);
-        return ((UsersDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult()).getId();
+    public long getUserId(String login) throws HibernateException {
+        Criteria criteria = session.createCriteria(UserDataSet.class);
+        return ((UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult()).getId();
     }
 
-    public int addUser(String login, String password, String firstName, String lastName) throws HibernateException {
-        return (int) session.save(new UsersDataSet(login, password, firstName, lastName));
+    public long addUser(String login, String password, String firstName, String lastName) throws HibernateException {
+        return (long) session.save(new UserDataSet(login, password, firstName, lastName));
     }
 
-    public int addUser(String login, String password, String firstName, String lastName, String patronymic) throws HibernateException {
-        return (int) session.save(new UsersDataSet(login, password, firstName, lastName, patronymic));
+    public long addUser(String login, String password, String firstName, String lastName, String patronymic) throws HibernateException {
+        return (long) session.save(new UserDataSet(login, password, firstName, lastName, patronymic));
     }
 }

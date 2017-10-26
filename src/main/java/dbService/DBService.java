@@ -3,6 +3,7 @@ package dbService;
 import dbService.dao.RolesDAO;
 import dbService.dao.UserRolesDAO;
 import dbService.dao.UsersDAO;
+import dbService.dataSets.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,10 +12,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
-
-import dbService.dataSets.UsersDataSet;
-import dbService.dataSets.RolesDataset;
-import dbService.dataSets.UserRolesDataset;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,7 +23,7 @@ import java.util.Properties;
 
 public class DBService {
     private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "update";
+    private static final String hibernate_hbm2ddl_auto = "create";
 
     private final SessionFactory sessionFactory;
 
@@ -40,23 +37,30 @@ public class DBService {
     }
 
     private Configuration getPostgresConfiguration() {
-        Configuration configuration = new Configuration();
-        addTables(configuration);
-        setConfigurationProperties(configuration, "properties/hibernate_Postgres.properties");
-        return configuration;
+        return getConfiguration("config/hibernate_Postgres.properties");
     }
 
     private Configuration getOracleConfiguration() {
+        return getConfiguration("config/hibernate_Oracle.properties");
+    }
+
+    private Configuration getConfiguration(String propertiesFilePath) {
         Configuration configuration = new Configuration();
+        setConfigurationProperties(configuration, propertiesFilePath);
+        configuration.configure("hibernate_all.cfg.xml");
         addTables(configuration);
-        setConfigurationProperties(configuration, "properties/hibernate_Oracle.properties");
         return configuration;
     }
 
     private void addTables(Configuration configuration) {
-        configuration.addAnnotatedClass(UsersDataSet.class);
-        configuration.addAnnotatedClass(RolesDataset.class);
-        configuration.addAnnotatedClass(UserRolesDataset.class);
+        configuration.addAnnotatedClass(UserDataSet.class);
+        configuration.addAnnotatedClass(RoleDataSet.class);
+        configuration.addAnnotatedClass(UserRoleDataset.class);
+        configuration.addAnnotatedClass(ProjectDataSet.class);
+        configuration.addAnnotatedClass(PositionDataSet.class);
+        configuration.addAnnotatedClass(StateDataSet.class);
+        configuration.addAnnotatedClass(RequestDataSet.class);
+        configuration.addAnnotatedClass(RequestPositionDataSet.class);
     }
 
     private void setConfigurationProperties(Configuration configuration, String propertiesFilePath) {
@@ -100,30 +104,19 @@ public class DBService {
 
     //Work with DAO below
 
-    public int addNewUser(String login, String password, String firstName, String lastName) throws DBException {
-        try {
-            Session session = sessionFactory.openSession();
-            Transaction transaction = session.beginTransaction();
-            UsersDAO usersDAO = new UsersDAO(session);
-            int id = usersDAO.addUser(login, password, firstName, lastName);
-            transaction.commit();
-            session.close();
-            return id;
-        }
-        catch (HibernateException e) {
-            throw new DBException(e);
-        }
+    public long addNewUser(String login, String password, String firstName, String lastName) throws DBException {
+        return addNewUser(login, password, firstName, lastName, null);
     }
 
-    public int addNewUser(String login, String password, String firstName, String lastName, String patronymic) throws DBException {
+    public long addNewUser(String login, String password, String firstName, String lastName, String patronymic) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             UsersDAO usersDAO = new UsersDAO(session);
             RolesDAO rolesDAO = new RolesDAO(session);
             UserRolesDAO userRolesDAO = new UserRolesDAO(session);
-            int userId = usersDAO.addUser(login, password, firstName, lastName, patronymic);
-            int roleId = rolesDAO.getRoleId("user");
+            long userId = usersDAO.addUser(login, password, firstName, lastName, patronymic);
+            long roleId = rolesDAO.getRoleId("user");
             userRolesDAO.addUserRole(userId, roleId);
             transaction.commit();
             session.close();
