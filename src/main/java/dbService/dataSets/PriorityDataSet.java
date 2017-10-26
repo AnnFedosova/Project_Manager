@@ -2,11 +2,12 @@ package dbService.dataSets;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "Priorities")
 public class PriorityDataSet  implements Serializable {
-    private static final long serialVersionUID = 25102017L;
+    private static final long serialVersionUID = 26102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -16,16 +17,11 @@ public class PriorityDataSet  implements Serializable {
     @Column(name = "priority_name", unique = true)
     private String priorityName;
 
+    @OneToMany(mappedBy = "priority")
+    private Set<RequestDataSet> RequestDataSets;
 
-    //Important to Hibernate!
-    @SuppressWarnings("UnusedDeclaration")
+
     public PriorityDataSet() {
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public PriorityDataSet(long id, String priorityName) {
-        this.id = id;
-        this.priorityName = priorityName;
     }
 
     public PriorityDataSet(String priorityName) {
@@ -49,11 +45,4 @@ public class PriorityDataSet  implements Serializable {
         this.priorityName = priorityName;
     }
 
-    @Override
-    public String toString() {
-        return "RoleDataSet{" +
-                "id=" + id +
-                ", role_name='" + priorityName + '\'' +
-                '}';
-    }
 }

@@ -19,11 +19,15 @@ public class RequestDataSet implements Serializable {
     private ProjectDataSet project;
 
     @Column(name = "request_name", unique = true)
-    private String projectName;
+    private String requestName;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
     private StateDataSet state;
+
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    private PriorityDataSet priority;
 
     @OneToMany(mappedBy = "request")
     private Set<RequestPositionDataSet> requestPositionDataSets;
@@ -31,27 +35,53 @@ public class RequestDataSet implements Serializable {
     @Column(name = "text")
     private String text;
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
+    public RequestDataSet() {}
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
+    public String getText() {
+        return text;
     }
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public String getText() {
-        return text;
+    public PriorityDataSet getPriority() {
+        return priority;
+    }
+
+    public void setPriority(PriorityDataSet priority) {
+        this.priority = priority;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getRequestName() {
+        return requestName;
+    }
+
+    public void setRequestName(String requestName) {
+        this.requestName = requestName;
+    }
+
+    public ProjectDataSet getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectDataSet project) {
+        this.project = project;
+    }
+
+    public StateDataSet getState() {
+        return state;
+    }
+
+    public void setState(StateDataSet state) {
+        this.state = state;
     }
 }

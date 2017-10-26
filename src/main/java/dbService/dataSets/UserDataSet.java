@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class UserDataSet implements Serializable {
-    private static final long serialVersionUID = 25102017L;
+    private static final long serialVersionUID = 26102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -27,25 +27,16 @@ public class UserDataSet implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "patronymic")
-    private String patronymic;
+    @Column(name = "middle_name")
+    private String middleName;
 
     @OneToMany(mappedBy = "user")
     private Set<RequestPositionDataSet> requestPositionDataSets;
 
-    //Important to Hibernate!
-    @SuppressWarnings("UnusedDeclaration")
+
     public UserDataSet() {
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public UserDataSet(long id, String login, String password, String firstName, String lastName) {
-        this.setId(id);
-        this.setLogin(login);
-        this.setPassword(password);
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-    }
 
     public UserDataSet(String login, String password, String firstName, String lastName) {
         this.setLogin(login);
@@ -54,12 +45,12 @@ public class UserDataSet implements Serializable {
         this.setLastName(lastName);
     }
 
-    public UserDataSet(String login, String password, String firstName, String lastName, String patronymic) {
+    public UserDataSet(String login, String password, String firstName, String lastName, String middleName) {
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
-        this.setPatronymic(patronymic);
+        this.setMiddleName(middleName);
     }
 
     public String getLogin() {
@@ -100,12 +91,12 @@ public class UserDataSet implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getPatronymic() {
-        return patronymic;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setMiddleName(String patronymic) {
+        this.middleName = patronymic;
     }
 
     @Override
@@ -114,6 +105,9 @@ public class UserDataSet implements Serializable {
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", middle_name='" + middleName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 '}';
     }
 }

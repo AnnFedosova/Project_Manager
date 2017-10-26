@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "request_positions")
+@Table(name = "request_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "request_id", "position_id"}))
 public class RequestPositionDataSet  implements Serializable {
     private static final long serialVersionUID = 26102017L;
 
@@ -25,6 +25,30 @@ public class RequestPositionDataSet  implements Serializable {
 
     public RequestPositionDataSet() {
 
+    }
+
+    public UserDataSet getUser() {
+        return user;
+    }
+
+    public void setUser(UserDataSet user) {
+        this.user = user;
+    }
+
+    public PositionDataSet getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionDataSet position) {
+        this.position = position;
+    }
+
+    public RequestDataSet getRequest() {
+        return request;
+    }
+
+    public void setRequest(RequestDataSet request) {
+        this.request = request;
     }
 }
 

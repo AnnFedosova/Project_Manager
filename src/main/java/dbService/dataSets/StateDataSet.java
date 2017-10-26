@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @Table(name = "states")
 public class StateDataSet  implements Serializable {
-    private static final long serialVersionUID = 25102017L;
+    private static final long serialVersionUID = 26102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -45,7 +45,7 @@ public class StateDataSet  implements Serializable {
 
     @Override
     public String toString() {
-        return "ProjectDataSet{" +
+        return "StateDataSet{" +
                 "id=" + id +
                 ", state_name='" + stateName + '\'' +
                 '}';

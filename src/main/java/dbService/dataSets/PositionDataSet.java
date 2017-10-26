@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "positions")
 public class PositionDataSet implements Serializable {
-    private static final long serialVersionUID = 25102017L;
+    private static final long serialVersionUID = 26102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -16,7 +16,7 @@ public class PositionDataSet implements Serializable {
     private long id;
 
     @Column(name = "role_name", unique = true)
-    private String roleName;
+    private String positionName;
 
     @OneToMany(mappedBy = "position")
     private Set<RequestPositionDataSet> requestPositionDataSets;
@@ -24,13 +24,13 @@ public class PositionDataSet implements Serializable {
     public PositionDataSet() {
     }
 
-    public PositionDataSet(long id, String roleName) {
+    public PositionDataSet(long id, String positionName) {
         this.id = id;
-        this.roleName = roleName;
+        this.positionName = positionName;
     }
 
-    public PositionDataSet(String roleName) {
-        this.roleName = roleName;
+    public PositionDataSet(String positionName) {
+        this.positionName = positionName;
     }
 
 
@@ -38,26 +38,16 @@ public class PositionDataSet implements Serializable {
         return id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getPositionName() {
+        return positionName;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setPositionName(String roleName) {
+        this.positionName = roleName;
     }
-
-    @Override
-    public String toString() {
-        return "PositionDataSet{" +
-                "id=" + id +
-                ", role_name='" + roleName + '\'' +
-                '}';
-    }
-
-
 
 }

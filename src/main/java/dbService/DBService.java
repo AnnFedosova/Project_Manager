@@ -18,13 +18,10 @@ import java.sql.SQLException;
 
 
 public class DBService {
-    private static final String hibernate_show_sql = "true";
-    private static final String hibernate_hbm2ddl_auto = "create";
-
     private final SessionFactory sessionFactory;
 
     public DBService() {
-        Configuration configuration = getPostgresConfiguration();
+        Configuration configuration = getOracleConfiguration();
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -57,6 +54,7 @@ public class DBService {
         configuration.addAnnotatedClass(StateDataSet.class);
         configuration.addAnnotatedClass(RequestDataSet.class);
         configuration.addAnnotatedClass(RequestPositionDataSet.class);
+        configuration.addAnnotatedClass(PriorityDataSet.class);
     }
 
     public void printConnectInfo() {

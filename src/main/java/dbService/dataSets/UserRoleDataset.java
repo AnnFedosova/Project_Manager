@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
 public class UserRoleDataset implements Serializable {
-    private static final long serialVersionUID = 25102017L;
+    private static final long serialVersionUID = 26102017L;
 
     @Id
     @Column(name = "user_id")
@@ -17,12 +17,9 @@ public class UserRoleDataset implements Serializable {
     private long roleId;
 
 
-    //Important to Hibernate!
-    @SuppressWarnings("UnusedDeclaration")
     public UserRoleDataset() {
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     public UserRoleDataset(long userId, long roleId) {
         this.userId = userId;
         this.roleId = roleId;

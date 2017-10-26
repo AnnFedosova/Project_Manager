@@ -12,5 +12,6 @@
         <mapping class="dbService.dataSets.UserDataSet"/>
         <mapping class="dbService.dataSets.PositionDataSet"/>
         <mapping class="dbService.dataSets.ProjectPositionDataSet"/>
+        <mapping class="dbService.dataSets.PriorityDataSet"/>
     </session-factory>
 </hibernate-configuration>
