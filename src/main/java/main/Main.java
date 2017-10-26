@@ -17,10 +17,10 @@ public class Main {
         Server server = new Server(8080);
 
         WebAppContext context = new WebAppContext();
-        context.setResourceBase("src/main/assets");
+        context.setResourceBase("src/main/resources/");
 
-        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "config/jdbcrealm_Postgres.properties");
-        //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "properties/jdbcrealm_Oracle.properties");
+        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Postgres.properties");
+        //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Oracle.properties");
 
 
         addServlets(dbService, context);

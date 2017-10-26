@@ -13,12 +13,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
 
 
 public class DBService {
@@ -37,17 +33,17 @@ public class DBService {
     }
 
     private Configuration getPostgresConfiguration() {
-        return getConfiguration("config/hibernate_Postgres.properties");
+        return getConfiguration("config/hibernate_Postgres.cfg.xml");
     }
 
     private Configuration getOracleConfiguration() {
-        return getConfiguration("config/hibernate_Oracle.properties");
+        return getConfiguration("config/hibernate_Oracle.cfg.xml");
     }
 
-    private Configuration getConfiguration(String propertiesFilePath) {
+    private Configuration getConfiguration(String cfgFilePath) {
         Configuration configuration = new Configuration();
-        setConfigurationProperties(configuration, propertiesFilePath);
-        configuration.configure("hibernate_all.cfg.xml");
+        configuration.configure(cfgFilePath);
+        configuration.configure("config/hibernate_all.cfg.xml");
         addTables(configuration);
         return configuration;
     }
@@ -61,24 +57,6 @@ public class DBService {
         configuration.addAnnotatedClass(StateDataSet.class);
         configuration.addAnnotatedClass(RequestDataSet.class);
         configuration.addAnnotatedClass(RequestPositionDataSet.class);
-    }
-
-    private void setConfigurationProperties(Configuration configuration, String propertiesFilePath) {
-        Properties properties = new Properties();
-        try (InputStream inputStream = new FileInputStream(propertiesFilePath)) {
-            properties.load(inputStream);
-            configuration.setProperty("hibernate.dialect", properties.getProperty("hibernate.dialect"));
-            configuration.setProperty("hibernate.connection.driver_class", properties.getProperty("hibernate.connection.driver_class"));
-            configuration.setProperty("hibernate.connection.url", properties.getProperty("hibernate.connection.url"));
-            configuration.setProperty("hibernate.connection.username", properties.getProperty("hibernate.connection.username"));
-            configuration.setProperty("hibernate.connection.password", properties.getProperty("hibernate.connection.password"));
-            configuration.setProperty("hibernate.show_sql", hibernate_show_sql);
-            configuration.setProperty("hibernate.hbm2ddl.auto", hibernate_hbm2ddl_auto);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void printConnectInfo() {
