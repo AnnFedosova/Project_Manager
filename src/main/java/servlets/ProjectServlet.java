@@ -15,26 +15,30 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
-public class ProjectsServlet extends HttpServlet {
-    public static final String PAGE_URL = "/projects";
+public class ProjectServlet extends HttpServlet {
+    public static final String PAGE_URL = "/project";
     private DBService dbService;
 
-    public ProjectsServlet(DBService dbService) {
+    public ProjectServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Map<String, Object> pageVariables = createPageVariablesMap(request);
+        String id = request.getParameter("id");
+
+        Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/projects/projects.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("html/project/project.html", pageVariables));
     }
 
-
-    private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("projects", this.dbService.getProjectsList());
+        ProjectDataSet project = dbService.getProject(id);
+        pageVariables.put("title", project.getTitle());
+        pageVariables.put("description", project.getDescription());
+        pageVariables.put("creator", project.getCreator());
         return pageVariables;
     }
 }

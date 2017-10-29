@@ -33,35 +33,29 @@
                     </a></h1>
 
                 <#list projects>
-                    <form action="/projects" method="post" id="postForm">
-                        <table width="100%">
-                            <div class='col-sm-2'>
-                                <!--<tr>-->
-                                <!--<td><h4 class='text-center'>Number</h4></td>-->
-                                <!--<td><h4 class='text-center'>Title</h4></td>-->
-                                <!--</tr>-->
-                                <div class='list-group'>
-                                    <#items as project>
-                                        <tr>
-                                            <td width="10%">
-                                                <div class="list-group-item text-center text-nowrap">
-                                                    ${project?counter}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <!--<td><a class="list-group-item text-center text-nowrap"-->
-                                                <!--href="/projects?id=${project.id}" methods="post">${project.title}</a>-->
-
-                                                <a class="list-group-item text-center text-nowrap" href="javascript:"
-                                                   onclick="document.getElementById('postForm').submit();">${project.title}</a>
-                                                <input type="hidden" name="id" value=${project.id}>
-                                            </td>
-                                        </tr>
-                                    </#items>
-                                </div>
+                    <table width="100%">
+                        <div class='col-sm-2'>
+                            <!--<tr>-->
+                            <!--<td><h4 class='text-center'>Number</h4></td>-->
+                            <!--<td><h4 class='text-center'>Title</h4></td>-->
+                            <!--</tr>-->
+                            <div class='list-group'>
+                                <#items as project>
+                                    <tr>
+                                        <td width="10%">
+                                            <div class="list-group-item text-center text-nowrap">
+                                                ${project?counter}
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <td><a class="list-group-item text-center text-nowrap"
+                                               href="/project?id=${project.id}" methods="post">${project.title}</a>
+                                        </td>
+                                    </tr>
+                                </#items>
                             </div>
-                        </table>
-                    </form>
+                        </div>
+                    </table>
                 </#list>
 
             </div>

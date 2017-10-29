@@ -21,6 +21,7 @@
             <url-pattern>/html/*</url-pattern>
             <url-pattern>/config/*</url-pattern>
             <url-pattern>/projects/*</url-pattern>
+            <url-pattern>/project/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -31,6 +32,7 @@
     <web-resource-collection>
         <web-resource-name>Secure resources</web-resource-name>
         <url-pattern>/projects/*</url-pattern>
+        <url-pattern>/project/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
         <role-name>user</role-name>

@@ -15,6 +15,7 @@ import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;

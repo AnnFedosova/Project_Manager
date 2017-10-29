@@ -1,6 +1,7 @@
 package dbService.dataSets;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "projects")
 public class ProjectDataSet implements Serializable {
-    private static final long serialVersionUID = 27102017L;
+    private static final long serialVersionUID = 30102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -20,7 +21,7 @@ public class ProjectDataSet implements Serializable {
     @Column(name = "title", unique = true)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition="text")
     private String description;
 
     @OneToMany(mappedBy = "project")

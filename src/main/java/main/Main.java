@@ -7,10 +7,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
-import servlets.LogoutServlet;
-import servlets.NewProjectServlet;
-import servlets.ProjectsServlet;
-import servlets.SignUpServlet;
+import servlets.*;
 
 /**
  * @author Evgeny Levin
@@ -44,6 +41,7 @@ public class Main {
         context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new SignUpServlet(dbService)), SignUpServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new ProjectsServlet(dbService)), ProjectsServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new ProjectServlet(dbService)), ProjectServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new NewProjectServlet(dbService)), NewProjectServlet.PAGE_URL);
     }
 

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -30,11 +31,20 @@ public class NewProjectServlet  extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
-        String description = request.getParameter("description");
+        //TextArea description = request.getParameter("description");
+        StringBuffer description = new StringBuffer(request.getParameter("description"));
+
+        int loc = (new String(description)).indexOf('\n');
+        while(loc > 0){
+            description.replace(loc, loc+1, "<BR>");
+            loc = (new String(description)).indexOf('\n');
+        }
+
+
 
         try {
             Principal user = request.getUserPrincipal();
-            dbService.addNewProject(title, description, user.getName());
+            dbService.addNewProject(title, description.toString(), user.getName());
         } catch (DBException e) {
             e.printStackTrace();
         }
