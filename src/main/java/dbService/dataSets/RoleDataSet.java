@@ -3,6 +3,9 @@ package dbService.dataSets;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "roles")
 public class RoleDataSet implements Serializable {
@@ -10,7 +13,7 @@ public class RoleDataSet implements Serializable {
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "role_name", unique = true)

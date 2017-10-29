@@ -1,0 +1,72 @@
+<HTML>
+<head>
+    <meta charset="utf-8">
+    <title>Projects</title>
+    <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
+    <link rel="apple-touch-icon" type="image/x-icon" href="/img/apple-icon.png"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+
+<body>
+<script language="javascript">
+    function DoPostToProjects(id) {
+        $.post("/projects", {id: id});  //Your values here..
+    }
+</script>
+
+
+<form>
+    <input value="Logout" type="button" class="button_active" onclick="location.href='/logout';" style="float: right;"/>
+    <input value="Home" type="button" class="button_active" onclick="location.href='/';" style="float: right;"/>
+</form>
+
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-8 col-md-offset-2'>
+            <br>
+            <div class='login'>
+                <h1 class='light'>
+                    Projects
+                    <a class="btn btn-primary" href="/projects/new"><i title="Create project" class="fa fa-plus"></i>
+                    </a></h1>
+
+                <#list projects>
+                    <form action="/projects" method="post" id="postForm">
+                        <table width="100%">
+                            <div class='col-sm-2'>
+                                <!--<tr>-->
+                                <!--<td><h4 class='text-center'>Number</h4></td>-->
+                                <!--<td><h4 class='text-center'>Title</h4></td>-->
+                                <!--</tr>-->
+                                <div class='list-group'>
+                                    <#items as project>
+                                        <tr>
+                                            <td width="10%">
+                                                <div class="list-group-item text-center text-nowrap">
+                                                    ${project?counter}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <!--<td><a class="list-group-item text-center text-nowrap"-->
+                                                <!--href="/projects?id=${project.id}" methods="post">${project.title}</a>-->
+
+                                                <a class="list-group-item text-center text-nowrap" href="javascript:"
+                                                   onclick="document.getElementById('postForm').submit();">${project.title}</a>
+                                                <input type="hidden" name="id" value=${project.id}>
+                                            </td>
+                                        </tr>
+                                    </#items>
+                                </div>
+                            </div>
+                        </table>
+                    </form>
+                </#list>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</HTML>

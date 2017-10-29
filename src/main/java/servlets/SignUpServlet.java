@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Evgeny Levin
+ */
 public class SignUpServlet extends HttpServlet {
     public static final String PAGE_URL = "/signup";
     private DBService dbService;

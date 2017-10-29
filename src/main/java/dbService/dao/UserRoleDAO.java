@@ -4,10 +4,13 @@ import dbService.dataSets.UserRoleDataset;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-public class UserRolesDAO {
+/**
+ * @author Evgeny Levin
+ */
+public class UserRoleDAO {
     private final Session session;
 
-    public UserRolesDAO(Session session) {
+    public UserRoleDAO(Session session) {
         this.session = session;
     }
 

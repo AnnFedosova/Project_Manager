@@ -6,10 +6,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class RolesDAO {
+/**
+ * @author Evgeny Levin
+ */
+public class RoleDAO {
     private final Session session;
 
-    public RolesDAO(Session session) {
+    public RoleDAO(Session session) {
         this.session = session;
     }
 

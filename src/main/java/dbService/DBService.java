@@ -1,8 +1,9 @@
 package dbService;
 
-import dbService.dao.RolesDAO;
-import dbService.dao.UserRolesDAO;
-import dbService.dao.UsersDAO;
+import dbService.dao.ProjectDAO;
+import dbService.dao.RoleDAO;
+import dbService.dao.UserRoleDAO;
+import dbService.dao.UserDAO;
 import dbService.dataSets.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -13,15 +14,19 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
-
+/**
+ * @author Evgeny Levin
+ */
 public class DBService {
     private final SessionFactory sessionFactory;
 
     public DBService() {
-        Configuration configuration = getOracleConfiguration();
+        Configuration configuration = getPostgresConfiguration();
         sessionFactory = createSessionFactory(configuration);
     }
 
@@ -80,20 +85,30 @@ public class DBService {
 
     //Work with DAO below
 
+    public long addNewRole(String roleName) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        RoleDAO roleDAO = new RoleDAO(session);
+        long id = roleDAO.addRole(roleName);
+        transaction.commit();
+        session.close();
+        return id;
+    }
+
     public long addNewUser(String login, String password, String firstName, String lastName) throws DBException {
         return addNewUser(login, password, firstName, lastName, null);
     }
 
-    public long addNewUser(String login, String password, String firstName, String lastName, String patronymic) throws DBException {
+    public long addNewUser(String login, String password, String firstName, String lastName, String middleName) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            UsersDAO usersDAO = new UsersDAO(session);
-            RolesDAO rolesDAO = new RolesDAO(session);
-            UserRolesDAO userRolesDAO = new UserRolesDAO(session);
-            long userId = usersDAO.addUser(login, password, firstName, lastName, patronymic);
-            long roleId = rolesDAO.getRoleId("user");
-            userRolesDAO.addUserRole(userId, roleId);
+            UserDAO userDAO = new UserDAO(session);
+            RoleDAO roleDAO = new RoleDAO(session);
+            UserRoleDAO userRoleDAO = new UserRoleDAO(session);
+            long userId = userDAO.addUser(login, password, firstName, lastName, middleName);
+            long roleId = roleDAO.getRoleId("user");
+            userRoleDAO.addUserRole(userId, roleId);
             transaction.commit();
             session.close();
             return userId;
@@ -101,6 +116,61 @@ public class DBService {
         catch (HibernateException e) {
             throw new DBException(e);
         }
+    }
+
+    public long addNewAdmin(String login, String password, String firstName, String lastName) throws DBException {
+        return addNewAdmin(login, password, firstName, lastName, null);
+    }
+
+    public long addNewAdmin(String login, String password, String firstName, String lastName, String middleName) throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            UserDAO userDAO = new UserDAO(session);
+            RoleDAO roleDAO = new RoleDAO(session);
+            UserRoleDAO userRoleDAO = new UserRoleDAO(session);
+            long userId = userDAO.addUser(login, password, firstName, lastName, middleName);
+            long roleId = roleDAO.getRoleId("admin");
+            userRoleDAO.addUserRole(userId, roleId);
+            transaction.commit();
+            session.close();
+            return userId;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public List getProjectsList() {
+        Session session = sessionFactory.openSession();
+        ProjectDAO projectDAO = new ProjectDAO(session);
+        List projects = projectDAO.selectAll();
+        session.close();
+        return projects;
+    }
+
+    public long addNewProject(String title, String description, String login) throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ProjectDAO projectDAO = new ProjectDAO(session);
+            UserDataSet creator = new UserDAO(session).get(login);
+            long projectId = projectDAO.addProject(title, description, creator);
+            transaction.commit();
+            session.close();
+            return projectId;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+    public ProjectDataSet getProject(long id) {
+        Session session = sessionFactory.openSession();
+        ProjectDAO projectDAO = new ProjectDAO(session);
+        ProjectDataSet projet =  projectDAO.get(id);
+        session.close();
+        return projet;
     }
 
 }

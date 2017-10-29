@@ -6,10 +6,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class UsersDAO {
+/**
+ * @author Evgeny Levin
+ */
+public class UserDAO {
     private final Session session;
 
-    public UsersDAO(Session session) {
+    public UserDAO(Session session) {
         this.session = session;
     }
 

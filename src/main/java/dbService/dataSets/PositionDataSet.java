@@ -5,6 +5,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "positions")
 public class PositionDataSet implements Serializable {
@@ -12,7 +15,7 @@ public class PositionDataSet implements Serializable {
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "role_name", unique = true)

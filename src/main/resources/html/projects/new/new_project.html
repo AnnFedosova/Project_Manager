@@ -1,47 +1,46 @@
-<!DOCTYPE html>
-<html>
+<HTML>
 <head>
-    <title>
-        Авторизация
-    </title>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
+    <title>New project</title>
     <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
     <link rel="apple-touch-icon" type="image/x-icon" href="/img/apple-icon.png"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
+
 <body>
+<form>
+    <input value="Logout" type="button" class="button_active" onclick="location.href='/logout';" style="float: right;"/>
+    <input value="Home" type="button" class="button_active" onclick="location.href='/';" style="float: right;"/>
+</form>
+
 <div class='container'>
     <div class='row'>
         <div class='col-md-8 col-md-offset-2'>
-            <div class='logo'>
-                <img alt="НИЯУ МИФИ" class="img-responsive center-block" src="/img/mephi-logo.png"/>
-            </div>
+            <br>
             <div class='login'>
                 <div class='page-header'>
-                    <h2 class='text-center'>Авторизация</h2>
+                    <h2 class='text-center'>New project</h2>
                 </div>
 
-                <form id="login-form" action="/j_security_check">
+                <form id="login-form" action="/projects/new" method="POST">
                     <div class='form-group'>
                         <div class='input-group input-group-lg'>
                             <span class='input-group-addon'><i class="fa fa-user"></i></span>
-                            <input type="text" name="j_username" placeholder="Имя пользователя" class="form-control" required="required"/>
+                            <input type="text" name="title" placeholder="Title" class="form-control" required="required"/>
                         </div>
                     </div>
                     <div class='form-group'>
                         <div class='input-group input-group-lg'>
-                            <span class='input-group-addon'><i class="fa fa-lock"></i></span>
-                            <input type="password" name="j_password" placeholder="Пароль" class="form-control" required="required"/>
+                            <span class='input-group-addon'><i class="fa fa-user"></i></span>
+                            <input type="text" name="description" placeholder="Description" class="form-control" height="200"/>
                         </div>
                     </div>
+
                     <div class='form-actions'>
-                        <div class='pull-right'>
-                            <div><a class="text-muted" href="/registration.html">Регистрация</a></div>
-                        </div>
                         <button value="Login" name="button" type="submit" class="btn btn-primary btn-lg"><i class="fa fa-sign-in"></i>
-                            Войти
+                            Create
                         </button>
                     </div>
                 </form>
@@ -57,6 +56,6 @@
     </div>
 
 </div>
-</body>
-</html>
 
+</body>
+</HTML>

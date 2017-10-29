@@ -1,0 +1,50 @@
+<HTML>
+<head>
+    <meta charset="utf-8">
+    <title>Projects</title>
+    <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
+    <link rel="apple-touch-icon" type="image/x-icon" href="/img/apple-icon.png"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+
+<body>
+<form>
+    <input value="Logout" type="button" class="button_active" onclick="location.href='/logout';" style="float: right;"/>
+    <input value="Home" type="button" class="button_active" onclick="location.href='/';" style="float: right;"/>
+</form>
+
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-8 col-md-offset-2'>
+            <br>
+            <div class='login'>
+                <!--<h1 class='light'>-->
+                    <!--${title}-->
+                <!--</h1>-->
+
+                <div class='page-header'>
+                    <h2 class='text-center'>${title}</h2>
+                </div>
+
+                <table width="100%">
+                    <div class='col-sm-2'>
+                        <tr>
+                            <td><h4 class='text-left'>Description</h4></td>
+                        </tr>
+                        <div class='list-group'>
+                            <tr>
+                                <td>${description}
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</HTML>

@@ -4,14 +4,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "requests")
 public class RequestDataSet implements Serializable {
-    private static final long serialVersionUID = 26102017L;
+    private static final long serialVersionUID = 27102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -30,19 +33,22 @@ public class RequestDataSet implements Serializable {
     private PriorityDataSet priority;
 
     @OneToMany(mappedBy = "request")
-    private Set<RequestPositionDataSet> requestPositionDataSets;
+    private Set<RequestPositionDataSet> requests;
+
+    @OneToMany(mappedBy = "request")
+    private Set<TaskDataSet> tasks;
 
     @Column(name = "text")
-    private String text;
+    private String progectDescription;
 
     public RequestDataSet() {}
 
-    public String getText() {
-        return text;
+    public String getProgectDescription() {
+        return progectDescription;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setProgectDescription(String text) {
+        this.progectDescription = text;
     }
 
     public PriorityDataSet getPriority() {

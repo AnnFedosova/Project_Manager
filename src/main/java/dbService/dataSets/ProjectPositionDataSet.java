@@ -3,6 +3,9 @@ package dbService.dataSets;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "project_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "project_id", "position_id"}))
 public class ProjectPositionDataSet implements Serializable{

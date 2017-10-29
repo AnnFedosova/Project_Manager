@@ -4,15 +4,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "users")
 public class UserDataSet implements Serializable {
-    private static final long serialVersionUID = 26102017L;
+    private static final long serialVersionUID = 27102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "login", unique = true)
@@ -31,7 +33,13 @@ public class UserDataSet implements Serializable {
     private String middleName;
 
     @OneToMany(mappedBy = "user")
-    private Set<RequestPositionDataSet> requestPositionDataSets;
+    private Set<RequestPositionDataSet> requests;
+
+    @OneToMany(mappedBy = "executor")
+    private Set<TaskDataSet> tasks;
+
+    @OneToMany(mappedBy = "creator")
+    private Set<ProjectDataSet> projects;
 
 
     public UserDataSet() {

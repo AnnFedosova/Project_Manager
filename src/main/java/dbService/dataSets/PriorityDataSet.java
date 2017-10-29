@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "Priorities")
 public class PriorityDataSet  implements Serializable {
@@ -11,7 +14,7 @@ public class PriorityDataSet  implements Serializable {
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "priority_name", unique = true)

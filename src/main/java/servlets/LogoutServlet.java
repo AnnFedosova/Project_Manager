@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author Evgeny Levin
+ */
 public class LogoutServlet extends HttpServlet {
     public static final String PAGE_URL = "/logout";
 

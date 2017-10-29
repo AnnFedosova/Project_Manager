@@ -14,10 +14,13 @@
         </form-login-config>
     </login-config>
 
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure resources</web-resource-name>
-            <url-pattern>/auth/*</url-pattern>
+            <url-pattern>/html/*</url-pattern>
+            <url-pattern>/config/*</url-pattern>
+            <url-pattern>/projects/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -27,10 +30,10 @@
     <security-constraint>
     <web-resource-collection>
         <web-resource-name>Secure resources</web-resource-name>
-        <url-pattern>/auth/*</url-pattern>
+        <url-pattern>/projects/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
         <role-name>user</role-name>
     </auth-constraint>
-</security-constraint>
+    </security-constraint>
 </web-app>

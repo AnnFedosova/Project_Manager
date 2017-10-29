@@ -3,6 +3,9 @@ package dbService.dataSets;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author Evgeny Levin
+ */
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
 public class UserRoleDataset implements Serializable {

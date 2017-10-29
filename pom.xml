@@ -6,7 +6,7 @@
 
     <groupId>levin.projectmanager</groupId>
     <artifactId>project-manager</artifactId>
-    <version>0.01</version>
+    <version>0.01-SNAPSHOT</version>
 
     <build>
         <plugins>
@@ -82,6 +82,11 @@
             <version>4.3.11.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.23</version>
+        </dependency>
     </dependencies>
 
 </project>
