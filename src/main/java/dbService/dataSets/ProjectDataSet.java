@@ -24,15 +24,15 @@ public class ProjectDataSet implements Serializable {
     @Column(name = "description", columnDefinition="text")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private UserDataSet creator;
+
     @OneToMany(mappedBy = "project")
     private Set<RequestDataSet> requests;
 
     @OneToMany(mappedBy = "project")
     private Set<ProjectPositionDataSet> projectPositions;
-
-    @ManyToOne
-    @JoinColumn(name = "creator_id")
-    private UserDataSet creator;
 
 
     public ProjectDataSet() {

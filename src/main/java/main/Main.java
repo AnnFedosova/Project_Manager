@@ -27,9 +27,7 @@ public class Main {
         JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Postgres.properties");
         //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Oracle.properties");
 
-
         addServlets(dbService, context);
-
 
         server.addBean(loginService);
         server.setHandler(context);

@@ -18,7 +18,7 @@ public class PriorityDataSet  implements Serializable {
     private long id;
 
     @Column(name = "priority_name", unique = true)
-    private String priorityName;
+    private String name;
 
     @OneToMany(mappedBy = "priority")
     private Set<RequestDataSet> RequestDataSets;
@@ -27,8 +27,8 @@ public class PriorityDataSet  implements Serializable {
     public PriorityDataSet() {
     }
 
-    public PriorityDataSet(String priorityName) {
-        this.priorityName = priorityName;
+    public PriorityDataSet(String name) {
+        this.name = name;
     }
 
 
@@ -36,16 +36,24 @@ public class PriorityDataSet  implements Serializable {
         return id;
     }
 
-    public String getPriorityName() {
-        return priorityName;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setPriorityName(String priorityName) {
-        this.priorityName = priorityName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "PriorityDataSet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
 }

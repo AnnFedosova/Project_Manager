@@ -36,6 +36,7 @@ public class ProjectServlet extends HttpServlet {
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
         Map<String, Object> pageVariables = new HashMap<>();
         ProjectDataSet project = dbService.getProject(id);
+        pageVariables.put("id", project.getId());
         pageVariables.put("title", project.getTitle());
         pageVariables.put("description", project.getDescription());
         pageVariables.put("creator", project.getCreator());

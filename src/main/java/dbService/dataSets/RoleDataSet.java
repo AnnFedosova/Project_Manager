@@ -17,14 +17,14 @@ public class RoleDataSet implements Serializable {
     private long id;
 
     @Column(name = "role_name", unique = true)
-    private String roleName;
+    private String name;
 
 
     public RoleDataSet() {
     }
 
-    public RoleDataSet(String roleName) {
-        this.roleName = roleName;
+    public RoleDataSet(String name) {
+        this.name = name;
     }
 
 
@@ -32,23 +32,23 @@ public class RoleDataSet implements Serializable {
         return id;
     }
 
-    public String getRoleName() {
-        return roleName;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "RoleDataSet{" +
                 "id=" + id +
-                ", role_name='" + roleName + '\'' +
+                ", role_name='" + name + '\'' +
                 '}';
     }
 }

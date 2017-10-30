@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "states")
 public class StateDataSet  implements Serializable {
-    private static final long serialVersionUID = 26102017L;
+    private static final long serialVersionUID = 30102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -18,7 +18,7 @@ public class StateDataSet  implements Serializable {
     private long id;
 
     @Column(name = "state_name", unique = true)
-    private String stateName;
+    private String name;
 
     @OneToMany(mappedBy = "state")
     private Set<RequestDataSet> requests;
@@ -26,8 +26,8 @@ public class StateDataSet  implements Serializable {
     public StateDataSet() {
     }
 
-    public StateDataSet(String stateName) {
-        this.stateName = stateName;
+    public StateDataSet(String name) {
+        this.name = name;
     }
 
     public long getId() {
@@ -38,19 +38,19 @@ public class StateDataSet  implements Serializable {
         this.id = id;
     }
 
-    public String getStateName() {
-        return stateName;
+    public String getName() {
+        return name;
     }
 
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
+    public void setName(String stateName) {
+        this.name = stateName;
     }
 
     @Override
     public String toString() {
         return "StateDataSet{" +
                 "id=" + id +
-                ", state_name='" + stateName + '\'' +
+                ", state_name='" + name + '\'' +
                 '}';
     }
 }

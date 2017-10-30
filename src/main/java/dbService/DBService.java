@@ -59,7 +59,6 @@ public class DBService {
         configuration.addAnnotatedClass(PositionDataSet.class);
         configuration.addAnnotatedClass(StateDataSet.class);
         configuration.addAnnotatedClass(RequestDataSet.class);
-        configuration.addAnnotatedClass(RequestPositionDataSet.class);
         configuration.addAnnotatedClass(PriorityDataSet.class);
     }
 
@@ -96,18 +95,18 @@ public class DBService {
         return id;
     }
 
-    public long addNewUser(String login, String password, String firstName, String lastName) throws DBException {
-        return addNewUser(login, password, firstName, lastName, null);
+    public long addNewUser(String login, String password, boolean internal, String firstName, String lastName) throws DBException {
+        return addNewUser(login, password, internal, firstName, lastName, null);
     }
 
-    public long addNewUser(String login, String password, String firstName, String lastName, String middleName) throws DBException {
+    public long addNewUser(String login, String password, boolean internal, String firstName, String lastName, String middleName) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             UserDAO userDAO = new UserDAO(session);
             RoleDAO roleDAO = new RoleDAO(session);
             UserRoleDAO userRoleDAO = new UserRoleDAO(session);
-            long userId = userDAO.addUser(login, password, firstName, lastName, middleName);
+            long userId = userDAO.addUser(login, password, internal, firstName, lastName, middleName);
             long roleId = roleDAO.getRoleId("user");
             userRoleDAO.addUserRole(userId, roleId);
             transaction.commit();
@@ -130,7 +129,7 @@ public class DBService {
             UserDAO userDAO = new UserDAO(session);
             RoleDAO roleDAO = new RoleDAO(session);
             UserRoleDAO userRoleDAO = new UserRoleDAO(session);
-            long userId = userDAO.addUser(login, password, firstName, lastName, middleName);
+            long userId = userDAO.addUser(login, password, true, firstName, lastName, middleName);
             long roleId = roleDAO.getRoleId("admin");
             userRoleDAO.addUserRole(userId, roleId);
             transaction.commit();

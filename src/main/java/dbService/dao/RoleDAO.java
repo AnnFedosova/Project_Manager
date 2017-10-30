@@ -22,7 +22,7 @@ public class RoleDAO {
 
     public long getRoleId(String roleName) throws HibernateException {
         Criteria criteria = session.createCriteria(RoleDataSet.class);
-        return ((RoleDataSet) criteria.add(Restrictions.eq("roleName", roleName)).uniqueResult()).getId();
+        return ((RoleDataSet) criteria.add(Restrictions.eq("name", roleName)).uniqueResult()).getId();
     }
 
     public long addRole(String roleName) throws HibernateException {

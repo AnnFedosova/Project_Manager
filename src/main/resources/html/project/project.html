@@ -11,33 +11,39 @@
 
 <body>
 <form>
-    <input value="Logout" type="button" class="button_active" onclick="location.href='/logout';" style="float: right;"/>
-    <input value="Home" type="button" class="button_active" onclick="location.href='/';" style="float: right;"/>
+    <button value="Login" name="button" type="button" onclick="location.href='/logout';" style="float: right;"><i
+            class="fa fa-sign-out"></i>
+        Log out
+    </button>
+    <button value="Login" name="button" type="button" onclick="location.href='/';" style="float: right;"><i
+            class="fa fa-home"></i>
+        Home
+    </button>
 </form>
 
-<div class='container'>
+<div class='container' style="padding-top: 35px">
     <div class='row'>
-        <div class='col-md-8 col-md-offset-2'>
-            <br>
-            <div class='login'>
-                <div class='page-header'>
-                    <h2 class='text-center'>${title}</h2>
-                </div>
+        <div class='login'>
+            <div class='page-header'>
+                <h2 class='text-left'>${title}</h2>
+                <a class="btn btn-primary" href="/project/edit?id=${id}"><i title="Edit project"
+                                                                            class="fa fa-pencil-square-o"></i> Edit</a>
+                <a class="btn btn-primary" href="/newrequest?projectid=${id}"><i title="Create request"
+                                                                                 class="fa fa-plus"></i> Create request</a>
+            </div>
 
-                <table width="100%">
-                    <div class='col-sm-2'>
-                        <tr>
-                            <td><h4 class='text-left'>Description</h4></td>
-                        </tr>
-                        <div class='list-group'>
-                            <tr>
-                                <td>${description}
-                                </td>
-                            </tr>
-                        </div>
-                    </div>
-                </table>
+            <h3 class="text-left">Creator</h3>
+            <div style="font-size: medium">
+                ${creator.login}
+            </div>
 
+            <h3 class="text-left">Description</h3>
+            <div style="font-size: medium">
+                ${description}
+            </div>
+
+            <h3 class="text-left">Roles</h3>
+            <div style="font-size: medium">
             </div>
         </div>
     </div>

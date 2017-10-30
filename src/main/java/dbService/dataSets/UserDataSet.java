@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class UserDataSet implements Serializable {
-    private static final long serialVersionUID = 27102017L;
+    private static final long serialVersionUID = 30102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -32,8 +32,8 @@ public class UserDataSet implements Serializable {
     @Column(name = "middle_name")
     private String middleName;
 
-    @OneToMany(mappedBy = "user")
-    private Set<RequestPositionDataSet> requests;
+    @Column(name="internal")
+    private boolean internal;
 
     @OneToMany(mappedBy = "executor")
     private Set<TaskDataSet> tasks;
@@ -46,19 +46,29 @@ public class UserDataSet implements Serializable {
     }
 
 
-    public UserDataSet(String login, String password, String firstName, String lastName) {
+    public UserDataSet(String login, String password, boolean internal, String firstName, String lastName) {
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
+        this.internal = internal;
     }
 
-    public UserDataSet(String login, String password, String firstName, String lastName, String middleName) {
+    public UserDataSet(String login, String password, boolean internal, String firstName, String lastName, String middleName) {
         this.setLogin(login);
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setMiddleName(middleName);
+        this.internal = internal;
+    }
+
+    public void setInternal(boolean internal) {
+        this.internal = internal;
+    }
+
+    public boolean getInternal() {
+        return internal;
     }
 
     public String getLogin() {
@@ -116,6 +126,7 @@ public class UserDataSet implements Serializable {
                 ", first_name='" + firstName + '\'' +
                 ", middle_name='" + middleName + '\'' +
                 ", last_name='" + lastName + '\'' +
+                ", internal='" + internal + '\'' +
                 '}';
     }
 }

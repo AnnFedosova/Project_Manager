@@ -11,8 +11,12 @@
 
 <body>
 <form>
-    <input value="Logout" type="button" class="button_active" onclick="location.href='/logout';" style="float: right;"/>
-    <input value="Home" type="button" class="button_active" onclick="location.href='/';" style="float: right;"/>
+    <button value="Login" name="button" type="button" onclick="location.href='/logout';" style="float: right;"><i class="fa fa-sign-out"></i>
+        Log out
+    </button>
+    <button value="Login" name="button" type="button" onclick="location.href='/';" style="float: right;"><i class="fa fa-home"></i>
+        Home
+    </button>
 </form>
 
 <div class='container'>
@@ -39,7 +43,7 @@
                     </div>
 
                     <div class='form-actions'>
-                        <button value="Login" name="button" type="submit" class="btn btn-primary btn-lg"><i class="fa fa-sign-in"></i>
+                        <button value="Login" name="button" type="submit" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i>
                             Create
                         </button>
                     </div>

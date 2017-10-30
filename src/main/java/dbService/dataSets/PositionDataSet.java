@@ -18,22 +18,22 @@ public class PositionDataSet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "role_name", unique = true)
-    private String positionName;
+    @Column(name = "name", unique = true)
+    private String name;
 
     @OneToMany(mappedBy = "position")
-    private Set<RequestPositionDataSet> requestPositionDataSets;
+    private Set<ProjectPositionDataSet> projectPositions;
 
     public PositionDataSet() {
     }
 
-    public PositionDataSet(long id, String positionName) {
+    public PositionDataSet(long id, String name) {
         this.id = id;
-        this.positionName = positionName;
+        this.name = name;
     }
 
-    public PositionDataSet(String positionName) {
-        this.positionName = positionName;
+    public PositionDataSet(String name) {
+        this.name = name;
     }
 
 
@@ -41,16 +41,24 @@ public class PositionDataSet implements Serializable {
         return id;
     }
 
-    public String getPositionName() {
-        return positionName;
+    public String getName() {
+        return name;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
-    public void setPositionName(String roleName) {
-        this.positionName = roleName;
+    public void setName(String roleName) {
+        this.name = roleName;
+    }
+
+    @Override
+    public String toString() {
+        return "PositionDataSet{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
 }

@@ -8,7 +8,6 @@
         <mapping class="dbService.dataSets.RequestDataSet"/>
         <mapping class="dbService.dataSets.StateDataSet"/>
         <mapping class="dbService.dataSets.ProjectDataSet"/>
-        <mapping class="dbService.dataSets.RequestPositionDataSet"/>
         <mapping class="dbService.dataSets.UserDataSet"/>
         <mapping class="dbService.dataSets.PositionDataSet"/>
         <mapping class="dbService.dataSets.ProjectPositionDataSet"/>

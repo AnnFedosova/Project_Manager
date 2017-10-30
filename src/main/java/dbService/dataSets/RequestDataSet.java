@@ -21,8 +21,19 @@ public class RequestDataSet implements Serializable {
     @JoinColumn(name = "project_id")
     private ProjectDataSet project;
 
-    @Column(name = "request_name", unique = true)
-    private String requestName;
+    @Column(name = "title", unique = true)
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private ProjectPositionDataSet creator;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private ProjectPositionDataSet customer;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
@@ -33,22 +44,42 @@ public class RequestDataSet implements Serializable {
     private PriorityDataSet priority;
 
     @OneToMany(mappedBy = "request")
-    private Set<RequestPositionDataSet> requests;
-
-    @OneToMany(mappedBy = "request")
     private Set<TaskDataSet> tasks;
-
-    @Column(name = "text")
-    private String progectDescription;
 
     public RequestDataSet() {}
 
-    public String getProgectDescription() {
-        return progectDescription;
+    public RequestDataSet(ProjectDataSet project, String title, String description, ProjectPositionDataSet creator, ProjectPositionDataSet customer, StateDataSet state, PriorityDataSet priority) {
+        this.project = project;
+        this.title = title;
+        this.description = description;
+        this.creator = creator;
+        this.customer = customer;
+        this.state = state;
+        this.priority = priority;
     }
 
-    public void setProgectDescription(String text) {
-        this.progectDescription = text;
+    public void setCreator(ProjectPositionDataSet creator) {
+        this.creator = creator;
+    }
+
+    public ProjectPositionDataSet getCreator() {
+        return creator;
+    }
+
+    public void setCustomer(ProjectPositionDataSet customer) {
+        this.customer = customer;
+    }
+
+    public ProjectPositionDataSet getCustomer() {
+        return customer;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public PriorityDataSet getPriority() {
@@ -67,12 +98,12 @@ public class RequestDataSet implements Serializable {
         this.id = id;
     }
 
-    public String getRequestName() {
-        return requestName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRequestName(String requestName) {
-        this.requestName = requestName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public ProjectDataSet getProject() {
