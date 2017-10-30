@@ -20,6 +20,11 @@ public class RoleDAO {
         return (RoleDataSet) session.get(RoleDataSet.class, id);
     }
 
+    public RoleDataSet get(String roleName) throws HibernateException {
+        Criteria criteria = session.createCriteria(RoleDataSet.class);
+        return (RoleDataSet) criteria.add(Restrictions.eq("name", roleName)).uniqueResult();
+    }
+
     public long getRoleId(String roleName) throws HibernateException {
         Criteria criteria = session.createCriteria(RoleDataSet.class);
         return ((RoleDataSet) criteria.add(Restrictions.eq("name", roleName)).uniqueResult()).getId();

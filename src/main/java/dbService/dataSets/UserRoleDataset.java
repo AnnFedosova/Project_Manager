@@ -9,48 +9,50 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
 public class UserRoleDataset implements Serializable {
-    private static final long serialVersionUID = 26102017L;
+    private static final long serialVersionUID = 30102017L;
 
     @Id
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserDataSet user;
 
     @Id
-    @Column(name = "role_id")
-    private long roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleDataSet role;
 
 
     public UserRoleDataset() {
     }
 
-    public UserRoleDataset(long userId, long roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
+    public UserRoleDataset(UserDataSet user, RoleDataSet role) {
+        this.user = user;
+        this.role = role;
     }
 
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUserId(UserDataSet user) {
+        this.user = user;
     }
 
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
+    public void setRoleId(RoleDataSet role) {
+        this.role = role;
     }
 
-    public long getUserId() {
-        return userId;
+    public UserDataSet getUserId() {
+        return user;
     }
 
-    public long getRoleId() {
-        return roleId;
+    public RoleDataSet getRoleId() {
+        return role;
     }
 
 
     @Override
     public String toString() {
         return "UserRoleDataset{" +
-                "user_id=" + userId +
-                ", role_id='" + roleId + '\'' +
+                "user_id=" + user.getId() +
+                ", role_id='" + role.getId() + '\'' +
                 '}';
     }
 }

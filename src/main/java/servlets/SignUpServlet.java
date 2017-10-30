@@ -49,7 +49,6 @@ public class SignUpServlet extends HttpServlet {
             return;
         }
 
-        //accountService.addNewUser(new UserProfile(login));
 
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().println("Registered");

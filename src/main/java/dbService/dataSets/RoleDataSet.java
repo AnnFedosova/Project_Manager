@@ -2,6 +2,7 @@ package dbService.dataSets;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Evgeny Levin
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "roles")
 public class RoleDataSet implements Serializable {
-    private static final long serialVersionUID = 26102017L;
+    private static final long serialVersionUID = 30102017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -19,6 +20,8 @@ public class RoleDataSet implements Serializable {
     @Column(name = "role_name", unique = true)
     private String name;
 
+    @OneToMany(mappedBy = "role")
+    private Set<UserRoleDataset> userRoleDatasetSet;
 
     public RoleDataSet() {
     }

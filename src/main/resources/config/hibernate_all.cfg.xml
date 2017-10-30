@@ -13,5 +13,7 @@
         <mapping class="dbService.dataSets.ProjectPositionDataSet"/>
         <mapping class="dbService.dataSets.PriorityDataSet"/>
         <mapping class="dbService.dataSets.TaskDataSet"/>
+        <mapping class="dbService.dataSets.UserRoleDataset"/>
+        <mapping class="dbService.dataSets.RoleDataSet"/>
     </session-factory>
 </hibernate-configuration>

@@ -41,6 +41,9 @@ public class UserDataSet implements Serializable {
     @OneToMany(mappedBy = "creator")
     private Set<ProjectDataSet> projects;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserRoleDataset> userRoleDatasetSet;
+
 
     public UserDataSet() {
     }
