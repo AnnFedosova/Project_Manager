@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
 public class UserRoleDataset implements Serializable {
-    private static final long serialVersionUID = 30102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @ManyToOne

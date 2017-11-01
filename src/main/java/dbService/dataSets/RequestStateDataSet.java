@@ -8,30 +8,28 @@ import java.util.Set;
  * @author Evgeny Levin
  */
 @Entity
-@Table(name = "priorities")
-public class PriorityDataSet  implements Serializable {
+@Table(name = "request_states")
+public class RequestStateDataSet implements Serializable {
     private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "priorities_id_generator")
-    @SequenceGenerator(name = "priorities_id_generator", sequenceName = "priorities_id_seq")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "request_states_id_generator")
+    @SequenceGenerator(name = "request_states_id_generator", sequenceName = "request_states_id_seq")
     private long id;
 
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "priority")
-    private Set<RequestDataSet> RequestDataSets;
+    @OneToMany(mappedBy = "state")
+    private Set<RequestDataSet> requests;
 
-
-    public PriorityDataSet() {
+    public RequestStateDataSet() {
     }
 
-    public PriorityDataSet(String name) {
+    public RequestStateDataSet(String name) {
         this.name = name;
     }
-
 
     public long getId() {
         return id;
@@ -45,16 +43,15 @@ public class PriorityDataSet  implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String stateName) {
+        this.name = stateName;
     }
 
     @Override
     public String toString() {
-        return "PriorityDataSet{" +
+        return "RequestStateDataSet{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", state_name='" + name + '\'' +
                 '}';
     }
-
 }

@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -44,7 +43,7 @@ public class NewProjectServlet  extends HttpServlet {
 
         try {
             Principal user = request.getUserPrincipal();
-            dbService.addNewProject(title, description.toString(), user.getName());
+            dbService.addProject(title, description.toString(), user.getName());
         } catch (DBException e) {
             e.printStackTrace();
         }

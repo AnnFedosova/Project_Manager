@@ -10,11 +10,12 @@ import java.util.Set;
 @Entity
 @Table(name = "project_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "project_id", "position_id"}))
 public class ProjectPositionDataSet implements Serializable{
-    private static final long serialVersionUID = 30102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
-    @Column(name = "id ", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "project_positions_id_generator")
+    @SequenceGenerator(name = "project_positions_id_generator", sequenceName = "project_positions_id_seq")
     private long id;
 
     @ManyToOne
@@ -29,6 +30,7 @@ public class ProjectPositionDataSet implements Serializable{
     @JoinColumn(name = "position_id")
     private PositionDataSet position;
 
+
     @OneToMany(mappedBy = "creator")
     private Set<RequestDataSet> requestCreators;
 
@@ -38,12 +40,18 @@ public class ProjectPositionDataSet implements Serializable{
     @OneToMany(mappedBy = "creator")
     private Set<TaskDataSet> taskCreators;
 
-    @OneToMany(mappedBy = "project")
-    private Set<ProjectPositionDataSet> projectPositions;
+    @OneToMany(mappedBy = "executor")
+    private Set<TaskDataSet> taskExecutors;
 
 
     public ProjectPositionDataSet() {
 
+    }
+
+    public ProjectPositionDataSet(ProjectDataSet project, PositionDataSet position, UserDataSet user) {
+        this.project = project;
+        this.position = position;
+        this.user = user;
     }
 
     public void setId(long id) {

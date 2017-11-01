@@ -7,41 +7,43 @@ import java.io.Serializable;
  * @author Evgeny Levin
  */
 @Entity
-@Table(name = "tasks")
+@Table(name = "tasks", uniqueConstraints = @UniqueConstraint(columnNames = {"request_id", "title"}))
 public class TaskDataSet implements Serializable{
-    private static final long serialVersionUID = 30102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "tasks_id_generator")
+    @SequenceGenerator(name = "tasks_id_generator", sequenceName = "tasks_id_seq")
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "request_id")
     private RequestDataSet request;
 
-    @Column(name = "task_name")
-    private String name;
+    @Column(name = "title")
+    private String title;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateDataSet state;
+    private TaskStateDataSet state;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private ProjectPositionDataSet creator;
+    private UserDataSet creator;
 
     @ManyToOne
     @JoinColumn(name = "executor_id")
-    private ProjectPositionDataSet executor;
+    private UserDataSet executor;
 
     public TaskDataSet() {}
 
-    public TaskDataSet(String name, String description, RequestDataSet request, StateDataSet state, ProjectPositionDataSet creator, ProjectPositionDataSet executor) {
-        this.name = name;
+    public TaskDataSet(String title, String description, RequestDataSet request, UserDataSet creator, UserDataSet executor, TaskStateDataSet state) {
+        this.title = title;
         this.description = description;
         this.request = request;
         this.state = state;
@@ -58,11 +60,11 @@ public class TaskDataSet implements Serializable{
         this.id = id;
     }
 
-    public ProjectPositionDataSet getCreator() {
+    public UserDataSet getCreator() {
         return creator;
     }
 
-    public void setCreator(ProjectPositionDataSet creator) {
+    public void setCreator(UserDataSet creator) {
         this.creator = creator;
     }
 
@@ -74,12 +76,12 @@ public class TaskDataSet implements Serializable{
         this.description = text;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String taskName) {
-        this.name = taskName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public RequestDataSet getRequest() {
@@ -90,19 +92,19 @@ public class TaskDataSet implements Serializable{
         this.request = request;
     }
 
-    public StateDataSet getState() {
+    public TaskStateDataSet getState() {
         return state;
     }
 
-    public void setState(StateDataSet state) {
+    public void setState(TaskStateDataSet state) {
         this.state = state;
     }
 
-    public ProjectPositionDataSet getExecutor() {
+    public UserDataSet getExecutor() {
         return executor;
     }
 
-    public void setExecutor(ProjectPositionDataSet executor) {
+    public void setExecutor(UserDataSet executor) {
         this.executor = executor;
     }
 }

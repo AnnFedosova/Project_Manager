@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.RequestDataSet;
+import dbService.dataSets.TaskDataSet;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -14,39 +14,39 @@ import java.util.List;
 /**
  * @author Evgeny Levin
  */
-public class RequestDAO {
+public class TaskDAO {
     private final Session session;
 
-    public RequestDAO(Session session) {
+    public TaskDAO(Session session) {
         this.session = session;
     }
 
-    public RequestDataSet get(long id)  throws HibernateException {
-        return session.get(RequestDataSet.class, id);
+    public TaskDataSet get(long id)  throws HibernateException {
+        return session.get(TaskDataSet.class, id);
     }
 
-    public RequestDataSet get(String title)  throws HibernateException {
+    public TaskDataSet get(String title)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<RequestDataSet> criteria = builder.createQuery(RequestDataSet.class);
+        CriteriaQuery<TaskDataSet> criteria = builder.createQuery(TaskDataSet.class);
 
-        Root<RequestDataSet> root = criteria.from(RequestDataSet.class);
+        Root<TaskDataSet> root = criteria.from(TaskDataSet.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("title"), parameter));
-        Query<RequestDataSet> query = session.createQuery(criteria);
+        Query<TaskDataSet> query = session.createQuery(criteria);
         query.setParameter(parameter, title);
         return query.uniqueResult();
     }
 
-    public long addRequest(RequestDataSet request) {
-        return (long) session.save(request);
+    public long addTask(TaskDataSet task) {
+        return (long) session.save(task);
     }
 
-    public List<RequestDataSet> selectAll() {
+    public List<TaskDataSet> selectAll() {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<RequestDataSet> criteria = builder.createQuery(RequestDataSet.class);
-        Root<RequestDataSet> root = criteria.from(RequestDataSet.class);
+        CriteriaQuery<TaskDataSet> criteria = builder.createQuery(TaskDataSet.class);
+        Root<TaskDataSet> root = criteria.from(TaskDataSet.class);
         criteria.select(root);
-        Query<RequestDataSet> query = session.createQuery(criteria);
+        Query<TaskDataSet> query = session.createQuery(criteria);
         return query.getResultList();
     }
 }

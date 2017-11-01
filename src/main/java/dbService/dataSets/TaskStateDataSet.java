@@ -8,25 +8,26 @@ import java.util.Set;
  * @author Evgeny Levin
  */
 @Entity
-@Table(name = "states")
-public class StateDataSet  implements Serializable {
-    private static final long serialVersionUID = 30102017L;
+@Table(name = "task_states")
+public class TaskStateDataSet implements Serializable {
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "task_states_id_generator")
+    @SequenceGenerator(name = "task_states_id_generator", sequenceName = "task_states_id_seq")
     private long id;
 
-    @Column(name = "state_name", unique = true)
+    @Column(name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "state")
-    private Set<RequestDataSet> requests;
+    private Set<TaskDataSet> tasks;
 
-    public StateDataSet() {
+    public TaskStateDataSet() {
     }
 
-    public StateDataSet(String name) {
+    public TaskStateDataSet(String name) {
         this.name = name;
     }
 
@@ -48,7 +49,7 @@ public class StateDataSet  implements Serializable {
 
     @Override
     public String toString() {
-        return "StateDataSet{" +
+        return "TaskStateDataSet{" +
                 "id=" + id +
                 ", state_name='" + name + '\'' +
                 '}';

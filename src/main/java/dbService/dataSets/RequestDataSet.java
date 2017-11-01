@@ -8,13 +8,14 @@ import java.util.Set;
  * @author Evgeny Levin
  */
 @Entity
-@Table(name = "requests")
+@Table(name = "requests", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
 public class RequestDataSet implements Serializable {
-    private static final long serialVersionUID = 27102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "requests_id_generator")
+    @SequenceGenerator(name = "requests_id_generator", sequenceName = "requests_id_seq")
     private long id;
 
     @ManyToOne
@@ -24,20 +25,21 @@ public class RequestDataSet implements Serializable {
     @Column(name = "title", unique = true)
     private String title;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private ProjectPositionDataSet creator;
+    private UserDataSet creator;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private ProjectPositionDataSet customer;
+    private UserDataSet customer;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateDataSet state;
+    private RequestStateDataSet state;
 
     @ManyToOne
     @JoinColumn(name = "priority_id")
@@ -48,7 +50,7 @@ public class RequestDataSet implements Serializable {
 
     public RequestDataSet() {}
 
-    public RequestDataSet(ProjectDataSet project, String title, String description, ProjectPositionDataSet creator, ProjectPositionDataSet customer, StateDataSet state, PriorityDataSet priority) {
+    public RequestDataSet(ProjectDataSet project, String title, String description, UserDataSet creator, UserDataSet customer, RequestStateDataSet state, PriorityDataSet priority) {
         this.project = project;
         this.title = title;
         this.description = description;
@@ -58,19 +60,19 @@ public class RequestDataSet implements Serializable {
         this.priority = priority;
     }
 
-    public void setCreator(ProjectPositionDataSet creator) {
+    public void setCreator(UserDataSet creator) {
         this.creator = creator;
     }
 
-    public ProjectPositionDataSet getCreator() {
+    public UserDataSet getCreator() {
         return creator;
     }
 
-    public void setCustomer(ProjectPositionDataSet customer) {
+    public void setCustomer(UserDataSet customer) {
         this.customer = customer;
     }
 
-    public ProjectPositionDataSet getCustomer() {
+    public UserDataSet getCustomer() {
         return customer;
     }
 
@@ -114,11 +116,11 @@ public class RequestDataSet implements Serializable {
         this.project = project;
     }
 
-    public StateDataSet getState() {
+    public RequestStateDataSet getState() {
         return state;
     }
 
-    public void setState(StateDataSet state) {
+    public void setState(RequestStateDataSet state) {
         this.state = state;
     }
 }

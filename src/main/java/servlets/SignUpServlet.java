@@ -36,10 +36,10 @@ public class SignUpServlet extends HttpServlet {
 
         try {
             if (patronymic == null) {
-                dbService.addNewUser(login, password, false, firstName, lastName);
+                dbService.addUser(login, password, false, firstName, lastName);
             }
             else {
-                dbService.addNewUser(login, password, false, firstName, lastName, patronymic);
+                dbService.addUser(login, password, false, firstName, lastName, patronymic);
             }
         }
         catch (DBException e) {

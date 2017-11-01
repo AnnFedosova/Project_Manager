@@ -10,11 +10,12 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class UserDataSet implements Serializable {
-    private static final long serialVersionUID = 30102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "users_id_generator")
+    @SequenceGenerator(name = "users_id_generator", sequenceName = "users_id_seq")
     private long id;
 
     @Column(name = "login", unique = true)
@@ -50,20 +51,20 @@ public class UserDataSet implements Serializable {
 
 
     public UserDataSet(String login, String password, boolean internal, String firstName, String lastName) {
-        this.setLogin(login);
-        this.setPassword(password);
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.internal = internal;
     }
 
     public UserDataSet(String login, String password, boolean internal, String firstName, String lastName, String middleName) {
-        this.setLogin(login);
-        this.setPassword(password);
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-        this.setMiddleName(middleName);
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.internal = internal;
+        this.middleName = middleName;
     }
 
     public void setInternal(boolean internal) {

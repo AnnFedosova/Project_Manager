@@ -11,17 +11,19 @@ import java.util.Set;
 @Entity
 @Table(name = "projects")
 public class ProjectDataSet implements Serializable {
-    private static final long serialVersionUID = 30102017L;
+    private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "projects_id_generator")
+    @SequenceGenerator(name = "projects_id_generator", sequenceName = "projects_id_seq")
     private long id;
 
     @Column(name = "title", unique = true)
     private String title;
 
-    @Column(name = "description", columnDefinition="text")
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
