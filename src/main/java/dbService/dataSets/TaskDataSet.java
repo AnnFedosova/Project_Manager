@@ -9,12 +9,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "tasks", uniqueConstraints = @UniqueConstraint(columnNames = {"request_id", "title"}))
 public class TaskDataSet implements Serializable{
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "tasks_id_generator")
-    @SequenceGenerator(name = "tasks_id_generator", sequenceName = "tasks_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -24,13 +23,12 @@ public class TaskDataSet implements Serializable{
     @Column(name = "title")
     private String title;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition="text")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private TaskStateDataSet state;
+    private StateDataSet state;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
@@ -42,7 +40,7 @@ public class TaskDataSet implements Serializable{
 
     public TaskDataSet() {}
 
-    public TaskDataSet(String title, String description, RequestDataSet request, UserDataSet creator, UserDataSet executor, TaskStateDataSet state) {
+    public TaskDataSet(String title, String description, RequestDataSet request, UserDataSet creator, UserDataSet executor, StateDataSet state) {
         this.title = title;
         this.description = description;
         this.request = request;
@@ -92,11 +90,11 @@ public class TaskDataSet implements Serializable{
         this.request = request;
     }
 
-    public TaskStateDataSet getState() {
+    public StateDataSet getState() {
         return state;
     }
 
-    public void setState(TaskStateDataSet state) {
+    public void setState(StateDataSet state) {
         this.state = state;
     }
 

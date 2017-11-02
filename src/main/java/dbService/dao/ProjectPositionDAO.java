@@ -51,7 +51,7 @@ public class ProjectPositionDAO {
         return query.getResultList();
     }
 
-    public long addProjectPosition(long projectId, String positionName, String userLogin) {
+    public void addProjectPosition(long projectId, String positionName, String userLogin) {
         PositionDAO positionDAO = new PositionDAO(session);
         ProjectDAO projectDAO = new ProjectDAO(session);
         UserDAO userDAO = new UserDAO(session);
@@ -60,14 +60,14 @@ public class ProjectPositionDAO {
         ProjectDataSet project = projectDAO.get(projectId);
         UserDataSet user = userDAO.get(userLogin);
 
-        return (long) session.save(new ProjectPositionDataSet(project, position, user));
+        session.save(new ProjectPositionDataSet(project, position, user));
     }
 
-    public long addProjectPosition(PositionDataSet position, ProjectDataSet project, UserDataSet user) {
-        return (long) session.save(new ProjectPositionDataSet(project, position, user));
+    public void addProjectPosition(PositionDataSet position, ProjectDataSet project, UserDataSet user) {
+        session.save(new ProjectPositionDataSet(project, position, user));
     }
 
-    public long addProjectPosition(ProjectPositionDataSet projectPosition) {
-        return (long) session.save(projectPosition);
+    public void addProjectPosition(ProjectPositionDataSet projectPosition) {
+        session.save(projectPosition);
     }
 }

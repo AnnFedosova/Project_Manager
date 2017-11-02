@@ -10,12 +10,11 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class UserDataSet implements Serializable {
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "users_id_generator")
-    @SequenceGenerator(name = "users_id_generator", sequenceName = "users_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "login", unique = true)
@@ -36,8 +35,17 @@ public class UserDataSet implements Serializable {
     @Column(name="internal")
     private boolean internal;
 
+    @OneToMany(mappedBy = "creator")
+    private Set<TaskDataSet> taskCreators;
+
     @OneToMany(mappedBy = "executor")
-    private Set<TaskDataSet> tasks;
+    private Set<TaskDataSet> taskExecutors;
+
+    @OneToMany(mappedBy = "creator")
+    private Set<RequestDataSet> requestCreators;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<RequestDataSet> requestCustomers;
 
     @OneToMany(mappedBy = "creator")
     private Set<ProjectDataSet> projects;

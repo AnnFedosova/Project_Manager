@@ -10,12 +10,11 @@ import java.util.Set;
 @Entity
 @Table(name = "requests", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
 public class RequestDataSet implements Serializable {
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "requests_id_generator")
-    @SequenceGenerator(name = "requests_id_generator", sequenceName = "requests_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -25,8 +24,7 @@ public class RequestDataSet implements Serializable {
     @Column(name = "title", unique = true)
     private String title;
 
-    @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition="text")
     private String description;
 
     @ManyToOne
@@ -39,7 +37,7 @@ public class RequestDataSet implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private RequestStateDataSet state;
+    private StateDataSet state;
 
     @ManyToOne
     @JoinColumn(name = "priority_id")
@@ -50,7 +48,7 @@ public class RequestDataSet implements Serializable {
 
     public RequestDataSet() {}
 
-    public RequestDataSet(ProjectDataSet project, String title, String description, UserDataSet creator, UserDataSet customer, RequestStateDataSet state, PriorityDataSet priority) {
+    public RequestDataSet(ProjectDataSet project, String title, String description, UserDataSet creator, UserDataSet customer, StateDataSet state, PriorityDataSet priority) {
         this.project = project;
         this.title = title;
         this.description = description;
@@ -116,11 +114,11 @@ public class RequestDataSet implements Serializable {
         this.project = project;
     }
 
-    public RequestStateDataSet getState() {
+    public StateDataSet getState() {
         return state;
     }
 
-    public void setState(RequestStateDataSet state) {
+    public void setState(StateDataSet state) {
         this.state = state;
     }
 }

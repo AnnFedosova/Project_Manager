@@ -9,10 +9,15 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import servlets.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * @author Evgeny Levin
  */
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class.getName());
+
     public static void main(String[] args) throws Exception {
         DBService dbService = new DBService();
         dbService.printConnectInfo();
@@ -25,8 +30,7 @@ public class Main {
         WebAppContext context = new WebAppContext();
         context.setResourceBase("src/main/resources/");
 
-        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Postgres.properties");
-        //JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/config/jdbcrealm_Oracle.properties");
+        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/cfg/jdbcrealm.properties");
 
         addServlets(dbService, context);
 
@@ -35,6 +39,7 @@ public class Main {
         server.start();
         server.join();
     }
+
 
     private static void addServlets(DBService dbService, ServletContextHandler context) {
         context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
@@ -65,26 +70,25 @@ public class Main {
 
 
             //RequestStates
-            dbService.addRequestState("New");
-            dbService.addRequestState("On the go");
-            dbService.addRequestState("Postponed");
-            dbService.addRequestState("Complete");
-            dbService.addRequestState("Rejected");
-            dbService.addRequestState("Closed");
+            dbService.addState("Postponed", true, false);
+            dbService.addState("Complete", true, false);
+            dbService.addState("Rejected", true, false);
+
+            //RequestAndTaskStates
+            dbService.addState("New", true, true);
+            dbService.addState("On the go", true, true);
+            dbService.addState("Closed", true, true);
 
             //TaskStates
-            dbService.addTaskState("New");
-            dbService.addTaskState("Assigned");
-            dbService.addTaskState("On the go");
-            dbService.addTaskState("Completed, waiting for testing");
-            dbService.addTaskState("In testing");
-            dbService.addTaskState("Closed");
+            dbService.addState("Assigned", false, true);
+            dbService.addState("Completed, waiting for testing", false, true);
+            dbService.addState("In testing", false, true);
 
 
             //Priorities
-            dbService.addPriority("high");
-            dbService.addPriority("medium");
-            dbService.addPriority("low");
+            dbService.addPriority("High");
+            dbService.addPriority("Medium");
+            dbService.addPriority("Low");
 
 
         } catch (DBException e) {
@@ -120,7 +124,7 @@ public class Main {
             long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", "leo","realtrump", "high", 3);
 
             //Tasks
-            dbService.addTask("Do it!", "Please", "leo", "belovivan", "medium", request1Id);
+            dbService.addTask("Do it!", "Please", "leo", "belovivan", request1Id);
         } catch (DBException e) {
             e.printStackTrace();
         }

@@ -11,12 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "positions")
 public class PositionDataSet implements Serializable {
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "positions_id_generator")
-    @SequenceGenerator(name = "positions_id_generator", sequenceName = "positions_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name", unique = true)

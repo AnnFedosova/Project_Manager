@@ -1,48 +1,45 @@
 package dbService.dao;
 
-import dbService.dataSets.TaskStateDataSet;
-import org.hibernate.Criteria;
+import dbService.dataSets.StateDataSet;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 /**
  * @author Evgeny Levin
  */
-public class TaskStateDAO {
+public class StateDAO {
     private final Session session;
 
-    public TaskStateDAO(Session session) {
+    public StateDAO(Session session) {
         this.session = session;
     }
 
-    public TaskStateDataSet get(long id)  throws HibernateException {
-        return session.get(TaskStateDataSet.class, id);
+    public StateDataSet get(long id)  throws HibernateException {
+        return session.get(StateDataSet.class, id);
     }
 
-    public TaskStateDataSet get(String name)  throws HibernateException {
+    public StateDataSet get(String name)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TaskStateDataSet> criteria = builder.createQuery(TaskStateDataSet.class);
-        Root<TaskStateDataSet> root = criteria.from(TaskStateDataSet.class);
+        CriteriaQuery<StateDataSet> criteria = builder.createQuery(StateDataSet.class);
+        Root<StateDataSet> root = criteria.from(StateDataSet.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("name"), parameter));
-        Query<TaskStateDataSet> query = session.createQuery(criteria);
+        Query<StateDataSet> query = session.createQuery(criteria);
         query.setParameter(parameter, name);
         return query.uniqueResult();
     }
 
-    public long addState(String name) {
-        return (long) session.save(new TaskStateDataSet(name));
+    public long addState(String name, boolean requestAccord, boolean tasksAccord) {
+        return (long) session.save(new StateDataSet(name, requestAccord, tasksAccord));
     }
 
-    public long addState(TaskStateDataSet state) {
+    public long addState(StateDataSet state) {
         return (long) session.save(state);
     }
 }

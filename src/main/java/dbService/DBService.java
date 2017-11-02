@@ -9,10 +9,8 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.jdbc.Work;
 import org.hibernate.service.ServiceRegistry;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class DBService {
     private final SessionFactory sessionFactory;
 
     public DBService() {
-        Configuration configuration = getPostgresConfiguration();
+        Configuration configuration = getConfiguration();
         //Configuration configuration = getOracleConfiguration();
         sessionFactory = createSessionFactory(configuration);
     }
@@ -32,17 +30,9 @@ public class DBService {
         return sessionFactory;
     }
 
-    private Configuration getPostgresConfiguration() {
-        return getConfiguration("config/hibernate_Postgres.cfg.xml");
-    }
-
-    private Configuration getOracleConfiguration() {
-        return getConfiguration("config/hibernate_Oracle.cfg.xml");
-    }
-
-    private Configuration getConfiguration(String cfgFilePath) {
+    private Configuration getConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.configure(cfgFilePath);
+        configuration.configure("cfg/hibernate.cfg.xml");
         addTables(configuration);
         return configuration;
     }
@@ -53,12 +43,11 @@ public class DBService {
         configuration.addAnnotatedClass(UserRoleDataset.class);
         configuration.addAnnotatedClass(ProjectDataSet.class);
         configuration.addAnnotatedClass(PositionDataSet.class);
-        configuration.addAnnotatedClass(RequestStateDataSet.class);
+        configuration.addAnnotatedClass(StateDataSet.class);
         configuration.addAnnotatedClass(RequestDataSet.class);
         configuration.addAnnotatedClass(PriorityDataSet.class);
         configuration.addAnnotatedClass(ProjectPositionDataSet.class);
         configuration.addAnnotatedClass(TaskDataSet.class);
-        configuration.addAnnotatedClass(TaskStateDataSet.class);
     }
 
     public void printConnectInfo() {
@@ -156,7 +145,6 @@ public class DBService {
 
             ProjectDAO projectDAO = new ProjectDAO(session);
             UserDataSet creator = new UserDAO(session).get(creatorLogin);
-            ProjectDataSet project = new ProjectDataSet(title, description, creator);
             long projectId = projectDAO.addProject(title, description, creator);
 
             transaction.commit();
@@ -198,7 +186,7 @@ public class DBService {
 //            RequestDAO requestDAO = new RequestDAO(session);
 //            UserDAO userDAO = new UserDAO(session);
 //            PriorityDAO priorityDAO = new PriorityDAO(session);
-//            RequestStateDAO requestStateDAO = new RequestStateDAO(session);
+//            StateDAO requestStateDAO = new StateDAO(session);
 //            ProjectDAO projectDAO = new ProjectDAO(session);
 //            ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
 //
@@ -211,7 +199,7 @@ public class DBService {
 //
 //            ProjectPositionDataSet creatorPosition = null;
 //            ProjectPositionDataSet customerPosition = null;
-//            RequestStateDataSet state = requestStateDAO.get("New");
+//            StateDataSet state = requestStateDAO.get("New");
 //            PriorityDataSet priority = priorityDAO.get(priorityName);
 //
 //            //TODO добавить проверку при создании проекта
@@ -252,14 +240,14 @@ public class DBService {
             RequestDAO requestDAO = new RequestDAO(session);
             UserDAO userDAO = new UserDAO(session);
             PriorityDAO priorityDAO = new PriorityDAO(session);
-            RequestStateDAO requestStateDAO = new RequestStateDAO(session);
+            StateDAO stateDAO = new StateDAO(session);
             ProjectDAO projectDAO = new ProjectDAO(session);
 
             ProjectDataSet project = projectDAO.get(projectId);
             UserDataSet creator = userDAO.get(creatorLogin);
             UserDataSet customer = userDAO.get(customerLogin);
 
-            RequestStateDataSet state = requestStateDAO.get("New");
+            StateDataSet state = stateDAO.get("New");
             PriorityDataSet priority = priorityDAO.get(priorityName);
 
             RequestDataSet request = new RequestDataSet(project, title, description, creator, customer, state, priority);
@@ -290,31 +278,15 @@ public class DBService {
     }
 
 
-    //RequestStates
+    //States
 
-    public long addRequestState(String stateName) {
+    public long addState(String stateName, boolean requestAccord, boolean tasksAccord) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        RequestStateDAO requestStateDAO = new RequestStateDAO(session);
+        StateDAO stateDAO = new StateDAO(session);
 
-        long id = requestStateDAO.addState(stateName);
-
-        transaction.commit();
-        session.close();
-        return id;
-    }
-
-
-    //TaskStates
-
-    public long addTaskState(String stateName) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-
-        TaskStateDAO taskStateDAO = new TaskStateDAO(session);
-
-        long id = taskStateDAO.addState(stateName);
+        long id = stateDAO.addState(stateName, requestAccord, tasksAccord);
 
         transaction.commit();
         session.close();
@@ -323,7 +295,7 @@ public class DBService {
 
     //Tasks
     //TODO добавить проверку при создании task'а
-    public long addTask(String title, String description, String creatorLogin, String executorLogin, String priorityName, long requestId) throws DBException {
+    public long addTask(String title, String description, String creatorLogin, String executorLogin, long requestId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
@@ -331,14 +303,14 @@ public class DBService {
             RequestDAO requestDAO = new RequestDAO(session);
             UserDAO userDAO = new UserDAO(session);
             PriorityDAO priorityDAO = new PriorityDAO(session);
-            TaskStateDAO taskStateDAO = new TaskStateDAO(session);
+            StateDAO stateDAO = new StateDAO(session);
             TaskDAO taskDAO = new TaskDAO(session);
 
             RequestDataSet request = requestDAO.get(requestId);
             UserDataSet creator = userDAO.get(creatorLogin);
             UserDataSet executor = userDAO.get(executorLogin);
 
-            TaskStateDataSet state = taskStateDAO.get("New");
+            StateDataSet state = stateDAO.get("New");
 
             TaskDataSet taskDataSet = new TaskDataSet(title, description, request, creator, executor, state);
             long taskId = taskDAO.addTask(taskDataSet);
@@ -354,17 +326,16 @@ public class DBService {
 
     //ProjectPositions
 
-    public long addProjectPosition(long projectId, String positionName, String userLogin) {
+    public void addProjectPosition(long projectId, String positionName, String userLogin) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
         ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
 
-        long id = projectPositionDAO.addProjectPosition(projectId, positionName, userLogin);
+        projectPositionDAO.addProjectPosition(projectId, positionName, userLogin);
 
         transaction.commit();
         session.close();
-        return id;
     }
 
 

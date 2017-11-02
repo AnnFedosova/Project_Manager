@@ -10,12 +10,11 @@ import java.util.Set;
 @Entity
 @Table(name = "priorities")
 public class PriorityDataSet  implements Serializable {
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "priorities_id_generator")
-    @SequenceGenerator(name = "priorities_id_generator", sequenceName = "priorities_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name", unique = true)

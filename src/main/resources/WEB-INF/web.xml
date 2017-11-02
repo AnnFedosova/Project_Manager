@@ -19,7 +19,7 @@
         <web-resource-collection>
             <web-resource-name>Secure resources</web-resource-name>
             <url-pattern>/html/*</url-pattern>
-            <url-pattern>/config/*</url-pattern>
+            <url-pattern>/cfg/*</url-pattern>
             <url-pattern>/projects/*</url-pattern>
             <url-pattern>/project/*</url-pattern>
         </web-resource-collection>

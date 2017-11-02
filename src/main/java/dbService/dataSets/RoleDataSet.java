@@ -10,12 +10,11 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class RoleDataSet implements Serializable {
-    private static final long serialVersionUID = 1_11_2017L;
+    private static final long serialVersionUID = 2_11_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "roles_id_generator")
-    @SequenceGenerator(name = "roles_id_generator", sequenceName = "roles_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "role_name", unique = true)
