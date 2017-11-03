@@ -14,6 +14,8 @@ public class LogoutServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
         try {
+            response.setContentType("text/html;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
             response.sendRedirect(request.getContextPath() + "/");
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,4 +1,5 @@
-package dbService.dataSets;
+package dbService.entities;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,8 +9,8 @@ import java.util.Set;
  * @author Evgeny Levin
  */
 @Entity
-@Table(name = "priorities")
-public class PriorityDataSet  implements Serializable {
+@Table(name = "positions")
+public class PositionEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -20,14 +21,18 @@ public class PriorityDataSet  implements Serializable {
     @Column(name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "priority")
-    private Set<RequestDataSet> RequestDataSets;
+    @OneToMany(mappedBy = "position")
+    private Set<ProjectPositionEntity> projectPositions;
 
-
-    public PriorityDataSet() {
+    public PositionEntity() {
     }
 
-    public PriorityDataSet(String name) {
+    public PositionEntity(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public PositionEntity(String name) {
         this.name = name;
     }
 
@@ -36,21 +41,21 @@ public class PriorityDataSet  implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String roleName) {
+        this.name = roleName;
     }
 
     @Override
     public String toString() {
-        return "PriorityDataSet{" +
+        return "PositionEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

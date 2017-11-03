@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public class UserDataSet implements Serializable {
+public class UserEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -36,29 +36,29 @@ public class UserDataSet implements Serializable {
     private boolean internal;
 
     @OneToMany(mappedBy = "creator")
-    private Set<TaskDataSet> taskCreators;
+    private Set<TaskEntity> taskCreators;
 
     @OneToMany(mappedBy = "executor")
-    private Set<TaskDataSet> taskExecutors;
+    private Set<TaskEntity> taskExecutors;
 
     @OneToMany(mappedBy = "creator")
-    private Set<RequestDataSet> requestCreators;
+    private Set<RequestEntity> requestCreators;
 
     @OneToMany(mappedBy = "customer")
-    private Set<RequestDataSet> requestCustomers;
+    private Set<RequestEntity> requestCustomers;
 
     @OneToMany(mappedBy = "creator")
-    private Set<ProjectDataSet> projects;
+    private Set<ProjectEntity> projects;
 
     @OneToMany(mappedBy = "user")
-    private Set<UserRoleDataset> userRoleDatasetSet;
+    private Set<UserRoleEntity> userRoleEntitySet;
 
 
-    public UserDataSet() {
+    public UserEntity() {
     }
 
 
-    public UserDataSet(String login, String password, boolean internal, String firstName, String lastName) {
+    public UserEntity(String login, String password, boolean internal, String firstName, String lastName) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -66,7 +66,7 @@ public class UserDataSet implements Serializable {
         this.internal = internal;
     }
 
-    public UserDataSet(String login, String password, boolean internal, String firstName, String lastName, String middleName) {
+    public UserEntity(String login, String password, boolean internal, String firstName, String lastName, String middleName) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -131,7 +131,7 @@ public class UserDataSet implements Serializable {
 
     @Override
     public String toString() {
-        return "UserDataSet{" +
+        return "UserEntity{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +

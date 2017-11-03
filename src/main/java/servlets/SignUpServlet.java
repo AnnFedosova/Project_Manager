@@ -25,9 +25,10 @@ public class SignUpServlet extends HttpServlet {
         String password = request.getParameter("password");
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
-        String patronymic = request.getParameter("patronymic");
+        String middleName = request.getParameter("middle_name");
+        String internal = request.getParameter("internal");
 
-        if (login == null || password == null || firstName == null || lastName == null) {
+        if (login == null || password == null || firstName == null || lastName == null || internal == null) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("Not registered");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -35,12 +36,7 @@ public class SignUpServlet extends HttpServlet {
         }
 
         try {
-            if (patronymic == null) {
-                dbService.addUser(login, password, false, firstName, lastName);
-            }
-            else {
-                dbService.addUser(login, password, false, firstName, lastName, patronymic);
-            }
+            dbService.addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);
         }
         catch (DBException e) {
             response.setContentType("text/html;charset=utf-8");

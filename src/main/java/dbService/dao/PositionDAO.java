@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.PositionDataSet;
+import dbService.entities.PositionEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -20,33 +20,33 @@ public class PositionDAO {
         this.session = session;
     }
 
-    public PositionDataSet get(long id) throws HibernateException {
-        return session.get(PositionDataSet.class, id);
+    public PositionEntity get(long id) throws HibernateException {
+        return session.get(PositionEntity.class, id);
     }
 
 
-    public PositionDataSet get(String positionName) throws HibernateException {
+    public PositionEntity get(String positionName) throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<PositionDataSet> criteria = builder.createQuery(PositionDataSet.class);
+        CriteriaQuery<PositionEntity> criteria = builder.createQuery(PositionEntity.class);
 
-        Root<PositionDataSet> root = criteria.from(PositionDataSet.class);
+        Root<PositionEntity> root = criteria.from(PositionEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("name"), parameter));
-        Query<PositionDataSet> query = session.createQuery(criteria);
+        Query<PositionEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, positionName);
         return query.uniqueResult();
     }
 
 //    public long getPositionId(String positionName) throws HibernateException {
-//        Criteria criteria = session.createCriteria(PositionDataSet.class);
-//        return ((PositionDataSet) criteria.add(Restrictions.eq("name", positionName)).uniqueResult()).getId();
+//        Criteria criteria = session.createCriteria(PositionEntity.class);
+//        return ((PositionEntity) criteria.add(Restrictions.eq("name", positionName)).uniqueResult()).getId();
 //    }
 
     public long addPosition(String positonName) throws HibernateException {
-        return (long) session.save(new PositionDataSet(positonName));
+        return (long) session.save(new PositionEntity(positonName));
     }
 
-    public long addPosition(PositionDataSet position) throws HibernateException {
+    public long addPosition(PositionEntity position) throws HibernateException {
         return (long) session.save(position);
     }
 }

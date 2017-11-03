@@ -1,18 +1,14 @@
 package dbService.dao;
 
-import dbService.dataSets.PriorityDataSet;
-import dbService.dataSets.UserDataSet;
-import org.hibernate.Criteria;
+import dbService.entities.PriorityEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import java.util.List;
 
 /**
  * @author Evgeny Levin
@@ -24,27 +20,27 @@ public class PriorityDAO {
         this.session = session;
     }
 
-    public PriorityDataSet get(long id)  throws HibernateException {
-        return session.get(PriorityDataSet.class, id);
+    public PriorityEntity get(long id)  throws HibernateException {
+        return session.get(PriorityEntity.class, id);
     }
 
-    public PriorityDataSet get(String priorityName)  throws HibernateException {
+    public PriorityEntity get(String priorityName)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<PriorityDataSet> criteria = builder.createQuery(PriorityDataSet.class);
+        CriteriaQuery<PriorityEntity> criteria = builder.createQuery(PriorityEntity.class);
 
-        Root<PriorityDataSet> root = criteria.from(PriorityDataSet.class);
+        Root<PriorityEntity> root = criteria.from(PriorityEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("name"), parameter));
-        Query<PriorityDataSet> query = session.createQuery(criteria);
+        Query<PriorityEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, priorityName);
         return query.uniqueResult();
     }
 
     public long addPriority(String name) {
-        return (long) session.save(new PriorityDataSet(name));
+        return (long) session.save(new PriorityEntity(name));
     }
 
-    public long addPriority(PriorityDataSet priority) {
+    public long addPriority(PriorityEntity priority) {
         return (long) session.save(priority);
     }
 }

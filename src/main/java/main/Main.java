@@ -101,8 +101,8 @@ public class Main {
             //Users
             dbService.addUser("leo", "leo", true, "Evgeny", "Levin", "Olegovich");
             dbService.addUser("belovivan", "belovivan", true, "Ivan", "Belov", "Aleksandrovich");
-            dbService.addUser("musk", "musk", true, "Elon", "Mask");
-            dbService.addUser("realtrump", "realtrump", false, "Donald", "Trump");
+            dbService.addUser("musk", "musk", true, "Elon", "Mask", null);
+            dbService.addUser("realtrump", "realtrump", false, "Donald", "Trump", null);
 
             //Projects
             long project1Id = dbService.addProject("Clean-Air Cabin", "Medical-grade air quality is delivered through a HEPA filtration system, specifically designed to prevent viruses and bacteria from entering the cabin. <BR>There are three modes: circulate with outside air, re-circulate inside air, and a bioweapon defense mode – which creates positive pressure inside the cabin to protect occupants.", "leo");

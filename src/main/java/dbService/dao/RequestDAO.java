@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.RequestDataSet;
+import dbService.entities.RequestEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -21,32 +21,32 @@ public class RequestDAO {
         this.session = session;
     }
 
-    public RequestDataSet get(long id)  throws HibernateException {
-        return session.get(RequestDataSet.class, id);
+    public RequestEntity get(long id)  throws HibernateException {
+        return session.get(RequestEntity.class, id);
     }
 
-    public RequestDataSet get(String title)  throws HibernateException {
+    public RequestEntity get(String title)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<RequestDataSet> criteria = builder.createQuery(RequestDataSet.class);
+        CriteriaQuery<RequestEntity> criteria = builder.createQuery(RequestEntity.class);
 
-        Root<RequestDataSet> root = criteria.from(RequestDataSet.class);
+        Root<RequestEntity> root = criteria.from(RequestEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("title"), parameter));
-        Query<RequestDataSet> query = session.createQuery(criteria);
+        Query<RequestEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, title);
         return query.uniqueResult();
     }
 
-    public long addRequest(RequestDataSet request) {
+    public long addRequest(RequestEntity request) {
         return (long) session.save(request);
     }
 
-    public List<RequestDataSet> selectAll() {
+    public List<RequestEntity> selectAll() {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<RequestDataSet> criteria = builder.createQuery(RequestDataSet.class);
-        Root<RequestDataSet> root = criteria.from(RequestDataSet.class);
+        CriteriaQuery<RequestEntity> criteria = builder.createQuery(RequestEntity.class);
+        Root<RequestEntity> root = criteria.from(RequestEntity.class);
         criteria.select(root);
-        Query<RequestDataSet> query = session.createQuery(criteria);
+        Query<RequestEntity> query = session.createQuery(criteria);
         return query.getResultList();
     }
 }

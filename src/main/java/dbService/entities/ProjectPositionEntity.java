@@ -1,15 +1,14 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author Evgeny Levin
  */
 @Entity
 @Table(name = "project_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "project_id", "position_id"}))
-public class ProjectPositionDataSet implements Serializable{
+public class ProjectPositionEntity implements Serializable{
     private static final long serialVersionUID = 2_11_2017L;
 
 //    @Id
@@ -21,37 +20,37 @@ public class ProjectPositionDataSet implements Serializable{
     @Id
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private ProjectDataSet project;
+    private ProjectEntity project;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDataSet user;
+    private UserEntity user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "position_id")
-    private PositionDataSet position;
+    private PositionEntity position;
 
 
 //    @OneToMany(mappedBy = "creator")
-//    private Set<RequestDataSet> requestCreators;
+//    private Set<RequestEntity> requestCreators;
 //
 //    @OneToMany(mappedBy = "customer")
-//    private Set<RequestDataSet> requestCustomers;
+//    private Set<RequestEntity> requestCustomers;
 //
 //    @OneToMany(mappedBy = "creator")
-//    private Set<TaskDataSet> taskCreators;
+//    private Set<TaskEntity> taskCreators;
 //
 //    @OneToMany(mappedBy = "executor")
-//    private Set<TaskDataSet> taskExecutors;
+//    private Set<TaskEntity> taskExecutors;
 
 
-    public ProjectPositionDataSet() {
+    public ProjectPositionEntity() {
 
     }
 
-    public ProjectPositionDataSet(ProjectDataSet project, PositionDataSet position, UserDataSet user) {
+    public ProjectPositionEntity(ProjectEntity project, PositionEntity position, UserEntity user) {
         this.project = project;
         this.position = position;
         this.user = user;
@@ -65,33 +64,33 @@ public class ProjectPositionDataSet implements Serializable{
 //        return id;
 //    }
 
-    public PositionDataSet getPosition() {
+    public PositionEntity getPosition() {
         return position;
     }
 
-    public void setPosition(PositionDataSet position) {
+    public void setPosition(PositionEntity position) {
         this.position = position;
     }
 
-    public ProjectDataSet getProject() {
+    public ProjectEntity getProject() {
         return project;
     }
 
-    public void setProject(ProjectDataSet project) {
+    public void setProject(ProjectEntity project) {
         this.project = project;
     }
 
-    public UserDataSet getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(UserDataSet user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
     @Override
     public String toString() {
-        return "ProjectPositionDataSet{" +
+        return "ProjectPositionEntity{" +
 //                "id=" + id +
                 ", project_id='" + project.getId() + '\'' +
                 ", user_id='" + user.getId() + '\'' +

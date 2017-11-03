@@ -27,16 +27,16 @@
 
 
         <!--Mapping-->
-        <mapping class="dbService.dataSets.RequestDataSet"/>
-        <mapping class="dbService.dataSets.StateDataSet"/>
-        <mapping class="dbService.dataSets.ProjectDataSet"/>
-        <mapping class="dbService.dataSets.UserDataSet"/>
-        <mapping class="dbService.dataSets.PositionDataSet"/>
-        <mapping class="dbService.dataSets.ProjectPositionDataSet"/>
-        <mapping class="dbService.dataSets.PriorityDataSet"/>
-        <mapping class="dbService.dataSets.TaskDataSet"/>
-        <mapping class="dbService.dataSets.UserRoleDataset"/>
-        <mapping class="dbService.dataSets.RoleDataSet"/>
-        <mapping class="dbService.dataSets.TaskDataSet"/>
+        <mapping class="dbService.entities.RequestEntity"/>
+        <mapping class="dbService.entities.StateEntity"/>
+        <mapping class="dbService.entities.ProjectEntity"/>
+        <mapping class="dbService.entities.UserEntity"/>
+        <mapping class="dbService.entities.PositionEntity"/>
+        <mapping class="dbService.entities.ProjectPositionEntity"/>
+        <mapping class="dbService.entities.PriorityEntity"/>
+        <mapping class="dbService.entities.TaskEntity"/>
+        <mapping class="dbService.entities.UserRoleEntity"/>
+        <mapping class="dbService.entities.RoleEntity"/>
+        <mapping class="dbService.entities.TaskEntity"/>
     </session-factory>
 </hibernate-configuration>

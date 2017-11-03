@@ -30,22 +30,32 @@ public class NewProjectServlet  extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
-        //TextArea description = request.getParameter("description");
-        StringBuffer description = new StringBuffer(request.getParameter("description"));
+        String description = request.getParameter("description");
 
-        int loc = (new String(description)).indexOf('\n');
-        while(loc > 0){
-            description.replace(loc, loc+1, "<BR>");
-            loc = (new String(description)).indexOf('\n');
+        if (title == null || description == null) {
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println("Not created");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
+        StringBuffer descriptionSB = new StringBuffer(description);
 
+        int loc = (new String(descriptionSB)).indexOf('\n');
+        while(loc > 0){
+            descriptionSB.replace(loc, loc+1, "<BR>");
+            loc = (new String(descriptionSB)).indexOf('\n');
+        }
 
 
         try {
             Principal user = request.getUserPrincipal();
-            dbService.addProject(title, description.toString(), user.getName());
+            dbService.addProject(title, descriptionSB.toString(), user.getName());
         } catch (DBException e) {
             e.printStackTrace();
+            response.setContentType("text/html;charset=utf-8");
+            response.getWriter().println("Not created");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
 
         response.setContentType("text/html;charset=utf-8");

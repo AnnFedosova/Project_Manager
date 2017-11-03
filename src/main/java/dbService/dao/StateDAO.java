@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.StateDataSet;
+import dbService.entities.StateEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -20,26 +20,26 @@ public class StateDAO {
         this.session = session;
     }
 
-    public StateDataSet get(long id)  throws HibernateException {
-        return session.get(StateDataSet.class, id);
+    public StateEntity get(long id)  throws HibernateException {
+        return session.get(StateEntity.class, id);
     }
 
-    public StateDataSet get(String name)  throws HibernateException {
+    public StateEntity get(String name)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<StateDataSet> criteria = builder.createQuery(StateDataSet.class);
-        Root<StateDataSet> root = criteria.from(StateDataSet.class);
+        CriteriaQuery<StateEntity> criteria = builder.createQuery(StateEntity.class);
+        Root<StateEntity> root = criteria.from(StateEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("name"), parameter));
-        Query<StateDataSet> query = session.createQuery(criteria);
+        Query<StateEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, name);
         return query.uniqueResult();
     }
 
     public long addState(String name, boolean requestAccord, boolean tasksAccord) {
-        return (long) session.save(new StateDataSet(name, requestAccord, tasksAccord));
+        return (long) session.save(new StateEntity(name, requestAccord, tasksAccord));
     }
 
-    public long addState(StateDataSet state) {
+    public long addState(StateEntity state) {
         return (long) session.save(state);
     }
 }

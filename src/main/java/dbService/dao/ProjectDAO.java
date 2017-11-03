@@ -1,18 +1,15 @@
 package dbService.dao;
 
-import dbService.dataSets.ProjectDataSet;
-import dbService.dataSets.UserDataSet;
-import org.hibernate.Criteria;
+import dbService.entities.ProjectEntity;
+import dbService.entities.UserEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -25,34 +22,34 @@ public class ProjectDAO {
         this.session = session;
     }
 
-    public ProjectDataSet get(long id)  throws HibernateException {
-        return session.get(ProjectDataSet.class, id);
+    public ProjectEntity get(long id)  throws HibernateException {
+        return session.get(ProjectEntity.class, id);
     }
 
-    public ProjectDataSet get(String title)  throws HibernateException {
+    public ProjectEntity get(String title)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ProjectDataSet> criteria = builder.createQuery(ProjectDataSet.class);
-        Root<ProjectDataSet> root = criteria.from(ProjectDataSet.class);
+        CriteriaQuery<ProjectEntity> criteria = builder.createQuery(ProjectEntity.class);
+        Root<ProjectEntity> root = criteria.from(ProjectEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("title"), parameter));
-        Query<ProjectDataSet> query = session.createQuery(criteria);
+        Query<ProjectEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, title);
         return query.uniqueResult();
     }
 
-    public long addProject(String title, String description, UserDataSet creator) {
-        return (long) session.save(new ProjectDataSet(title, description, creator));
+    public long addProject(String title, String description, UserEntity creator) {
+        return (long) session.save(new ProjectEntity(title, description, creator));
     }
-    public long addProject(ProjectDataSet project) {
+    public long addProject(ProjectEntity project) {
         return (long) session.save(project);
     }
 
-    public List<ProjectDataSet> selectAll() {
+    public List<ProjectEntity> selectAll() {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ProjectDataSet> criteria = builder.createQuery(ProjectDataSet.class);
-        Root<ProjectDataSet> root = criteria.from(ProjectDataSet.class);
+        CriteriaQuery<ProjectEntity> criteria = builder.createQuery(ProjectEntity.class);
+        Root<ProjectEntity> root = criteria.from(ProjectEntity.class);
         criteria.select(root);
-        Query<ProjectDataSet> query = session.createQuery(criteria);
+        Query<ProjectEntity> query = session.createQuery(criteria);
         return query.getResultList();
     }
 }

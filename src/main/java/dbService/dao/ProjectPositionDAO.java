@@ -1,9 +1,9 @@
 package dbService.dao;
 
-import dbService.dataSets.PositionDataSet;
-import dbService.dataSets.ProjectDataSet;
-import dbService.dataSets.ProjectPositionDataSet;
-import dbService.dataSets.UserDataSet;
+import dbService.entities.PositionEntity;
+import dbService.entities.ProjectEntity;
+import dbService.entities.ProjectPositionEntity;
+import dbService.entities.UserEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -24,28 +24,28 @@ public class ProjectPositionDAO {
         this.session = session;
     }
 
-    public ProjectPositionDataSet get(long id)  throws HibernateException {
-        return session.get(ProjectPositionDataSet.class, id);
+    public ProjectPositionEntity get(long id)  throws HibernateException {
+        return session.get(ProjectPositionEntity.class, id);
     }
 
-    public List<ProjectPositionDataSet> get(UserDataSet user)  throws HibernateException {
+    public List<ProjectPositionEntity> get(UserEntity user)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ProjectPositionDataSet> criteria = builder.createQuery(ProjectPositionDataSet.class);
-        Root<ProjectPositionDataSet> root = criteria.from(ProjectPositionDataSet.class);
-        ParameterExpression<UserDataSet> parameter = builder.parameter(UserDataSet.class);
+        CriteriaQuery<ProjectPositionEntity> criteria = builder.createQuery(ProjectPositionEntity.class);
+        Root<ProjectPositionEntity> root = criteria.from(ProjectPositionEntity.class);
+        ParameterExpression<UserEntity> parameter = builder.parameter(UserEntity.class);
         criteria.select(root).where(builder.equal(root.get("user"), parameter));
-        Query<ProjectPositionDataSet> query = session.createQuery(criteria);
+        Query<ProjectPositionEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, user);
         return query.getResultList();
     }
 
-    public List<ProjectPositionDataSet> get(String login)  throws HibernateException {
+    public List<ProjectPositionEntity> get(String login)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ProjectPositionDataSet> criteria = builder.createQuery(ProjectPositionDataSet.class);
-        Root<ProjectPositionDataSet> root = criteria.from(ProjectPositionDataSet.class);
-        ParameterExpression<UserDataSet> parameter = builder.parameter(UserDataSet.class);
+        CriteriaQuery<ProjectPositionEntity> criteria = builder.createQuery(ProjectPositionEntity.class);
+        Root<ProjectPositionEntity> root = criteria.from(ProjectPositionEntity.class);
+        ParameterExpression<UserEntity> parameter = builder.parameter(UserEntity.class);
         criteria.select(root).where(builder.equal(root.get("user"), parameter));
-        Query<ProjectPositionDataSet> query = session.createQuery(criteria);
+        Query<ProjectPositionEntity> query = session.createQuery(criteria);
         UserDAO userDAO = new UserDAO(session);
         query.setParameter(parameter, userDAO.get(login));
         return query.getResultList();
@@ -56,18 +56,18 @@ public class ProjectPositionDAO {
         ProjectDAO projectDAO = new ProjectDAO(session);
         UserDAO userDAO = new UserDAO(session);
 
-        PositionDataSet position = positionDAO.get(positionName);
-        ProjectDataSet project = projectDAO.get(projectId);
-        UserDataSet user = userDAO.get(userLogin);
+        PositionEntity position = positionDAO.get(positionName);
+        ProjectEntity project = projectDAO.get(projectId);
+        UserEntity user = userDAO.get(userLogin);
 
-        session.save(new ProjectPositionDataSet(project, position, user));
+        session.save(new ProjectPositionEntity(project, position, user));
     }
 
-    public void addProjectPosition(PositionDataSet position, ProjectDataSet project, UserDataSet user) {
-        session.save(new ProjectPositionDataSet(project, position, user));
+    public void addProjectPosition(PositionEntity position, ProjectEntity project, UserEntity user) {
+        session.save(new ProjectPositionEntity(project, position, user));
     }
 
-    public void addProjectPosition(ProjectPositionDataSet projectPosition) {
+    public void addProjectPosition(ProjectPositionEntity projectPosition) {
         session.save(projectPosition);
     }
 }

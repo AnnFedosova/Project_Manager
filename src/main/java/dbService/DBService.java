@@ -1,7 +1,7 @@
 package dbService;
 
 import dbService.dao.*;
-import dbService.dataSets.*;
+import dbService.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,8 +22,11 @@ public class DBService {
 
     public DBService() {
         Configuration configuration = getConfiguration();
-        //Configuration configuration = getOracleConfiguration();
         sessionFactory = createSessionFactory(configuration);
+    }
+
+    public DBService(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public SessionFactory getSessionFactory() {
@@ -38,16 +41,16 @@ public class DBService {
     }
 
     private void addTables(Configuration configuration) {
-        configuration.addAnnotatedClass(UserDataSet.class);
-        configuration.addAnnotatedClass(RoleDataSet.class);
-        configuration.addAnnotatedClass(UserRoleDataset.class);
-        configuration.addAnnotatedClass(ProjectDataSet.class);
-        configuration.addAnnotatedClass(PositionDataSet.class);
-        configuration.addAnnotatedClass(StateDataSet.class);
-        configuration.addAnnotatedClass(RequestDataSet.class);
-        configuration.addAnnotatedClass(PriorityDataSet.class);
-        configuration.addAnnotatedClass(ProjectPositionDataSet.class);
-        configuration.addAnnotatedClass(TaskDataSet.class);
+        configuration.addAnnotatedClass(UserEntity.class);
+        configuration.addAnnotatedClass(RoleEntity.class);
+        configuration.addAnnotatedClass(UserRoleEntity.class);
+        configuration.addAnnotatedClass(ProjectEntity.class);
+        configuration.addAnnotatedClass(PositionEntity.class);
+        configuration.addAnnotatedClass(StateEntity.class);
+        configuration.addAnnotatedClass(RequestEntity.class);
+        configuration.addAnnotatedClass(PriorityEntity.class);
+        configuration.addAnnotatedClass(ProjectPositionEntity.class);
+        configuration.addAnnotatedClass(TaskEntity.class);
     }
 
     public void printConnectInfo() {
@@ -89,16 +92,8 @@ public class DBService {
 
 
     //Users
-    public long addUser(String login, String password, boolean internal, String firstName, String lastName) throws DBException {
-        return addUser(login, password, internal, firstName, lastName, null);
-    }
-
     public long addUser(String login, String password, boolean internal, String firstName, String lastName, String middleName) throws DBException {
         return addPerson(login, password, internal, firstName, lastName, middleName, "user");
-    }
-
-    public long addAdmin(String login, String password, String firstName, String lastName) throws DBException {
-        return addAdmin(login, password, firstName, lastName, null);
     }
 
     public long addAdmin(String login, String password, String firstName, String lastName, String middleName) throws DBException {
@@ -114,10 +109,10 @@ public class DBService {
             RoleDAO roleDAO = new RoleDAO(session);
             UserRoleDAO userRoleDAO = new UserRoleDAO(session);
 
-            UserDataSet user = new UserDataSet(login, password, internal, firstName, lastName, middleName);
+            UserEntity user = new UserEntity(login, password, internal, firstName, lastName, middleName);
 
             long userId = userDAO.addUser(user);
-            RoleDataSet role = roleDAO.get(roleName);
+            RoleEntity role = roleDAO.get(roleName);
             userRoleDAO.addUserRole(user, role);
             transaction.commit();
             session.close();
@@ -144,7 +139,7 @@ public class DBService {
             Transaction transaction = session.beginTransaction();
 
             ProjectDAO projectDAO = new ProjectDAO(session);
-            UserDataSet creator = new UserDAO(session).get(creatorLogin);
+            UserEntity creator = new UserDAO(session).get(creatorLogin);
             long projectId = projectDAO.addProject(title, description, creator);
 
             transaction.commit();
@@ -160,10 +155,10 @@ public class DBService {
         }
     }
 
-    public ProjectDataSet getProject(long id) {
+    public ProjectEntity getProject(long id) {
         Session session = sessionFactory.openSession();
         ProjectDAO projectDAO = new ProjectDAO(session);
-        ProjectDataSet projet =  projectDAO.get(id);
+        ProjectEntity projet =  projectDAO.get(id);
         session.close();
         return projet;
     }
@@ -190,36 +185,36 @@ public class DBService {
 //            ProjectDAO projectDAO = new ProjectDAO(session);
 //            ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
 //
-//            ProjectDataSet project = projectDAO.get(projectTitle);
-//            UserDataSet creator = userDAO.get(creatorLogin);
-//            UserDataSet customer = userDAO.get(customerLogin);
-//            List<ProjectPositionDataSet> creatorPositions = projectPositionDAO.get(creator);
-//            List<ProjectPositionDataSet> customerPositions = projectPositionDAO.get(customer);
+//            ProjectEntity project = projectDAO.get(projectTitle);
+//            UserEntity creator = userDAO.get(creatorLogin);
+//            UserEntity customer = userDAO.get(customerLogin);
+//            List<ProjectPositionEntity> creatorPositions = projectPositionDAO.get(creator);
+//            List<ProjectPositionEntity> customerPositions = projectPositionDAO.get(customer);
 //
 //
-//            ProjectPositionDataSet creatorPosition = null;
-//            ProjectPositionDataSet customerPosition = null;
-//            StateDataSet state = requestStateDAO.get("New");
-//            PriorityDataSet priority = priorityDAO.get(priorityName);
+//            ProjectPositionEntity creatorPosition = null;
+//            ProjectPositionEntity customerPosition = null;
+//            StateEntity state = requestStateDAO.get("New");
+//            PriorityEntity priority = priorityDAO.get(priorityName);
 //
 //            //TODO добавить проверку при создании проекта
 //            //if (creatorPositions.contains())
 //
-//            for (ProjectPositionDataSet projectPosition: creatorPositions) {
+//            for (ProjectPositionEntity projectPosition: creatorPositions) {
 //                if (projectPosition.getPosition().getName().toLowerCase().equals("receptionist")) {
 //                    creatorPosition = projectPosition;
 //                    break;
 //                }
 //            }
 //
-//            for (ProjectPositionDataSet projectPosition: customerPositions) {
+//            for (ProjectPositionEntity projectPosition: customerPositions) {
 //                if (projectPosition.getPosition().getName().toLowerCase().equals("customer")) {
 //                    customerPosition = projectPosition;
 //                    break;
 //                }
 //            }
 //
-//            RequestDataSet request = new RequestDataSet(project, title, description, creatorPosition, customerPosition, state, priority);
+//            RequestEntity request = new RequestEntity(project, title, description, creatorPosition, customerPosition, state, priority);
 //            long requestId = requestDAO.addRequest(request);
 //
 //            transaction.commit();
@@ -243,14 +238,14 @@ public class DBService {
             StateDAO stateDAO = new StateDAO(session);
             ProjectDAO projectDAO = new ProjectDAO(session);
 
-            ProjectDataSet project = projectDAO.get(projectId);
-            UserDataSet creator = userDAO.get(creatorLogin);
-            UserDataSet customer = userDAO.get(customerLogin);
+            ProjectEntity project = projectDAO.get(projectId);
+            UserEntity creator = userDAO.get(creatorLogin);
+            UserEntity customer = userDAO.get(customerLogin);
 
-            StateDataSet state = stateDAO.get("New");
-            PriorityDataSet priority = priorityDAO.get(priorityName);
+            StateEntity state = stateDAO.get("New");
+            PriorityEntity priority = priorityDAO.get(priorityName);
 
-            RequestDataSet request = new RequestDataSet(project, title, description, creator, customer, state, priority);
+            RequestEntity request = new RequestEntity(project, title, description, creator, customer, state, priority);
             long requestId = requestDAO.addRequest(request);
 
             transaction.commit();
@@ -306,14 +301,14 @@ public class DBService {
             StateDAO stateDAO = new StateDAO(session);
             TaskDAO taskDAO = new TaskDAO(session);
 
-            RequestDataSet request = requestDAO.get(requestId);
-            UserDataSet creator = userDAO.get(creatorLogin);
-            UserDataSet executor = userDAO.get(executorLogin);
+            RequestEntity request = requestDAO.get(requestId);
+            UserEntity creator = userDAO.get(creatorLogin);
+            UserEntity executor = userDAO.get(executorLogin);
 
-            StateDataSet state = stateDAO.get("New");
+            StateEntity state = stateDAO.get("New");
 
-            TaskDataSet taskDataSet = new TaskDataSet(title, description, request, creator, executor, state);
-            long taskId = taskDAO.addTask(taskDataSet);
+            TaskEntity taskEntity = new TaskEntity(title, description, request, creator, executor, state);
+            long taskId = taskDAO.addTask(taskEntity);
 
             transaction.commit();
             session.close();

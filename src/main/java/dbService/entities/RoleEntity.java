@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "roles")
-public class RoleDataSet implements Serializable {
+public class RoleEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -21,12 +21,12 @@ public class RoleDataSet implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "role")
-    private Set<UserRoleDataset> userRoleDatasetSet;
+    private Set<UserRoleEntity> userRoleEntitySet;
 
-    public RoleDataSet() {
+    public RoleEntity() {
     }
 
-    public RoleDataSet(String name) {
+    public RoleEntity(String name) {
         this.name = name;
     }
 
@@ -49,7 +49,7 @@ public class RoleDataSet implements Serializable {
 
     @Override
     public String toString() {
-        return "RoleDataSet{" +
+        return "RoleEntity{" +
                 "id=" + id +
                 ", role_name='" + name + '\'' +
                 '}';

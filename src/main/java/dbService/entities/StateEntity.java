@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "states")
-public class StateDataSet implements Serializable {
+public class StateEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -27,15 +27,15 @@ public class StateDataSet implements Serializable {
     private boolean tasksAccord;
 
     @OneToMany(mappedBy = "state")
-    private Set<RequestDataSet> requests;
+    private Set<RequestEntity> requests;
 
     @OneToMany(mappedBy = "state")
-    private Set<TaskDataSet> tasks;
+    private Set<TaskEntity> tasks;
 
-    public StateDataSet() {
+    public StateEntity() {
     }
 
-    public StateDataSet(String name, boolean requestAccord, boolean tasksAccord) {
+    public StateEntity(String name, boolean requestAccord, boolean tasksAccord) {
         this.name = name;
         this.requestAccord = requestAccord;
         this.tasksAccord = tasksAccord;
@@ -75,7 +75,7 @@ public class StateDataSet implements Serializable {
 
     @Override
     public String toString() {
-        return "StateDataSet{" +
+        return "StateEntity{" +
                 "id=" + id +
                 "requests_accord=" + requestAccord +
                 "tasksAccord=" + tasksAccord +

@@ -1,6 +1,6 @@
 package dbService.dao;
 
-import dbService.dataSets.TaskDataSet;
+import dbService.entities.TaskEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -21,32 +21,32 @@ public class TaskDAO {
         this.session = session;
     }
 
-    public TaskDataSet get(long id)  throws HibernateException {
-        return session.get(TaskDataSet.class, id);
+    public TaskEntity get(long id)  throws HibernateException {
+        return session.get(TaskEntity.class, id);
     }
 
-    public TaskDataSet get(String title)  throws HibernateException {
+    public TaskEntity get(String title)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TaskDataSet> criteria = builder.createQuery(TaskDataSet.class);
+        CriteriaQuery<TaskEntity> criteria = builder.createQuery(TaskEntity.class);
 
-        Root<TaskDataSet> root = criteria.from(TaskDataSet.class);
+        Root<TaskEntity> root = criteria.from(TaskEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("title"), parameter));
-        Query<TaskDataSet> query = session.createQuery(criteria);
+        Query<TaskEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, title);
         return query.uniqueResult();
     }
 
-    public long addTask(TaskDataSet task) {
+    public long addTask(TaskEntity task) {
         return (long) session.save(task);
     }
 
-    public List<TaskDataSet> selectAll() {
+    public List<TaskEntity> selectAll() {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<TaskDataSet> criteria = builder.createQuery(TaskDataSet.class);
-        Root<TaskDataSet> root = criteria.from(TaskDataSet.class);
+        CriteriaQuery<TaskEntity> criteria = builder.createQuery(TaskEntity.class);
+        Root<TaskEntity> root = criteria.from(TaskEntity.class);
         criteria.select(root);
-        Query<TaskDataSet> query = session.createQuery(criteria);
+        Query<TaskEntity> query = session.createQuery(criteria);
         return query.getResultList();
     }
 }

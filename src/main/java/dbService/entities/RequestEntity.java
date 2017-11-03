@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "requests", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
-public class RequestDataSet implements Serializable {
+public class RequestEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -19,7 +19,7 @@ public class RequestDataSet implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private ProjectDataSet project;
+    private ProjectEntity project;
 
     @Column(name = "title", unique = true)
     private String title;
@@ -29,26 +29,26 @@ public class RequestDataSet implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private UserDataSet creator;
+    private UserEntity creator;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private UserDataSet customer;
+    private UserEntity customer;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateDataSet state;
+    private StateEntity state;
 
     @ManyToOne
     @JoinColumn(name = "priority_id")
-    private PriorityDataSet priority;
+    private PriorityEntity priority;
 
     @OneToMany(mappedBy = "request")
-    private Set<TaskDataSet> tasks;
+    private Set<TaskEntity> tasks;
 
-    public RequestDataSet() {}
+    public RequestEntity() {}
 
-    public RequestDataSet(ProjectDataSet project, String title, String description, UserDataSet creator, UserDataSet customer, StateDataSet state, PriorityDataSet priority) {
+    public RequestEntity(ProjectEntity project, String title, String description, UserEntity creator, UserEntity customer, StateEntity state, PriorityEntity priority) {
         this.project = project;
         this.title = title;
         this.description = description;
@@ -58,19 +58,19 @@ public class RequestDataSet implements Serializable {
         this.priority = priority;
     }
 
-    public void setCreator(UserDataSet creator) {
+    public void setCreator(UserEntity creator) {
         this.creator = creator;
     }
 
-    public UserDataSet getCreator() {
+    public UserEntity getCreator() {
         return creator;
     }
 
-    public void setCustomer(UserDataSet customer) {
+    public void setCustomer(UserEntity customer) {
         this.customer = customer;
     }
 
-    public UserDataSet getCustomer() {
+    public UserEntity getCustomer() {
         return customer;
     }
 
@@ -82,11 +82,11 @@ public class RequestDataSet implements Serializable {
         this.description = description;
     }
 
-    public PriorityDataSet getPriority() {
+    public PriorityEntity getPriority() {
         return priority;
     }
 
-    public void setPriority(PriorityDataSet priority) {
+    public void setPriority(PriorityEntity priority) {
         this.priority = priority;
     }
 
@@ -106,19 +106,19 @@ public class RequestDataSet implements Serializable {
         this.title = title;
     }
 
-    public ProjectDataSet getProject() {
+    public ProjectEntity getProject() {
         return project;
     }
 
-    public void setProject(ProjectDataSet project) {
+    public void setProject(ProjectEntity project) {
         this.project = project;
     }
 
-    public StateDataSet getState() {
+    public StateEntity getState() {
         return state;
     }
 
-    public void setState(StateDataSet state) {
+    public void setState(StateEntity state) {
         this.state = state;
     }
 }

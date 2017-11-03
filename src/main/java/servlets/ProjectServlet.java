@@ -1,7 +1,7 @@
 package servlets;
 
 import dbService.DBService;
-import dbService.dataSets.ProjectDataSet;
+import dbService.entities.ProjectEntity;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -35,7 +35,7 @@ public class ProjectServlet extends HttpServlet {
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
         Map<String, Object> pageVariables = new HashMap<>();
-        ProjectDataSet project = dbService.getProject(id);
+        ProjectEntity project = dbService.getProject(id);
         pageVariables.put("id", project.getId());
         pageVariables.put("title", project.getTitle());
         pageVariables.put("description", project.getDescription());

@@ -1,10 +1,8 @@
 package dbService.dao;
 
-import dbService.dataSets.RoleDataSet;
-import org.hibernate.Criteria;
+import dbService.entities.RoleEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,27 +20,27 @@ public class RoleDAO {
         this.session = session;
     }
 
-    public RoleDataSet get(long id) throws HibernateException {
-        return session.get(RoleDataSet.class, id);
+    public RoleEntity get(long id) throws HibernateException {
+        return session.get(RoleEntity.class, id);
     }
 
-    public RoleDataSet get(String roleName) throws HibernateException {
+    public RoleEntity get(String roleName) throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<RoleDataSet> criteria = builder.createQuery(RoleDataSet.class);
-        Root<RoleDataSet> root = criteria.from(RoleDataSet.class);
+        CriteriaQuery<RoleEntity> criteria = builder.createQuery(RoleEntity.class);
+        Root<RoleEntity> root = criteria.from(RoleEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("name"), parameter));
-        Query<RoleDataSet> query = session.createQuery(criteria);
+        Query<RoleEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, roleName);
         return query.uniqueResult();
     }
 
 //    public long getRoleId(String roleName) throws HibernateException {
-//        Criteria criteria = session.createCriteria(RoleDataSet.class);
-//        return ((RoleDataSet) criteria.add(Restrictions.eq("name", roleName)).uniqueResult()).getId();
+//        Criteria criteria = session.createCriteria(RoleEntity.class);
+//        return ((RoleEntity) criteria.add(Restrictions.eq("name", roleName)).uniqueResult()).getId();
 //    }
 
     public long addRole(String roleName) throws HibernateException {
-        return (long) session.save(new RoleDataSet(roleName));
+        return (long) session.save(new RoleEntity(roleName));
     }
 }

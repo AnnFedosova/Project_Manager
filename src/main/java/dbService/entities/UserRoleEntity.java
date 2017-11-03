@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,49 +8,49 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}))
-public class UserRoleDataset implements Serializable {
+public class UserRoleEntity implements Serializable {
     private static final long serialVersionUID = 1_11_2017L;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDataSet user;
+    private UserEntity user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private RoleDataSet role;
+    private RoleEntity role;
 
 
-    public UserRoleDataset() {
+    public UserRoleEntity() {
     }
 
-    public UserRoleDataset(UserDataSet user, RoleDataSet role) {
+    public UserRoleEntity(UserEntity user, RoleEntity role) {
         this.user = user;
         this.role = role;
     }
 
 
-    public void setUserId(UserDataSet user) {
+    public void setUserId(UserEntity user) {
         this.user = user;
     }
 
-    public void setRoleId(RoleDataSet role) {
+    public void setRoleId(RoleEntity role) {
         this.role = role;
     }
 
-    public UserDataSet getUserId() {
+    public UserEntity getUserId() {
         return user;
     }
 
-    public RoleDataSet getRoleId() {
+    public RoleEntity getRoleId() {
         return role;
     }
 
 
     @Override
     public String toString() {
-        return "UserRoleDataset{" +
+        return "UserRoleEntity{" +
                 "user_id=" + user.getId() +
                 ", role_id='" + role.getId() + '\'' +
                 '}';

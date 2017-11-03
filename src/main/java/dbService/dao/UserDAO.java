@@ -1,10 +1,8 @@
 package dbService.dao;
 
-import dbService.dataSets.UserDataSet;
-import org.hibernate.Criteria;
+import dbService.entities.UserEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,41 +20,41 @@ public class UserDAO {
         this.session = session;
     }
 
-    public UserDataSet get(long id) throws HibernateException {
-        return session.get(UserDataSet.class, id);
+    public UserEntity get(long id) throws HibernateException {
+        return session.get(UserEntity.class, id);
     }
 
-//    public UserDataSet get(String login) throws HibernateException {
-//        Criteria criteria = session.createCriteria(UserDataSet.class);
-//        return (UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult();
+//    public UserEntity get(String login) throws HibernateException {
+//        Criteria criteria = session.createCriteria(UserEntity.class);
+//        return (UserEntity) criteria.add(Restrictions.eq("login", login)).uniqueResult();
 //    }
 
-    public UserDataSet get(String login) throws HibernateException {
+    public UserEntity get(String login) throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<UserDataSet> criteria = builder.createQuery(UserDataSet.class);
+        CriteriaQuery<UserEntity> criteria = builder.createQuery(UserEntity.class);
 
-        Root<UserDataSet> root = criteria.from(UserDataSet.class);
+        Root<UserEntity> root = criteria.from(UserEntity.class);
         ParameterExpression<String> parameter = builder.parameter(String.class);
         criteria.select(root).where(builder.equal(root.get("login"), parameter));
-        Query<UserDataSet> query = session.createQuery(criteria);
+        Query<UserEntity> query = session.createQuery(criteria);
         query.setParameter(parameter, login);
         return query.uniqueResult();
     }
 
 //    public long getUserId(String login) throws HibernateException {
-//        Criteria criteria = session.createCriteria(UserDataSet.class);
-//        return ((UserDataSet) criteria.add(Restrictions.eq("login", login)).uniqueResult()).getId();
+//        Criteria criteria = session.createCriteria(UserEntity.class);
+//        return ((UserEntity) criteria.add(Restrictions.eq("login", login)).uniqueResult()).getId();
 //    }
 
-    public long addUser(UserDataSet user) throws HibernateException {
+    public long addUser(UserEntity user) throws HibernateException {
         return (long) session.save(user);
     }
 
     public long addUser(String login, String password, boolean internal, String firstName, String lastName) throws HibernateException {
-        return (long) session.save(new UserDataSet(login, password, internal, firstName, lastName));
+        return (long) session.save(new UserEntity(login, password, internal, firstName, lastName));
     }
 
     public long addUser(String login, String password, boolean internal, String firstName, String lastName, String patronymic) throws HibernateException {
-        return (long) session.save(new UserDataSet(login, password, internal, firstName, lastName, patronymic));
+        return (long) session.save(new UserEntity(login, password, internal, firstName, lastName, patronymic));
     }
 }

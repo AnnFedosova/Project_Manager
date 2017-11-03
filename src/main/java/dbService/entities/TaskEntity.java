@@ -1,4 +1,4 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "tasks", uniqueConstraints = @UniqueConstraint(columnNames = {"request_id", "title"}))
-public class TaskDataSet implements Serializable{
+public class TaskEntity implements Serializable{
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -18,7 +18,7 @@ public class TaskDataSet implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "request_id")
-    private RequestDataSet request;
+    private RequestEntity request;
 
     @Column(name = "title")
     private String title;
@@ -28,19 +28,19 @@ public class TaskDataSet implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateDataSet state;
+    private StateEntity state;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private UserDataSet creator;
+    private UserEntity creator;
 
     @ManyToOne
     @JoinColumn(name = "executor_id")
-    private UserDataSet executor;
+    private UserEntity executor;
 
-    public TaskDataSet() {}
+    public TaskEntity() {}
 
-    public TaskDataSet(String title, String description, RequestDataSet request, UserDataSet creator, UserDataSet executor, StateDataSet state) {
+    public TaskEntity(String title, String description, RequestEntity request, UserEntity creator, UserEntity executor, StateEntity state) {
         this.title = title;
         this.description = description;
         this.request = request;
@@ -58,11 +58,11 @@ public class TaskDataSet implements Serializable{
         this.id = id;
     }
 
-    public UserDataSet getCreator() {
+    public UserEntity getCreator() {
         return creator;
     }
 
-    public void setCreator(UserDataSet creator) {
+    public void setCreator(UserEntity creator) {
         this.creator = creator;
     }
 
@@ -82,27 +82,27 @@ public class TaskDataSet implements Serializable{
         this.title = title;
     }
 
-    public RequestDataSet getRequest() {
+    public RequestEntity getRequest() {
         return request;
     }
 
-    public void setRequest(RequestDataSet request) {
+    public void setRequest(RequestEntity request) {
         this.request = request;
     }
 
-    public StateDataSet getState() {
+    public StateEntity getState() {
         return state;
     }
 
-    public void setState(StateDataSet state) {
+    public void setState(StateEntity state) {
         this.state = state;
     }
 
-    public UserDataSet getExecutor() {
+    public UserEntity getExecutor() {
         return executor;
     }
 
-    public void setExecutor(UserDataSet executor) {
+    public void setExecutor(UserEntity executor) {
         this.executor = executor;
     }
 }

@@ -17,21 +17,8 @@
             </Policies>
             <DefaultRolloverStrategy max="20"/>
         </RollingFile>
-        <RollingFile name="RollingSQLFile" fileName="${log_dir}/hibernateSQL.log"
-                     filePattern="${log_dir}/hibernateSQL_%i.log.gz">
-            <PatternLayout>
-                <pattern>[%d{MM-dd HH:mm:ss,SSS}, %r] %c %m%n</pattern>
-            </PatternLayout>
-            <Policies>
-                <SizeBasedTriggeringPolicy size="50MB"/>
-            </Policies>
-            <DefaultRolloverStrategy max="20"/>
-        </RollingFile>
         <Async name="AsyncFile">
             <AppenderRef ref="RollingFile"/>
-        </Async>
-        <Async name="AsyncSQLFile">
-            <AppenderRef ref="RollingSQLFile"/>
         </Async>
         <Async name="AsyncConsole">
             <AppenderRef ref="Console"/>
@@ -39,23 +26,8 @@
     </Appenders>
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="AsyncFile"/>
+            <!--<AppenderRef ref="AsyncFile"/>-->
             <AppenderRef ref="AsyncConsole"/>
         </Root>
-        <Logger name="org.hibernate.SQL" level="debug" additivity="false">
-            <AppenderRef ref="AsyncSQLFile"/>
-        </Logger>
-        <Logger name="org.hibernate.engine.query" level="trace" additivity="false">
-            <AppenderRef ref="AsyncSQLFile"/>
-        </Logger>
-        <Logger name="org.hibernate.type" level="trace" additivity="false">
-            <AppenderRef ref="AsyncSQLFile"/>
-        </Logger>
-        <Logger name="org.hibernate.jdbc" level="trace" additivity="false">
-            <AppenderRef ref="AsyncSQLFile"/>
-        </Logger>
-        <Logger name="org.hibernate.SQL" level="trace" additivity="false">
-            <AppenderRef ref="AsyncSQLFile"/>
-        </Logger>
     </Loggers>
 </Configuration>

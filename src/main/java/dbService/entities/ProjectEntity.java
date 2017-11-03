@@ -1,7 +1,6 @@
-package dbService.dataSets;
+package dbService.entities;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -10,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "projects")
-public class ProjectDataSet implements Serializable {
+public class ProjectEntity implements Serializable {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -26,19 +25,19 @@ public class ProjectDataSet implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
-    private UserDataSet creator;
+    private UserEntity creator;
 
     @OneToMany(mappedBy = "project")
-    private Set<RequestDataSet> requests;
+    private Set<RequestEntity> requests;
 
     @OneToMany(mappedBy = "project")
-    private Set<ProjectPositionDataSet> projectPositions;
+    private Set<ProjectPositionEntity> projectPositions;
 
 
-    public ProjectDataSet() {
+    public ProjectEntity() {
     }
 
-    public ProjectDataSet(String title, String description, UserDataSet creator) {
+    public ProjectEntity(String title, String description, UserEntity creator) {
         this.title = title;
         this.description = description;
         this.creator = creator;
@@ -52,11 +51,11 @@ public class ProjectDataSet implements Serializable {
         this.description = description;
     }
 
-    public void setCreator(UserDataSet creator) {
+    public void setCreator(UserEntity creator) {
         this.creator = creator;
     }
 
-    public UserDataSet getCreator() {
+    public UserEntity getCreator() {
         return creator;
     }
 
@@ -78,7 +77,7 @@ public class ProjectDataSet implements Serializable {
 
     @Override
     public String toString() {
-        return "ProjectDataSet{" +
+        return "ProjectEntity{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + title + '\'' +
