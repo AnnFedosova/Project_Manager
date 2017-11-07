@@ -1,5 +1,6 @@
 package dbService.dao;
 
+import dbService.entities.ProjectEntity;
 import dbService.entities.RequestEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -39,6 +40,19 @@ public class RequestDAO {
 
     public long addRequest(RequestEntity request) {
         return (long) session.save(request);
+    }
+
+    public List<RequestEntity> getRequestsByProjectId(long projectId) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<RequestEntity> criteria = builder.createQuery(RequestEntity.class);
+
+        Root<RequestEntity> root = criteria.from(RequestEntity.class);
+        ParameterExpression<ProjectEntity> parameter = builder.parameter(ProjectEntity.class);
+        criteria.select(root).where(builder.equal(root.get("project"), parameter));
+        Query<RequestEntity> query = session.createQuery(criteria);
+        ProjectDAO projectDAO = new ProjectDAO(session);
+        query.setParameter(parameter, projectDAO.get(projectId));
+        return query.getResultList();
     }
 
     public List<RequestEntity> selectAll() {

@@ -10,42 +10,106 @@
 </head>
 
 <body>
-<form>
-    <button value="Login" name="button" type="button" onclick="location.href='/logout';" style="float: right;"><i
-            class="fa fa-sign-out"></i>
-        Log out
-    </button>
-    <button value="Login" name="button" type="button" onclick="location.href='/';" style="float: right;"><i
-            class="fa fa-home"></i>
-        Home
-    </button>
-</form>
+<div id="navbar">
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+            <div class='navbar-header'><a class="navbar-brand" href="/"><i class="fa fa-home"></i> Home</a></div>
+            <div class='navbar-right'>
+                <a class="navbar-brand" href="/logout"><i class="fa fa-sign-out"></i>Log out</a>
+            </div>
+        </div>
+    </nav>
+</div>
 
-<div class='container' style="padding-top: 35px">
+<div class='container'>
     <div class='row'>
         <div class='login'>
             <div class='page-header'>
                 <h2 class='text-left'>${title}</h2>
                 <a class="btn btn-primary" href="/project/edit?id=${id}"><i title="Edit project"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
-                <a class="btn btn-primary" href="/newrequest?projectid=${id}"><i title="Create request"
-                                                                                 class="fa fa-plus"></i> Create request</a>
+                <a class="btn btn-primary" href="/request/new?projectid=${id}"><i title="Create request"
+                                                                                   class="fa fa-plus"></i> Create
+                    request</a>
             </div>
 
             <h3 class="text-left">Creator</h3>
             <div style="font-size: medium">
-                ${creator.login}
+                <a href="/user?id=${creator.id}">
+                    ${creator.firstName} ${creator.lastName} (${creator.login})
+                </a>
             </div>
 
+            <br>
             <h3 class="text-left">Description</h3>
             <div style="font-size: medium">
                 ${description}
             </div>
 
-            <h3 class="text-left">Roles</h3>
+            <br>
+            <h3 class="text-left">Positions</h3>
             <div style="font-size: medium">
+                <#list positions>
+                    <table width="100%">
+                        <div class='col-sm-2'>
+                            <div class='list-group'>
+                                <#items as position>
+                                    <tr>
+                                        <td width="5%">
+                                            <div class="list-group-item text-center">
+                                                ${position?counter}
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <td width="30%"><a class="list-group-item text-center"
+                                                           href="/user?id=${position.user.id}">${position.user.firstName}
+                                            ${position.user.lastName} (${position.user.login})</a>
+                                        </td>
+                                        <td>
+                                            <div class="list-group-item text-center ">
+                                                ${position.position.name}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </#items>
+                            </div>
+                        </div>
+                    </table>
+                </#list>
             </div>
+
+            <br>
+            <h3 class="text-left">Requests</h3>
+            <div style="font-size: medium">
+                <#list requests>
+                    <table width="100%">
+                        <div class='col-sm-2'>
+                            <div class='list-group'>
+                                <#items as request>
+                                    <tr>
+                                        <td width="5%">
+                                            <div class="list-group-item text-center">
+                                                ${request?counter}
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <td><a class="list-group-item text-center"
+                                               href="/request?id=${request.id}">${request.title}</a>
+                                        </td>
+                                    </tr>
+                                </#items>
+                            </div>
+                        </div>
+                    </table>
+                </#list>
+            </div>
+            <br>
         </div>
+        <footer class='text-muted'>
+            <div class='pull-left'><span>2017</span></div>
+            <div class='pull-right'>Levin Inc.</div>
+            <div class='clearfix'></div>
+        </footer>
     </div>
 </div>
 </body>

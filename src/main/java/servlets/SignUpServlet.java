@@ -2,6 +2,7 @@ package servlets;
 
 import dbService.DBException;
 import dbService.DBService;
+import templater.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +19,12 @@ public class SignUpServlet extends HttpServlet {
 
     public SignUpServlet(DBService dbService) {
         this.dbService = dbService;
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().println(PageGenerator.instance().getPage("html/signup/signup.html", null));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,8 +9,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>JCGRealm</realm-name>
         <form-login-config>
-            <form-login-page>/login.html</form-login-page>
-            <form-error-page>/registration.html</form-error-page>
+            <form-login-page>/html/login/redirToLogin.html</form-login-page>
+            <form-error-page>/html/login/redirToLogin.html</form-error-page>
         </form-login-config>
     </login-config>
 
@@ -18,10 +18,10 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Secure resources</web-resource-name>
-            <url-pattern>/html/*</url-pattern>
             <url-pattern>/cfg/*</url-pattern>
             <url-pattern>/projects/*</url-pattern>
             <url-pattern>/project/*</url-pattern>
+            <url-pattern>/request/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -33,6 +33,7 @@
         <web-resource-name>Secure resources</web-resource-name>
         <url-pattern>/projects/*</url-pattern>
         <url-pattern>/project/*</url-pattern>
+        <url-pattern>/request/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
         <role-name>user</role-name>

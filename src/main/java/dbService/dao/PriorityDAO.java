@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * @author Evgeny Levin
@@ -42,5 +43,14 @@ public class PriorityDAO {
 
     public long addPriority(PriorityEntity priority) {
         return (long) session.save(priority);
+    }
+
+    public List<PriorityEntity> selectAll() {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<PriorityEntity> criteria = builder.createQuery(PriorityEntity.class);
+        Root<PriorityEntity> root = criteria.from(PriorityEntity.class);
+        criteria.select(root);
+        Query<PriorityEntity> query = session.createQuery(criteria);
+        return query.getResultList();
     }
 }

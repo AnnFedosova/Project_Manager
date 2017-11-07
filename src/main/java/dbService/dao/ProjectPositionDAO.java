@@ -28,7 +28,7 @@ public class ProjectPositionDAO {
         return session.get(ProjectPositionEntity.class, id);
     }
 
-    public List<ProjectPositionEntity> get(UserEntity user)  throws HibernateException {
+    public List<ProjectPositionEntity> getByUser(UserEntity user)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<ProjectPositionEntity> criteria = builder.createQuery(ProjectPositionEntity.class);
         Root<ProjectPositionEntity> root = criteria.from(ProjectPositionEntity.class);
@@ -39,7 +39,7 @@ public class ProjectPositionDAO {
         return query.getResultList();
     }
 
-    public List<ProjectPositionEntity> get(String login)  throws HibernateException {
+    public List<ProjectPositionEntity> getByUser(String login)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<ProjectPositionEntity> criteria = builder.createQuery(ProjectPositionEntity.class);
         Root<ProjectPositionEntity> root = criteria.from(ProjectPositionEntity.class);
@@ -48,6 +48,18 @@ public class ProjectPositionDAO {
         Query<ProjectPositionEntity> query = session.createQuery(criteria);
         UserDAO userDAO = new UserDAO(session);
         query.setParameter(parameter, userDAO.get(login));
+        return query.getResultList();
+    }
+
+    public List<ProjectPositionEntity> getByProjectId(long projectId)  throws HibernateException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<ProjectPositionEntity> criteria = builder.createQuery(ProjectPositionEntity.class);
+        Root<ProjectPositionEntity> root = criteria.from(ProjectPositionEntity.class);
+        ParameterExpression<ProjectEntity> parameter = builder.parameter(ProjectEntity.class);
+        criteria.select(root).where(builder.equal(root.get("project"), parameter));
+        Query<ProjectPositionEntity> query = session.createQuery(criteria);
+        ProjectDAO projectDAO = new ProjectDAO(session);
+        query.setParameter(parameter, projectDAO.get(projectId));
         return query.getResultList();
     }
 

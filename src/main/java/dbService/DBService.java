@@ -123,6 +123,14 @@ public class DBService {
         }
     }
 
+    public List<UserEntity> getAllUsers() {
+        Session session = sessionFactory.openSession();
+        UserDAO userDAO = new UserDAO(session);
+        List<UserEntity> users = userDAO.selectAll();
+        session.close();
+        return users;
+    }
+
 
     //Projects
     public List getProjectsList() {
@@ -165,12 +173,14 @@ public class DBService {
 
 
     //Requests
-    public List getRequestsList() {
+    public List<RequestEntity> getRequestssList(long projectId) {
         Session session = sessionFactory.openSession();
+
         RequestDAO requestDAO = new RequestDAO(session);
-        List projects = requestDAO.selectAll();
+        List <RequestEntity> list = requestDAO.getRequestsByProjectId(projectId);
+
         session.close();
-        return projects;
+        return list;
     }
 
 //    public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, String projectTitle) throws DBException {
@@ -244,6 +254,38 @@ public class DBService {
 
             StateEntity state = stateDAO.get("New");
             PriorityEntity priority = priorityDAO.get(priorityName);
+
+            RequestEntity request = new RequestEntity(project, title, description, creator, customer, state, priority);
+            long requestId = requestDAO.addRequest(request);
+
+            transaction.commit();
+            session.close();
+            return requestId;
+        }
+        catch (HibernateException e) {
+            throw new DBException(e);
+        }
+    }
+
+
+    //TODO добавить проверку при создании request'а
+    public long addRequest(String title, String description, String creatorLogin, long customerId, long priorityId, long projectId) throws DBException {
+        try {
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+
+            RequestDAO requestDAO = new RequestDAO(session);
+            UserDAO userDAO = new UserDAO(session);
+            PriorityDAO priorityDAO = new PriorityDAO(session);
+            StateDAO stateDAO = new StateDAO(session);
+            ProjectDAO projectDAO = new ProjectDAO(session);
+
+            ProjectEntity project = projectDAO.get(projectId);
+            UserEntity creator = userDAO.get(creatorLogin);
+            UserEntity customer = userDAO.get(customerId);
+
+            StateEntity state = stateDAO.get("New");
+            PriorityEntity priority = priorityDAO.get(priorityId);
 
             RequestEntity request = new RequestEntity(project, title, description, creator, customer, state, priority);
             long requestId = requestDAO.addRequest(request);
@@ -333,6 +375,16 @@ public class DBService {
         session.close();
     }
 
+    public List<ProjectPositionEntity> getProjectPositionsList(long projectId) {
+        Session session = sessionFactory.openSession();
+
+        ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
+        List <ProjectPositionEntity> list = projectPositionDAO.getByProjectId(projectId);
+
+        session.close();
+        return list;
+    }
+
 
     //Priorities
 
@@ -346,6 +398,14 @@ public class DBService {
         transaction.commit();
         session.close();
         return id;
+    }
+
+    public List<PriorityEntity> getAllPriorities() {
+        Session session = sessionFactory.openSession();
+        PriorityDAO priorityDAO = new PriorityDAO(session);
+        List<PriorityEntity> priorities = priorityDAO.selectAll();
+        session.close();
+        return priorities;
     }
 
 }

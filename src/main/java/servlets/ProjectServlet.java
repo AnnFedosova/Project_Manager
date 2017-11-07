@@ -2,6 +2,8 @@ package servlets;
 
 import dbService.DBService;
 import dbService.entities.ProjectEntity;
+import dbService.entities.ProjectPositionEntity;
+import dbService.entities.RequestEntity;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,10 +39,16 @@ public class ProjectServlet extends HttpServlet {
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
         Map<String, Object> pageVariables = new HashMap<>();
         ProjectEntity project = dbService.getProject(id);
+        List<ProjectPositionEntity> positions= dbService.getProjectPositionsList(project.getId());
+        List<RequestEntity> requests = dbService.getRequestssList(project.getId());
+
         pageVariables.put("id", project.getId());
         pageVariables.put("title", project.getTitle());
         pageVariables.put("description", project.getDescription());
         pageVariables.put("creator", project.getCreator());
+        pageVariables.put("positions", positions);
+        pageVariables.put("requests", requests);
+
         return pageVariables;
     }
 }

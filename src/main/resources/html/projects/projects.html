@@ -10,16 +10,18 @@
 </head>
 
 <body>
-<form>
-    <button value="Login" name="button" type="button" onclick="location.href='/logout';" style="float: right;"><i class="fa fa-sign-out"></i>
-        Log out
-    </button>
-    <button value="Login" name="button" type="button" onclick="location.href='/';" style="float: right;"><i class="fa fa-home"></i>
-        Home
-    </button>
-</form>
+<div id="navbar">
+    <nav class='navbar navbar-inverse'>
+        <div class='container-fluid'>
+            <div class='navbar-header'><a class="navbar-brand" href="/"><i class="fa fa-home"></i> Home</a></div>
+            <div class='navbar-right'>
+                <a class="navbar-brand" href="/logout"><i class="fa fa-sign-out"></i>Log out</a>
+            </div>
+        </div>
+    </nav>
+</div>
 
-<div class='container' style="padding-top: 35px">
+<div class='container'>
     <div class='row'>
         <div class='col-md-8 col-md-offset-2'>
             <div class='login'>
@@ -53,8 +55,13 @@
                         </div>
                     </table>
                 </#list>
-
+                <br>
             </div>
+            <footer class='text-muted'>
+                <div class='pull-left'><span>2017</span></div>
+                <div class='pull-right'>Levin Inc.</div>
+                <div class='clearfix'></div>
+            </footer>
         </div>
     </div>
 </div>

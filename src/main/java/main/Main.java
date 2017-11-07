@@ -42,11 +42,13 @@ public class Main {
 
 
     private static void addServlets(DBService dbService, ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new LoginServlet()), LoginServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new SignUpServlet(dbService)), SignUpServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new ProjectsServlet(dbService)), ProjectsServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new ProjectServlet(dbService)), ProjectServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new NewProjectServlet(dbService)), NewProjectServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new NewRequestServlet(dbService)), NewRequestServlet.PAGE_URL);
     }
 
     private static void dbSetupData(DBService dbService) {
@@ -101,7 +103,7 @@ public class Main {
             //Users
             dbService.addUser("leo", "leo", true, "Evgeny", "Levin", "Olegovich");
             dbService.addUser("belovivan", "belovivan", true, "Ivan", "Belov", "Aleksandrovich");
-            dbService.addUser("musk", "musk", true, "Elon", "Mask", null);
+            dbService.addUser("musk", "musk", true, "Elon", "Musk", null);
             dbService.addUser("realtrump", "realtrump", false, "Donald", "Trump", null);
 
             //Projects
