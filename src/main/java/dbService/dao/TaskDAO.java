@@ -1,5 +1,6 @@
 package dbService.dao;
 
+import dbService.entities.RequestEntity;
 import dbService.entities.TaskEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -47,6 +48,19 @@ public class TaskDAO {
         Root<TaskEntity> root = criteria.from(TaskEntity.class);
         criteria.select(root);
         Query<TaskEntity> query = session.createQuery(criteria);
+        return query.getResultList();
+    }
+
+    public List<TaskEntity> getTasksByReauestId(long requestId) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<TaskEntity> criteria = builder.createQuery(TaskEntity.class);
+
+        Root<TaskEntity> root = criteria.from(TaskEntity.class);
+        ParameterExpression<RequestEntity> parameter = builder.parameter(RequestEntity.class);
+        criteria.select(root).where(builder.equal(root.get("request"), parameter));
+        Query<TaskEntity> query = session.createQuery(criteria);
+        RequestDAO requestDAO = new RequestDAO(session);
+        query.setParameter(parameter, requestDAO.get(requestId));
         return query.getResultList();
     }
 }

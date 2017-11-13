@@ -1,9 +1,9 @@
 package servlets;
 
+
 import dbService.DBService;
-import dbService.entities.ProjectEntity;
-import dbService.entities.ProjectPositionEntity;
 import dbService.entities.RequestEntity;
+import dbService.entities.TaskEntity;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -18,11 +18,11 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
-public class ProjectServlet extends HttpServlet {
-    public static final String PAGE_URL = "/project";
+public class RequestServlet extends HttpServlet {
+    public static final String PAGE_URL = "/request";
     private DBService dbService;
 
-    public ProjectServlet(DBService dbService) {
+    public RequestServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
@@ -33,21 +33,22 @@ public class ProjectServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/project/project.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("html/request/request.html", pageVariables));
     }
 
     private Map<String, Object> createPageVariablesMap(long id) {
         Map<String, Object> pageVariables = new HashMap<>();
-        ProjectEntity project = dbService.getProject(id);
-        List<ProjectPositionEntity> positions= dbService.getProjectPositionsList(project.getId());
-        List<RequestEntity> requests = dbService.getRequestssList(project.getId());
+        RequestEntity requestEntity = dbService.getRequest(id);
+        List<TaskEntity> tasks = dbService.getTasksList(requestEntity.getId());
 
-        pageVariables.put("id", project.getId());
-        pageVariables.put("title", project.getTitle());
-        pageVariables.put("description", project.getDescription());
-        pageVariables.put("creator", project.getCreator());
-        pageVariables.put("positions", positions);
-        pageVariables.put("requests", requests);
+        pageVariables.put("id", requestEntity.getId());
+        pageVariables.put("title", requestEntity.getTitle());
+        pageVariables.put("description", requestEntity.getDescription());
+        pageVariables.put("creator", requestEntity.getCreator());
+        pageVariables.put("customer", requestEntity.getCustomer());
+        pageVariables.put("priority", requestEntity.getPriority().getName());
+        pageVariables.put("state", requestEntity.getState().getName());
+        pageVariables.put("tasks", tasks);
 
         return pageVariables;
     }

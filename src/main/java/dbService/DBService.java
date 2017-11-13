@@ -183,6 +183,15 @@ public class DBService {
         return list;
     }
 
+    public RequestEntity getRequest(long id) {
+        Session session = sessionFactory.openSession();
+        RequestDAO requestDAO = new RequestDAO(session);
+        RequestEntity request = requestDAO.get(id);
+        session.close();
+        return request;
+    }
+
+
 //    public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, String projectTitle) throws DBException {
 //        try {
 //            Session session = sessionFactory.openSession();
@@ -331,8 +340,27 @@ public class DBService {
     }
 
     //Tasks
+
+    public TaskEntity getTask(long id) {
+        Session session = sessionFactory.openSession();
+        TaskDAO taskDAO = new TaskDAO(session);
+        TaskEntity task = taskDAO.get(id);
+        session.close();
+        return task;
+    }
+
+    public List<TaskEntity> getTasksList(long requestId) {
+        Session session = sessionFactory.openSession();
+
+        TaskDAO taskDAO = new TaskDAO(session);
+        List <TaskEntity> list = taskDAO.getTasksByReauestId(requestId);
+
+        session.close();
+        return list;
+    }
+
     //TODO добавить проверку при создании task'а
-    public long addTask(String title, String description, String creatorLogin, String executorLogin, long requestId) throws DBException {
+    public long addTask(String title, String description, String creatorLogin, long executorId, long requestId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
@@ -345,7 +373,7 @@ public class DBService {
 
             RequestEntity request = requestDAO.get(requestId);
             UserEntity creator = userDAO.get(creatorLogin);
-            UserEntity executor = userDAO.get(executorLogin);
+            UserEntity executor = userDAO.get(executorId);
 
             StateEntity state = stateDAO.get("New");
 

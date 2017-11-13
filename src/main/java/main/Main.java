@@ -49,6 +49,9 @@ public class Main {
         context.addServlet(new ServletHolder(new ProjectServlet(dbService)), ProjectServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new NewProjectServlet(dbService)), NewProjectServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new NewRequestServlet(dbService)), NewRequestServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new RequestServlet(dbService)), RequestServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new TaskServlet(dbService)), TaskServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new NewTaskServlet(dbService)), NewTaskServlet.PAGE_URL);
     }
 
     private static void dbSetupData(DBService dbService) {
@@ -123,10 +126,10 @@ public class Main {
             dbService.addProjectPosition(1, "Developer", "belovivan");
 
             //Requests
-            long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", "leo","realtrump", "high", 3);
+            long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", "leo","realtrump", "High", 3);
 
             //Tasks
-            dbService.addTask("Do it!", "Please", "leo", "belovivan", request1Id);
+            dbService.addTask("Do it!", "Please", "leo", 3, request1Id);
         } catch (DBException e) {
             e.printStackTrace();
         }

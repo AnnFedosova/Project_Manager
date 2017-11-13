@@ -121,4 +121,8 @@ public class RequestEntity implements Serializable {
     public void setState(StateEntity state) {
         this.state = state;
     }
+
+    public Set<TaskEntity> getTasks() {
+        return tasks;
+    }
 }

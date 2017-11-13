@@ -1,9 +1,8 @@
 package servlets;
 
 import dbService.DBService;
-import dbService.entities.ProjectEntity;
-import dbService.entities.ProjectPositionEntity;
 import dbService.entities.RequestEntity;
+import dbService.entities.TaskEntity;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -18,11 +17,11 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
-public class ProjectServlet extends HttpServlet {
-    public static final String PAGE_URL = "/project";
+public class TaskServlet extends HttpServlet {
+    public static final String PAGE_URL = "/task";
     private DBService dbService;
 
-    public ProjectServlet(DBService dbService) {
+    public TaskServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
@@ -33,21 +32,19 @@ public class ProjectServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/project/project.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("html/task/task.html", pageVariables));
     }
 
     private Map<String, Object> createPageVariablesMap(long id) {
         Map<String, Object> pageVariables = new HashMap<>();
-        ProjectEntity project = dbService.getProject(id);
-        List<ProjectPositionEntity> positions= dbService.getProjectPositionsList(project.getId());
-        List<RequestEntity> requests = dbService.getRequestssList(project.getId());
+        TaskEntity task = dbService.getTask(id);
 
-        pageVariables.put("id", project.getId());
-        pageVariables.put("title", project.getTitle());
-        pageVariables.put("description", project.getDescription());
-        pageVariables.put("creator", project.getCreator());
-        pageVariables.put("positions", positions);
-        pageVariables.put("requests", requests);
+        pageVariables.put("id", task.getId());
+        pageVariables.put("title", task.getTitle());
+        pageVariables.put("description", task.getDescription());
+        pageVariables.put("creator", task.getCreator());
+        pageVariables.put("executor", task.getExecutor());
+        pageVariables.put("state", task.getState().getName());
 
         return pageVariables;
     }

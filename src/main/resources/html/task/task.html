@@ -26,11 +26,8 @@
         <div class='login'>
             <div class='page-header'>
                 <h2 class='text-left'>${title}</h2>
-                <a class="btn btn-primary" href="/request/edit?id=${id}"><i title="Edit request"
+                <a class="btn btn-primary" href="/task/edit?id=${id}"><i title="Edit request"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
-                <a class="btn btn-primary" href="/task/new?requestid=${id}"><i title="Create task"
-                                                                                  class="fa fa-plus"></i> Create
-                    task</a>
             </div>
 
             <h3 class="text-left">Creator</h3>
@@ -41,10 +38,10 @@
             </div>
 
             <br>
-            <h3 class="text-left">Customer</h3>
+            <h3 class="text-left">Executor</h3>
             <div style="font-size: medium">
                 <a href="/user?id=${creator.id}">
-                    ${customer.firstName} ${customer.lastName} (${customer.login})
+                    ${executor.firstName} ${executor.lastName} (${executor.login})
                 </a>
             </div>
 
@@ -55,42 +52,11 @@
             </div>
 
             <br>
-            <h3 class="text-left">Priority</h3>
-            <div style="font-size: medium">
-                ${priority}
-            </div>
-
-            <br>
             <h3 class="text-left">State</h3>
             <div style="font-size: medium">
                 ${state}
             </div>
 
-            <br>
-            <h3 class="text-left">Tasks</h3>
-            <div style="font-size: medium">
-                <#list tasks>
-                    <table width="100%">
-                        <div class='col-sm-2'>
-                            <div class='list-group'>
-                                <#items as task>
-                                    <tr>
-                                        <td width="5%">
-                                            <div class="list-group-item text-center">
-                                                ${task?counter}
-                                            </div>
-                                        </td>
-                                        <td>
-                                        <td><a class="list-group-item text-center"
-                                               href="/task?id=${task.id}">${task.title}</a>
-                                        </td>
-                                    </tr>
-                                </#items>
-                            </div>
-                        </div>
-                    </table>
-                </#list>
-            </div>
             <br>
         </div>
         <footer class='text-muted'>
