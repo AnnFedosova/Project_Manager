@@ -1,7 +1,7 @@
 <HTML>
 <head>
     <meta charset="utf-8">
-    <title>${title}</title>
+    <title>${login}</title>
     <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
@@ -30,38 +30,21 @@
     <div class='row'>
         <div class='login'>
             <div class='page-header'>
-                <h2 class='text-left'>${title}</h2>
-                <a class="btn btn-primary" href="/task/edit?id=${id}"><i title="Edit request"
+                <h2 class='text-left'>${firstName} ${lastName}</h2>
+                <a class="btn btn-primary" href="/user/edit?id=${id}"><i title="Edit user"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
             </div>
 
-            <h3 class="text-left">Creator</h3>
+            <h3 class="text-left">Login</h3>
             <div style="font-size: medium">
-                <a href="/user?id=${creator.id}">
-                    ${creator.firstName} ${creator.lastName} (${creator.login})
-                </a>
+                    ${login}
             </div>
 
             <br>
-            <h3 class="text-left">Executor</h3>
+            <h3 class="text-left">Internal</h3>
             <div style="font-size: medium">
-                <a href="/user?id=${creator.id}">
-                    ${executor.firstName} ${executor.lastName} (${executor.login})
-                </a>
+                    ${internal}
             </div>
-
-            <br>
-            <h3 class="text-left">Description</h3>
-            <div style="font-size: medium">
-                ${description}
-            </div>
-
-            <br>
-            <h3 class="text-left">State</h3>
-            <div style="font-size: medium">
-                ${state}
-            </div>
-
             <br>
         </div>
         <footer class='text-muted'>

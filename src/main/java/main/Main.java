@@ -52,6 +52,8 @@ public class Main {
         context.addServlet(new ServletHolder(new RequestServlet(dbService)), RequestServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new TaskServlet(dbService)), TaskServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new NewTaskServlet(dbService)), NewTaskServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new UserServlet(dbService)), UserServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new AdminServlet(dbService)), AdminServlet.PAGE_URL);
     }
 
     private static void dbSetupData(DBService dbService) {

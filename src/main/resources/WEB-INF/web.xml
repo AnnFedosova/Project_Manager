@@ -19,9 +19,14 @@
         <web-resource-collection>
             <web-resource-name>Secure resources</web-resource-name>
             <url-pattern>/cfg/*</url-pattern>
+            <url-pattern>/signup/*</url-pattern>
             <url-pattern>/projects/*</url-pattern>
             <url-pattern>/project/*</url-pattern>
             <url-pattern>/request/*</url-pattern>
+            <url-pattern>/task/*</url-pattern>
+            <url-pattern>/user/*</url-pattern>
+            <url-pattern>/signup/*</url-pattern>
+            <url-pattern>/admin/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -34,6 +39,8 @@
         <url-pattern>/projects/*</url-pattern>
         <url-pattern>/project/*</url-pattern>
         <url-pattern>/request/*</url-pattern>
+        <url-pattern>/task/*</url-pattern>
+        <url-pattern>/user/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
         <role-name>user</role-name>

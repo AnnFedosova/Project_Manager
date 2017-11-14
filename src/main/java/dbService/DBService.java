@@ -10,7 +10,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -92,6 +91,23 @@ public class DBService {
 
 
     //Users
+
+    public UserEntity getUser(long id) {
+        Session session = sessionFactory.openSession();
+        UserDAO userDAO = new UserDAO(session);
+        UserEntity user = userDAO.get(id);
+        session.close();
+        return user;
+    }
+
+    public UserEntity getUser(String login) {
+        Session session = sessionFactory.openSession();
+        UserDAO userDAO = new UserDAO(session);
+        UserEntity user = userDAO.get(login);
+        session.close();
+        return user;
+    }
+
     public long addUser(String login, String password, boolean internal, String firstName, String lastName, String middleName) throws DBException {
         return addPerson(login, password, internal, firstName, lastName, middleName, "user");
     }
@@ -434,6 +450,25 @@ public class DBService {
         List<PriorityEntity> priorities = priorityDAO.selectAll();
         session.close();
         return priorities;
+    }
+
+
+    //UserRoles
+
+    public boolean isAdmin(String userLogin) {
+        Session session = sessionFactory.openSession();
+
+        UserRoleDAO userRoleDAO = new UserRoleDAO(session);
+        long adminRoleId = new RoleDAO(session).get("admin").getId();
+        List<UserRoleEntity> roles = userRoleDAO.getRolesByUser(userLogin);
+        for (UserRoleEntity role: roles) {
+            if (role.getRole().getId() == adminRoleId) {
+                session.close();
+                return true;
+            }
+        }
+        session.close();
+        return false;
     }
 
 }

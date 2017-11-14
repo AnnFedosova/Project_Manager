@@ -2,7 +2,6 @@ package servlets;
 
 import dbService.DBService;
 import templater.PageGenerator;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +11,11 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Evgeny Levin
- */
-public class ProjectsServlet extends HttpServlet {
-    public static final String PAGE_URL = "/projects";
-    private DBService dbService;
+public class AdminServlet extends HttpServlet {
+    public static final String PAGE_URL = "/admin";
+    DBService dbService;
 
-    public ProjectsServlet(DBService dbService) {
+    public AdminServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
@@ -28,15 +24,14 @@ public class ProjectsServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/projects/projects.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("html/admin/admin.html", pageVariables));
     }
-
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
         Map<String, Object> pageVariables = new HashMap<>();
+
         Principal user = request.getUserPrincipal();
         pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
-        pageVariables.put("projects", this.dbService.getProjectsList());
         return pageVariables;
     }
 }

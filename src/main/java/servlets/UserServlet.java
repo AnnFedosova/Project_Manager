@@ -1,9 +1,8 @@
 package servlets;
 
 import dbService.DBService;
-import dbService.entities.TaskEntity;
+import dbService.entities.UserEntity;
 import templater.PageGenerator;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,17 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Evgeny Levin
  */
-public class TaskServlet extends HttpServlet {
-    public static final String PAGE_URL = "/task";
+public class UserServlet extends HttpServlet{
+    public static final String PAGE_URL = "/user";
     private DBService dbService;
 
-    public TaskServlet(DBService dbService) {
+    public UserServlet(DBService dbService) {
         this.dbService = dbService;
     }
 
@@ -32,21 +30,20 @@ public class TaskServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/task/task.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("html/user/user.html", pageVariables));
     }
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
         Map<String, Object> pageVariables = new HashMap<>();
-        TaskEntity task = dbService.getTask(id);
+        UserEntity user = dbService.getUser(id);
 
-        Principal user = request.getUserPrincipal();
-        pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
-        pageVariables.put("id", task.getId());
-        pageVariables.put("title", task.getTitle());
-        pageVariables.put("description", task.getDescription());
-        pageVariables.put("creator", task.getCreator());
-        pageVariables.put("executor", task.getExecutor());
-        pageVariables.put("state", task.getState().getName());
+        Principal userPrincipal = request.getUserPrincipal();
+        pageVariables.put("isAdmin", dbService.isAdmin(userPrincipal.getName()));
+        pageVariables.put("id", user.getId());
+        pageVariables.put("firstName", user.getFirstName());
+        pageVariables.put("lastName", user.getLastName());
+        pageVariables.put("internal", Boolean.toString(user.getInternal()));
+        pageVariables.put("login", user.getLogin());
 
         return pageVariables;
     }

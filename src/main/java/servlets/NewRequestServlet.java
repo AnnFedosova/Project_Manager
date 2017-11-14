@@ -76,6 +76,8 @@ public class NewRequestServlet extends HttpServlet {
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
         Map<String, Object> pageVariables = new HashMap<>();
+        Principal user = request.getUserPrincipal();
+        pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
         pageVariables.put("users", this.dbService.getAllUsers());
         pageVariables.put("priorities", this.dbService.getAllPriorities());
         return pageVariables;

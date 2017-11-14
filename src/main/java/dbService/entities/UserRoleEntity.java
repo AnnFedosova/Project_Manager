@@ -31,19 +31,19 @@ public class UserRoleEntity implements Serializable {
     }
 
 
-    public void setUserId(UserEntity user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
-    public void setRoleId(RoleEntity role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
     }
 
-    public UserEntity getUserId() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public RoleEntity getRoleId() {
+    public RoleEntity getRole() {
         return role;
     }
 
