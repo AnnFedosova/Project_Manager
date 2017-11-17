@@ -50,6 +50,7 @@ public class DBService {
         configuration.addAnnotatedClass(PriorityEntity.class);
         configuration.addAnnotatedClass(ProjectPositionEntity.class);
         configuration.addAnnotatedClass(TaskEntity.class);
+        configuration.addAnnotatedClass(StateTransitionEntity.class);
     }
 
     public void printConnectInfo() {
@@ -355,6 +356,19 @@ public class DBService {
         return id;
     }
 
+    public long addState(StateEntity state) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        StateDAO stateDAO = new StateDAO(session);
+
+        long id = stateDAO.addState(state);
+
+        transaction.commit();
+        session.close();
+        return id;
+    }
+
     //Tasks
 
     public TaskEntity getTask(long id) {
@@ -469,6 +483,38 @@ public class DBService {
         }
         session.close();
         return false;
+    }
+
+
+    //StateTransitions
+
+    public List<StateTransitionEntity> getStateTransitions(StateEntity fromState) {
+        Session session = sessionFactory.openSession();
+        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
+        List<StateTransitionEntity> transitions = stateTransitionDAO.getStateTransitionsList(fromState);
+        session.close();
+        return transitions;
+    }
+
+    public void addStateTransition(StateEntity fromState, StateEntity toState) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
+        stateTransitionDAO.add(fromState, toState);
+        transaction.commit();
+        session.close();
+    }
+
+    public void addStateTransition(String fromState, String toState) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        StateDAO stateDAO = new StateDAO(session);
+        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
+        StateEntity state1 = stateDAO.get(fromState);
+        StateEntity state2 = stateDAO.get(toState);
+        stateTransitionDAO.add(state1, state2);
+        transaction.commit();
+        session.close();
     }
 
 }

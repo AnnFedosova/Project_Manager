@@ -38,5 +38,6 @@
         <mapping class="dbService.entities.UserRoleEntity"/>
         <mapping class="dbService.entities.RoleEntity"/>
         <mapping class="dbService.entities.TaskEntity"/>
+        <mapping class="dbService.entities.StateTransitionEntity"/>
     </session-factory>
 </hibernate-configuration>

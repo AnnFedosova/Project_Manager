@@ -2,6 +2,8 @@ package main;
 
 import dbService.DBException;
 import dbService.DBService;
+import dbService.dao.StateTransitionDAO;
+import dbService.entities.StateEntity;
 import org.eclipse.jetty.security.JDBCLoginService;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -77,19 +79,65 @@ public class Main {
 
 
             //RequestStates
-            dbService.addState("Postponed", true, false);
-            dbService.addState("Complete", true, false);
-            dbService.addState("Rejected", true, false);
+            StateEntity statePostponed = new StateEntity("Postponed", true, false);
+            StateEntity stateComplete = new StateEntity("Complete", true, false);
+            StateEntity stateRejected = new StateEntity("Rejected", true, false);
+
+            dbService.addState(statePostponed);
+            dbService.addState(stateComplete);
+            dbService.addState(stateRejected);
+
+//            dbService.addState("Postponed", true, false);
+//            dbService.addState("Complete", true, false);
+//            dbService.addState("Rejected", true, false);
 
             //RequestAndTaskStates
-            dbService.addState("New", true, true);
-            dbService.addState("On the go", true, true);
-            dbService.addState("Closed", true, true);
+            StateEntity stateNew = new StateEntity("New", true, true);
+            StateEntity stateOnTheGo = new StateEntity("On the go", true, true);
+            StateEntity stateClosed = new StateEntity("Closed", true, true);
+
+            dbService.addState(stateNew);
+            dbService.addState(stateOnTheGo);
+            dbService.addState(stateClosed);
+
+//            dbService.addState("New", true, true);
+//            dbService.addState("On the go", true, true);
+//            dbService.addState("Closed", true, true);
 
             //TaskStates
-            dbService.addState("Assigned", false, true);
-            dbService.addState("Completed, waiting for testing", false, true);
-            dbService.addState("In testing", false, true);
+            StateEntity stateAssigned = new StateEntity("Assigned", false, true);
+            StateEntity stateWaitingForTesting = new StateEntity("Complete, waiting for testing", false, true);
+            StateEntity stateInTesting = new StateEntity("In testing", false, true);
+
+            dbService.addState(stateAssigned);
+            dbService.addState(stateWaitingForTesting);
+            dbService.addState(stateInTesting);
+
+//            dbService.addState("Assigned", false, true);
+//            dbService.addState("Completed, waiting for testing", false, true);
+//            dbService.addState("In testing", false, true);
+
+
+            //StateTransitions
+            dbService.addStateTransition(stateNew, stateOnTheGo);
+            dbService.addStateTransition(stateNew, stateRejected);
+            dbService.addStateTransition(stateNew, statePostponed);
+            dbService.addStateTransition(statePostponed, stateNew);
+            dbService.addStateTransition(stateOnTheGo, statePostponed);
+            dbService.addStateTransition(stateOnTheGo, stateComplete);
+            dbService.addStateTransition(stateComplete, stateOnTheGo);
+            dbService.addStateTransition(statePostponed, stateOnTheGo);
+            dbService.addStateTransition(stateComplete, stateClosed);
+            dbService.addStateTransition(stateComplete, statePostponed);
+            dbService.addStateTransition(statePostponed, stateComplete);
+
+            dbService.addStateTransition(stateNew, stateAssigned);
+            dbService.addStateTransition(stateAssigned, stateOnTheGo);
+            dbService.addStateTransition(stateOnTheGo, stateAssigned);
+            dbService.addStateTransition(stateOnTheGo, stateWaitingForTesting);
+            dbService.addStateTransition(stateWaitingForTesting, stateInTesting);
+            dbService.addStateTransition(stateInTesting, stateAssigned);
+            dbService.addStateTransition(stateInTesting, stateClosed);
 
 
             //Priorities

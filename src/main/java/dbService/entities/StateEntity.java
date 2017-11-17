@@ -32,6 +32,12 @@ public class StateEntity implements Serializable {
     @OneToMany(mappedBy = "state")
     private Set<TaskEntity> tasks;
 
+    @OneToMany(mappedBy = "fromState")
+    private Set<StateTransitionEntity> fromStateStansitions;
+
+    @OneToMany(mappedBy = "toState")
+    private Set<StateTransitionEntity> toStateStansitions;
+
     public StateEntity() {
     }
 
