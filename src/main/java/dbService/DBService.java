@@ -11,13 +11,18 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.service.ServiceRegistry;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Evgeny Levin
  */
 public class DBService {
     private final SessionFactory sessionFactory;
+
+    public enum RequestOrTask { REQUEST, TASK }
 
     public DBService() {
         Configuration configuration = getConfiguration();
@@ -208,60 +213,6 @@ public class DBService {
         return request;
     }
 
-
-//    public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, String projectTitle) throws DBException {
-//        try {
-//            Session session = sessionFactory.openSession();
-//            Transaction transaction = session.beginTransaction();
-//
-//            RequestDAO requestDAO = new RequestDAO(session);
-//            UserDAO userDAO = new UserDAO(session);
-//            PriorityDAO priorityDAO = new PriorityDAO(session);
-//            StateDAO requestStateDAO = new StateDAO(session);
-//            ProjectDAO projectDAO = new ProjectDAO(session);
-//            ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
-//
-//            ProjectEntity project = projectDAO.get(projectTitle);
-//            UserEntity creator = userDAO.get(creatorLogin);
-//            UserEntity customer = userDAO.get(customerLogin);
-//            List<ProjectPositionEntity> creatorPositions = projectPositionDAO.get(creator);
-//            List<ProjectPositionEntity> customerPositions = projectPositionDAO.get(customer);
-//
-//
-//            ProjectPositionEntity creatorPosition = null;
-//            ProjectPositionEntity customerPosition = null;
-//            StateEntity state = requestStateDAO.get("New");
-//            PriorityEntity priority = priorityDAO.get(priorityName);
-//
-//            //TODO добавить проверку при создании проекта
-//            //if (creatorPositions.contains())
-//
-//            for (ProjectPositionEntity projectPosition: creatorPositions) {
-//                if (projectPosition.getPosition().getName().toLowerCase().equals("receptionist")) {
-//                    creatorPosition = projectPosition;
-//                    break;
-//                }
-//            }
-//
-//            for (ProjectPositionEntity projectPosition: customerPositions) {
-//                if (projectPosition.getPosition().getName().toLowerCase().equals("customer")) {
-//                    customerPosition = projectPosition;
-//                    break;
-//                }
-//            }
-//
-//            RequestEntity request = new RequestEntity(project, title, description, creatorPosition, customerPosition, state, priority);
-//            long requestId = requestDAO.addRequest(request);
-//
-//            transaction.commit();
-//            session.close();
-//            return requestId;
-//        }
-//        catch (HibernateException e) {
-//            throw new DBException(e);
-//        }
-//    }
-
     //TODO добавить проверку при создании request'а
     public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, long projectId) throws DBException {
         try {
@@ -419,6 +370,17 @@ public class DBService {
         }
     }
 
+    public void updateTask(TaskEntity task) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        TaskDAO taskDAO = new TaskDAO(session);
+        taskDAO.update(task);
+
+        transaction.commit();
+        session.close();
+    }
+
     //ProjectPositions
 
     public void addProjectPosition(long projectId, String positionName, String userLogin) {
@@ -438,6 +400,34 @@ public class DBService {
 
         ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
         List <ProjectPositionEntity> list = projectPositionDAO.getByProjectId(projectId);
+
+        session.close();
+        return list;
+    }
+
+    public List<ProjectPositionEntity> getProjectPositionsByRequestID(long requestId) {
+        Session session = sessionFactory.openSession();
+
+        RequestDAO requestDAO = new RequestDAO(session);
+        ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
+
+        long projectId = requestDAO.get(requestId).getProject().getId();
+        List<ProjectPositionEntity> list = projectPositionDAO.getByProjectId(projectId);
+
+        session.close();
+        return list;
+    }
+
+    public List<ProjectPositionEntity> getProjectPositionsByTaskId(long taskId) {
+        Session session = sessionFactory.openSession();
+
+        RequestDAO requestDAO = new RequestDAO(session);
+        TaskDAO taskDAO = new TaskDAO(session);
+        ProjectPositionDAO projectPositionDAO = new ProjectPositionDAO(session);
+
+        long requestId = taskDAO.get(taskId).getRequest().getId();
+        long projectId = requestDAO.get(requestId).getProject().getId();
+        List<ProjectPositionEntity> list = projectPositionDAO.getByProjectId(projectId);
 
         session.close();
         return list;
@@ -488,12 +478,31 @@ public class DBService {
 
     //StateTransitions
 
-    public List<StateTransitionEntity> getStateTransitions(StateEntity fromState) {
+    public List<StateTransitionEntity> getStateTransitions(StateEntity fromState, RequestOrTask requestOrTask) {
         Session session = sessionFactory.openSession();
         StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
         List<StateTransitionEntity> transitions = stateTransitionDAO.getStateTransitionsList(fromState);
         session.close();
-        return transitions;
+
+        if (requestOrTask == RequestOrTask.REQUEST) {
+            for (StateTransitionEntity transition : transitions) {
+                if (!transition.getFromState().getRequestsAccord()) {
+                    transitions.remove(transition);
+                }
+            }
+            return transitions;
+        }
+
+        if (requestOrTask == RequestOrTask.TASK) {
+            for (StateTransitionEntity transition : transitions) {
+                if (!transition.getFromState().getTasksAccord()) {
+                    transitions.remove(transition);
+                }
+            }
+            return transitions;
+        }
+
+        return null;
     }
 
     public void addStateTransition(StateEntity fromState, StateEntity toState) {
@@ -517,4 +526,57 @@ public class DBService {
         session.close();
     }
 
+
+    //Other
+
+    public List<UserEntity> getUsersByProjectId(long projectId) {
+        Session session = sessionFactory.openSession();
+
+        Set<UserEntity> users = new TreeSet<>();
+
+        List<ProjectPositionEntity> projectPositions = getProjectPositionsList(projectId);
+        for(ProjectPositionEntity projectPosition : projectPositions) {
+            users.add(projectPosition.getUser());
+        }
+
+        session.close();
+
+        List<UserEntity> list = new ArrayList<>();
+        list.addAll(users);
+        return list;
+    }
+
+    public List<UserEntity> getUsersByRequestId(long requestId) {
+        Session session = sessionFactory.openSession();
+
+        Set<UserEntity> users = new TreeSet<>();
+
+        List<ProjectPositionEntity> projectPositions = getProjectPositionsByRequestID(requestId);
+        for(ProjectPositionEntity projectPosition : projectPositions) {
+            users.add(projectPosition.getUser());
+        }
+
+        session.close();
+
+        List<UserEntity> list = new ArrayList<>();
+        list.addAll(users);
+        return list;
+    }
+
+    public List<UserEntity> getUsersByTaskId(long taskId) {
+        Session session = sessionFactory.openSession();
+
+        Set<UserEntity> users = new TreeSet<>();
+
+        List<ProjectPositionEntity> projectPositions = getProjectPositionsByTaskId(taskId);
+        for(ProjectPositionEntity projectPosition : projectPositions) {
+            users.add(projectPosition.getUser());
+        }
+
+        session.close();
+
+        List<UserEntity> list = new ArrayList<>();
+        list.addAll(users);
+        return list;
+    }
 }

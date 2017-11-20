@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
-public class UserEntity implements Serializable {
+public class UserEntity implements Serializable, Comparable<UserEntity> {
     private static final long serialVersionUID = 2_11_2017L;
 
     @Id
@@ -129,6 +129,7 @@ public class UserEntity implements Serializable {
         this.middleName = patronymic;
     }
 
+
     @Override
     public String toString() {
         return "UserEntity{" +
@@ -140,5 +141,10 @@ public class UserEntity implements Serializable {
                 ", last_name='" + lastName + '\'' +
                 ", internal='" + internal + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(UserEntity o) {
+        return (firstName + lastName + login).compareTo(o.getFirstName() + o.getLastName() + o.getLogin());
     }
 }

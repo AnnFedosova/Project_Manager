@@ -56,6 +56,7 @@ public class Main {
         context.addServlet(new ServletHolder(new NewTaskServlet(dbService)), NewTaskServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new UserServlet(dbService)), UserServlet.PAGE_URL);
         context.addServlet(new ServletHolder(new AdminServlet(dbService)), AdminServlet.PAGE_URL);
+        context.addServlet(new ServletHolder(new EditTaskServlet(dbService)), EditTaskServlet.PAGE_URL);
     }
 
     private static void dbSetupData(DBService dbService) {
@@ -179,7 +180,7 @@ public class Main {
             long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", "leo","realtrump", "High", 3);
 
             //Tasks
-            dbService.addTask("Do it!", "Please", "leo", 3, request1Id);
+            dbService.addTask("Do it!", "Please", "leo", 2, request1Id);
         } catch (DBException e) {
             e.printStackTrace();
         }

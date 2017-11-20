@@ -26,6 +26,10 @@ public class TaskDAO {
         return session.get(TaskEntity.class, id);
     }
 
+    public void update(TaskEntity task) throws HibernateException {
+        session.update(task);
+    }
+
     public TaskEntity get(String title)  throws HibernateException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<TaskEntity> criteria = builder.createQuery(TaskEntity.class);

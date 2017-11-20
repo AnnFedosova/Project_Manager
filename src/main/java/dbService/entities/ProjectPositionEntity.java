@@ -8,14 +8,9 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "project_positions", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "project_id", "position_id"}))
-public class ProjectPositionEntity implements Serializable{
-    private static final long serialVersionUID = 2_11_2017L;
+public class ProjectPositionEntity implements Serializable, Comparable<ProjectPositionEntity> {
+    private static final long serialVersionUID = 20_11_2017L;
 
-//    @Id
-//    @Column(name = "id", unique = true, updatable = false)
-//    @GeneratedValue(strategy = GenerationType.AUTO, generator = "project_positions_id_generator")
-//    @SequenceGenerator(name = "project_positions_id_generator", sequenceName = "project_positions_id_seq")
-//    private long id;
 
     @Id
     @ManyToOne
@@ -33,19 +28,6 @@ public class ProjectPositionEntity implements Serializable{
     private PositionEntity position;
 
 
-//    @OneToMany(mappedBy = "creator")
-//    private Set<RequestEntity> requestCreators;
-//
-//    @OneToMany(mappedBy = "customer")
-//    private Set<RequestEntity> requestCustomers;
-//
-//    @OneToMany(mappedBy = "creator")
-//    private Set<TaskEntity> taskCreators;
-//
-//    @OneToMany(mappedBy = "executor")
-//    private Set<TaskEntity> taskExecutors;
-
-
     public ProjectPositionEntity() {
 
     }
@@ -56,13 +38,6 @@ public class ProjectPositionEntity implements Serializable{
         this.user = user;
     }
 
-//    public void setId(long id) {
-//        this.id = id;
-//    }
-//
-//    public long getId() {
-//        return id;
-//    }
 
     public PositionEntity getPosition() {
         return position;
@@ -86,6 +61,18 @@ public class ProjectPositionEntity implements Serializable{
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+
+    @Override
+    public int compareTo(ProjectPositionEntity o) {
+        int comp = Long.compare(this.project.getId(), o.getProject().getId());
+        if (comp != 0) {
+            return comp;
+        }
+        else {
+            return (user.getFirstName() + user.getLastName() + user.getLogin()).compareTo(o.getUser().getFirstName() + o.getUser().getLastName() + o.getUser().getLogin());
+        }
     }
 
     @Override
