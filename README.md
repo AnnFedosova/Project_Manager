@@ -1,3 +1,14 @@
-# Project_Manager
+# Levin Project Manager
 Simple Project Manager App
-(In developing)
+
+## Run environment requirements
+In order to run Project Manager you need to have:
+
+- JRE 8 and higher
+- PostgreSQL 9 and higher
+
+Work on younger versions of software is not guaranteed.
+
+## Contributing
+We love contributions! There's lots to do on Project Manager. So why not join the development?
+
