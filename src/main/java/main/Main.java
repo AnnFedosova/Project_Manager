@@ -2,7 +2,6 @@ package main;
 
 import dbService.DBException;
 import dbService.DBService;
-import dbService.dao.StateTransitionDAO;
 import dbService.entities.StateEntity;
 import org.eclipse.jetty.security.JDBCLoginService;
 import org.eclipse.jetty.server.Server;
@@ -78,7 +77,6 @@ public class Main {
             dbService.addPosition("Analyst");
             dbService.addPosition("System administrator");
 
-
             //RequestStates
             StateEntity statePostponed = new StateEntity("Postponed", true, false);
             StateEntity stateComplete = new StateEntity("Complete", true, false);
@@ -87,10 +85,6 @@ public class Main {
             dbService.addState(statePostponed);
             dbService.addState(stateComplete);
             dbService.addState(stateRejected);
-
-//            dbService.addState("Postponed", true, false);
-//            dbService.addState("Complete", true, false);
-//            dbService.addState("Rejected", true, false);
 
             //RequestAndTaskStates
             StateEntity stateNew = new StateEntity("New", true, true);
@@ -101,10 +95,6 @@ public class Main {
             dbService.addState(stateOnTheGo);
             dbService.addState(stateClosed);
 
-//            dbService.addState("New", true, true);
-//            dbService.addState("On the go", true, true);
-//            dbService.addState("Closed", true, true);
-
             //TaskStates
             StateEntity stateAssigned = new StateEntity("Assigned", false, true);
             StateEntity stateWaitingForTesting = new StateEntity("Complete, waiting for testing", false, true);
@@ -113,11 +103,6 @@ public class Main {
             dbService.addState(stateAssigned);
             dbService.addState(stateWaitingForTesting);
             dbService.addState(stateInTesting);
-
-//            dbService.addState("Assigned", false, true);
-//            dbService.addState("Completed, waiting for testing", false, true);
-//            dbService.addState("In testing", false, true);
-
 
             //StateTransitions
             dbService.addStateTransition(stateNew, stateOnTheGo);
@@ -139,7 +124,6 @@ public class Main {
             dbService.addStateTransition(stateWaitingForTesting, stateInTesting);
             dbService.addStateTransition(stateInTesting, stateAssigned);
             dbService.addStateTransition(stateInTesting, stateClosed);
-
 
             //Priorities
             dbService.addPriority("High");

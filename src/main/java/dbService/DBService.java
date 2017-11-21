@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import org.eclipse.jetty.util.security.Password;
 
 /**
  * @author Evgeny Levin
@@ -131,7 +132,8 @@ public class DBService {
             RoleDAO roleDAO = new RoleDAO(session);
             UserRoleDAO userRoleDAO = new UserRoleDAO(session);
 
-            UserEntity user = new UserEntity(login, password, internal, firstName, lastName, middleName);
+
+            UserEntity user = new UserEntity(login, Password.obfuscate(password), internal, firstName, lastName, middleName);
 
             long userId = userDAO.addUser(user);
             RoleEntity role = roleDAO.get(roleName);

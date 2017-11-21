@@ -2,13 +2,17 @@ package servlets;
 
 import dbService.DBException;
 import dbService.DBService;
+import dbService.entities.UserEntity;
 import templater.PageGenerator;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Evgeny Levin
@@ -22,9 +26,10 @@ public class SignUpServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String, Object> pageVariables = createPageVariablesMap(request);
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("html/signup/signup.html", null));
+        response.getWriter().println(PageGenerator.instance().getPage("html/signup/signup.html", pageVariables));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,7 +40,9 @@ public class SignUpServlet extends HttpServlet {
         String middleName = request.getParameter("middle_name");
         String internal = request.getParameter("internal");
 
-        if (login == null || password == null || firstName == null || lastName == null || internal == null) {
+
+
+        if (login == null || password == null || firstName == null || lastName == null) {
             response.setContentType("text/html;charset=utf-8");
             response.getWriter().println("Not registered");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -56,5 +63,13 @@ public class SignUpServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         response.getWriter().println("Registered");
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request) {
+        Map<String, Object> pageVariables = new HashMap<>();
+        Principal user = request.getUserPrincipal();
+
+        pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
+        return pageVariables;
     }
 }
