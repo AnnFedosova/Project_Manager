@@ -40,7 +40,7 @@ public class DBService {
 
     private Configuration getConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.configure("cfg/hibernate.cfg.xml");
+        configuration.configure("cfg/hibernate-Azure.cfg.xml");
         addTables(configuration);
         return configuration;
     }
@@ -71,6 +71,22 @@ public class DBService {
                 e.printStackTrace();
             }
         });
+    }
+
+    public String getConnectInfo() {
+        SessionFactoryImpl sessionFactoryImpl = (SessionFactoryImpl) sessionFactory;
+        StringBuffer info = new StringBuffer();
+        sessionFactoryImpl.openSession().doWork(connection -> {
+            try {
+                info.append("DB name: ").append(connection.getMetaData().getDatabaseProductName()).append('\n');
+                info.append("DB version: ").append(connection.getMetaData().getDatabaseProductVersion()).append('\n');
+                info.append("Driver: ").append(connection.getMetaData().getDriverName()).append('\n');
+                info.append("Autocommit: ").append(connection.getAutoCommit()).append('\n');
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+        return info.toString();
     }
 
     private static SessionFactory createSessionFactory(Configuration configuration) {

@@ -143,26 +143,4 @@ public class SignUpServletTest {
         assertEquals(response.getStatus(), HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    @Test
-    public void doPostEmptyInternal() throws Exception {
-        DBService dbService = mock(DBService.class);
-
-        String login = "login";
-        String password = "password";
-        String firstName = "first_name";
-        String lastName = "testLastName";
-        String middleName = "testMiddleName";
-        String internal = null;
-
-        HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
-        new SignUpServlet(dbService).doPost(request, response);
-
-        verify(request, times(1)).getParameter("internal");
-        verify(dbService, times(0)).addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);
-
-        assertEquals(response.getStatus(), HttpServletResponse.SC_BAD_REQUEST);
-    }
-
 }

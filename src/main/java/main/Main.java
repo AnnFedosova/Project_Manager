@@ -13,31 +13,46 @@ import servlets.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Map;
+
 /**
  * @author Evgeny Levin
  */
 public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class.getName());
+    private static String DBType = "AZURE";
 
     public static void main(String[] args) throws Exception {
         DBService dbService = new DBService();
-        dbService.printConnectInfo();
+        logger.info("DB info: " + '\n' + dbService.getConnectInfo());
 
         dbSetupData(dbService);
+        logger.info("Data loaded");
         fillDB(dbService);
+        logger.info("DB filled");
 
-        Server server = new Server(8080);
+
+        int port;
+        if (DBType.equals("AZURE")) {
+            port = Integer.parseInt(System.getenv("HTTP_PLATFORM_PORT"));
+        }
+        else {
+            port = 8080;
+        }
+        Server server = new Server(port);
 
         WebAppContext context = new WebAppContext();
         context.setResourceBase("src/main/resources/");
 
-        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/cfg/jdbcrealm.properties");
+        JDBCLoginService loginService = new JDBCLoginService("JCGRealm", "src/main/resources/cfg/jdbcrealm-Azure.properties");
 
         addServlets(dbService, context);
+        logger.info("Servlets added");
 
         server.addBean(loginService);
         server.setHandler(context);
         server.start();
+        logger.info("Server started at port " + port);
         server.join();
     }
 
