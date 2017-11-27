@@ -3,6 +3,7 @@ package webapp.servlets;
 import server.dbService.DBService;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,15 +12,15 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+@WebServlet(name = "Admin", urlPatterns = "/admin")
 public class AdminServlet extends HttpServlet {
-    public static final String PAGE_URL = "/admin";
-    DBService dbService;
+    DBService dbService = DBService.getInstance();
 
-    public AdminServlet(DBService dbService) {
-        this.dbService = dbService;
+    public AdminServlet() {
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> pageVariables = createPageVariablesMap(request);
 
         response.setContentType("text/html;charset=utf-8");

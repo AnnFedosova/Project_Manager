@@ -5,6 +5,7 @@ import server.dbService.DBService;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,15 +17,15 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
+@WebServlet(name = "NewProject", urlPatterns = "/projects/new")
 public class NewProjectServlet  extends HttpServlet {
-    public static final String PAGE_URL = "/projects/new";
-    private DBService dbService;
+    private DBService dbService = DBService.getInstance();
 
-    public NewProjectServlet(DBService dbService) {
-        this.dbService = dbService;
+    public NewProjectServlet() {
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> pageVariables = createPageVariablesMap(request);
 
         response.setContentType("text/html;charset=utf-8");
@@ -32,7 +33,8 @@ public class NewProjectServlet  extends HttpServlet {
         response.getWriter().println(PageGenerator.instance().getPage("projects/new/new_project.html", pageVariables));
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
 

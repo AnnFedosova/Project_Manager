@@ -44,7 +44,7 @@ public class NewProjectServletTest {
         when(user.getName()).thenReturn(userName);
         when(dbService.addProject(projectTitle, projectDescription, userName)).thenReturn(0L);
 
-        new NewProjectServlet(dbService).doPost(request, response);
+        new NewProjectServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("title");
         verify(request, times(1)).getParameter("description");
@@ -67,7 +67,7 @@ public class NewProjectServletTest {
         when(request.getUserPrincipal()).thenReturn(user);
         when(user.getName()).thenReturn(userName);
 
-        new NewProjectServlet(dbService).doPost(request, response);
+        new NewProjectServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("title");
         verify(dbService, times(0)).addProject(projectTitle, projectDescription, userName);
@@ -88,7 +88,7 @@ public class NewProjectServletTest {
         when(request.getUserPrincipal()).thenReturn(user);
         when(user.getName()).thenReturn(userName);
 
-        new NewProjectServlet(dbService).doPost(request, response);
+        new NewProjectServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("description");
         verify(dbService, times(0)).addProject(projectTitle, projectDescription, userName);

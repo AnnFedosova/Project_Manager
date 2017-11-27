@@ -42,7 +42,7 @@ public class SignUpServletTest {
         HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        new SignUpServlet(dbService).doPost(request, response);
+        new SignUpServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("login");
         verify(request, times(1)).getParameter("password");
@@ -69,7 +69,7 @@ public class SignUpServletTest {
         HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        new SignUpServlet(dbService).doPost(request, response);
+        new SignUpServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("login");
         verify(dbService, times(0)).addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);
@@ -91,7 +91,7 @@ public class SignUpServletTest {
         HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        new SignUpServlet(dbService).doPost(request, response);
+        new SignUpServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("password");
         verify(dbService, times(0)).addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);
@@ -113,7 +113,7 @@ public class SignUpServletTest {
         HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        new SignUpServlet(dbService).doPost(request, response);
+        new SignUpServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("first_name");
         verify(dbService, times(0)).addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);
@@ -135,7 +135,7 @@ public class SignUpServletTest {
         HttpServletRequest request = getMockedRequest(login, password, firstName, lastName, middleName, internal);
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        new SignUpServlet(dbService).doPost(request, response);
+        new SignUpServlet().doPost(request, response);
 
         verify(request, times(1)).getParameter("last_name");
         verify(dbService, times(0)).addUser(login, password, Boolean.parseBoolean(internal), firstName, lastName, middleName);

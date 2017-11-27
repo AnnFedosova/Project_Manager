@@ -5,6 +5,7 @@ import server.dbService.entities.TaskEntity;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,15 +17,16 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
+@WebServlet(name = "Task", urlPatterns = "/task")
 public class TaskServlet extends HttpServlet {
-    public static final String PAGE_URL = "/task";
-    private DBService dbService;
+    private DBService dbService = DBService.getInstance();
 
-    public TaskServlet(DBService dbService) {
-        this.dbService = dbService;
+    public TaskServlet() {
+
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
         Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));

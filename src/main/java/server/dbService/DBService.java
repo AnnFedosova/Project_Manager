@@ -20,12 +20,28 @@ import org.eclipse.jetty.util.security.Password;
 /**
  * @author Evgeny Levin
  */
+
+//TODO: Make DBService abstract
+
+
 public class DBService {
+    public static volatile DBService instance;
     private final SessionFactory sessionFactory;
 
-    public DBService() {
+    private DBService() {
         Configuration configuration = getConfiguration();
         sessionFactory = createSessionFactory(configuration);
+    }
+
+    public static DBService getInstance() {
+        if (instance == null) {
+            synchronized (DBService.class) {
+                if (instance == null)
+                    instance = new DBService();
+            }
+        }
+        return instance;
+
     }
 
     public DBService(SessionFactory sessionFactory) {
@@ -171,7 +187,7 @@ public class DBService {
 
 
     //Projects
-    public List getProjectsList() {
+    public List<ProjectEntity>  getProjectsList() {
         Session session = sessionFactory.openSession();
         ProjectDAO projectDAO = new ProjectDAO(session);
         List projects = projectDAO.selectAll();
@@ -229,7 +245,6 @@ public class DBService {
         return request;
     }
 
-    //TODO добавить проверку при создании request'а
     public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, long projectId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
@@ -261,7 +276,6 @@ public class DBService {
     }
 
 
-    //TODO добавить проверку при создании request'а
     public long addRequest(String title, String description, String creatorLogin, long customerId, long priorityId, long projectId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
@@ -356,7 +370,6 @@ public class DBService {
         return list;
     }
 
-    //TODO добавить проверку при создании task'а
     public long addTask(String title, String description, String creatorLogin, long executorId, long requestId) throws DBException {
         try {
             Session session = sessionFactory.openSession();

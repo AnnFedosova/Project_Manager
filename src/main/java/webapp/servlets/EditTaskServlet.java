@@ -7,6 +7,7 @@ import server.dbService.entities.UserEntity;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,15 +20,16 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
-public class EditTaskServlet extends HttpServlet {
-    public static final String PAGE_URL = "/task/edit";
-    private DBService dbService;
 
-    public EditTaskServlet(DBService dbService) {
-        this.dbService = dbService;
+@WebServlet(name = "EditTask", urlPatterns = "/task/edit")
+public class EditTaskServlet extends HttpServlet {
+    private DBService dbService = DBService.getInstance();
+
+    public EditTaskServlet() {
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         Map<String, Object> pageVariables = createPageVariablesMap(request, Long.valueOf(id));
 
@@ -36,7 +38,7 @@ public class EditTaskServlet extends HttpServlet {
         response.getWriter().println(PageGenerator.instance().getPage("task/edit/edit_task.html", pageVariables));
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String executorId = request.getParameter("executors");

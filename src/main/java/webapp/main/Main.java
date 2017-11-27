@@ -1,5 +1,7 @@
 package webapp.main;
 
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.webapp.*;
 import server.dbService.DBException;
 import server.dbService.DBService;
 import server.dbService.DBType;
@@ -8,13 +10,16 @@ import org.eclipse.jetty.security.JDBCLoginService;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.annotations.AnnotationConfiguration;
+import org.eclipse.jetty.plus.webapp.EnvConfiguration;
+import org.eclipse.jetty.plus.webapp.PlusConfiguration;
 import webapp.servlets.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Paths;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Evgeny Levin
@@ -24,7 +29,7 @@ public class Main {
     private static DBType dbType = DBType.POSTGRESQL_LOCALHOST;
 
     public static void main(String[] args) throws Exception {
-        DBService dbService = new DBService();
+        DBService dbService = DBService.getInstance();
         logger.info("DB info: " + '\n' + dbService.getConnectInfo());
 
         dbSetupData(dbService);
@@ -47,17 +52,33 @@ public class Main {
         context.setResourceBase(Main.class.getClassLoader().getResource("css").toString().replace("css", ""));
         logger.info("Resource base setted for WebAppContext");
 
+        context.setConfigurations(new Configuration[]
+                {
+                        new AnnotationConfiguration(),
+                        new WebInfConfiguration(),
+                        new WebXmlConfiguration(),
+                        new MetaInfConfiguration(),
+                        new FragmentConfiguration(),
+                        new EnvConfiguration(),
+                        new PlusConfiguration(),
+                        new JettyWebXmlConfiguration()
+                });
+
+        URL classes = Main.class.getProtectionDomain().getCodeSource().getLocation();
+        context.getMetaData().setWebInfClassesDirs(Collections.singletonList(Resource.newResource(classes)));
+
+
+        context.setParentLoaderPriority(true);
+        context.setContextPath("/");
+
         JDBCLoginService loginService;
         if (dbType == DBType.AZURE) {
             loginService = new JDBCLoginService("JCGRealm", Main.class.getClassLoader().getResource("jdbcrealm-Azure.properties").toString());
         }
         else {
             loginService = new JDBCLoginService("JCGRealm", Main.class.getClassLoader().getResource("jdbcrealm.properties").toString());
-            //loginService = new JDBCLoginService("JCGRealm", Main.class.getClassLoader().getResource("jdbcrealm.properties").toString());
         }
 
-        addServlets(dbService, context);
-        logger.info("Servlets added");
 
         server.addBean(loginService);
         server.setHandler(context);
@@ -66,22 +87,6 @@ public class Main {
         server.join();
     }
 
-
-    private static void addServlets(DBService dbService, ServletContextHandler context) {
-        context.addServlet(new ServletHolder(new LoginServlet()), LoginServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new LogoutServlet()), LogoutServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new SignUpServlet(dbService)), SignUpServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new ProjectsServlet(dbService)), ProjectsServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new ProjectServlet(dbService)), ProjectServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new NewProjectServlet(dbService)), NewProjectServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new NewRequestServlet(dbService)), NewRequestServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new RequestServlet(dbService)), RequestServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new TaskServlet(dbService)), TaskServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new NewTaskServlet(dbService)), NewTaskServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new UserServlet(dbService)), UserServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new AdminServlet(dbService)), AdminServlet.PAGE_URL);
-        context.addServlet(new ServletHolder(new EditTaskServlet(dbService)), EditTaskServlet.PAGE_URL);
-    }
 
     private static void dbSetupData(DBService dbService) {
         try {

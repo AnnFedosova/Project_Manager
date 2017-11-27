@@ -6,6 +6,7 @@ import server.dbService.entities.RequestEntity;
 import server.dbService.entities.TaskEntity;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,15 +19,15 @@ import java.util.Map;
 /**
  * @author Evgeny Levin
  */
+@WebServlet(name = "Request", urlPatterns = "/request")
 public class RequestServlet extends HttpServlet {
-    public static final String PAGE_URL = "/request";
-    private DBService dbService;
+    private DBService dbService = DBService.getInstance();
 
-    public RequestServlet(DBService dbService) {
-        this.dbService = dbService;
+    public RequestServlet() {
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
 
         Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));
