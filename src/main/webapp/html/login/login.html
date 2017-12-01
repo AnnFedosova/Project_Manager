@@ -23,7 +23,7 @@
                     <h2 class='text-center'>Log in</h2>
                 </div>
 
-                <form id="login-form" action="/j_security_check">
+                <form id="login-form" action="/j_security_check" method="post">
                     <div class='form-group'>
                         <div class='input-group input-group-lg'>
                             <span class='input-group-addon'><i class="fa fa-user"></i></span>
@@ -37,9 +37,6 @@
                         </div>
                     </div>
                     <div class='form-actions'>
-                        <!--<div class='pull-right'>-->
-                            <!--<div><a class="text-muted" href="/signup">Create an account</a></div>-->
-                        <!--</div>-->
                         <button value="Login" name="button" type="submit" class="btn btn-primary btn-lg"><i class="fa fa-sign-in"></i>
                             Log in
                         </button>

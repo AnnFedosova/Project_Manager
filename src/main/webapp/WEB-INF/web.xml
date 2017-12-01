@@ -5,47 +5,15 @@
         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         version="3.0">
 
-    <display-name>Jetty Authentication Configuration Example</display-name>
+    <display-name>ProjectManager</display-name>
 
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>JCGRealm</realm-name>
+        <realm-name>ProjectManagerSec</realm-name>
         <form-login-config>
             <form-login-page>/html/login/redirToLogin.html</form-login-page>
             <form-error-page>/html/login/redirToLogin.html</form-error-page>
         </form-login-config>
     </login-config>
 
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Secure resources</web-resource-name>
-            <url-pattern>/cfg/*</url-pattern>
-            <url-pattern>/signup/*</url-pattern>
-            <url-pattern>/projects/*</url-pattern>
-            <url-pattern>/project/*</url-pattern>
-            <url-pattern>/request/*</url-pattern>
-            <url-pattern>/task/*</url-pattern>
-            <url-pattern>/user/*</url-pattern>
-            <url-pattern>/signup/*</url-pattern>
-            <url-pattern>/admin/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
-
-    <security-constraint>
-    <web-resource-collection>
-        <web-resource-name>Secure resources</web-resource-name>
-        <url-pattern>/projects/*</url-pattern>
-        <url-pattern>/project/*</url-pattern>
-        <url-pattern>/request/*</url-pattern>
-        <url-pattern>/task/*</url-pattern>
-        <url-pattern>/user/*</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-        <role-name>user</role-name>
-    </auth-constraint>
-    </security-constraint>
 </web-app>

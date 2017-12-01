@@ -1,5 +1,6 @@
 package webapp.servlets;
 
+import server.dbService.DBService;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,6 @@ import java.io.IOException;
  */
 @WebServlet(name = "Login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
-
     public LoginServlet() {}
 
     @Override

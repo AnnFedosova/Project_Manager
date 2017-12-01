@@ -4,6 +4,8 @@ import server.dbService.DBException;
 import server.dbService.DBService;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.util.Map;
  * @author Evgeny Levin
  */
 @WebServlet(name = "SignUp", urlPatterns = "/signup")
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"admin"}))
 public class SignUpServlet extends HttpServlet {
     private DBService dbService = DBService.getInstance();
 

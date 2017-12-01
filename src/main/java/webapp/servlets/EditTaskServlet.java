@@ -7,6 +7,8 @@ import server.dbService.entities.UserEntity;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 
 @WebServlet(name = "EditTask", urlPatterns = "/task/edit")
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"admin", "user"}))
 public class EditTaskServlet extends HttpServlet {
     private DBService dbService = DBService.getInstance();
 

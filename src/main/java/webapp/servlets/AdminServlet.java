@@ -3,6 +3,8 @@ package webapp.servlets;
 import server.dbService.DBService;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(name = "Admin", urlPatterns = "/admin")
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"admin"}))
 public class AdminServlet extends HttpServlet {
     DBService dbService = DBService.getInstance();
 
