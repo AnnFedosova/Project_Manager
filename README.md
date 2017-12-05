@@ -16,7 +16,7 @@ It is also possible to work with Microsoft Azure.
 ### 1. Datasource configuration
 You can edit datasource settings in src/main/resources/hibernate.cfg.xml file.
 
-### 2. Wildfly configuration
+### 2. WildFly configuration
 1. Install JDBC driver to Wildfly.
 2. Add datasource to WildFly.
 3. Add "ProjectManagerSec" security-domain to standalone.xml:

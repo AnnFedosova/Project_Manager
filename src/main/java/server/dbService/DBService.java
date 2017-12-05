@@ -39,8 +39,8 @@ public class DBService {
             synchronized (DBService.class) {
                 if (instance == null) {
                     instance = new DBService();
-                    dbSetupData(instance);
-                    fillDB(instance);
+                    //dbSetupData(instance);
+                    //fillDB(instance);
                 }
             }
         }
@@ -167,7 +167,6 @@ public class DBService {
             UserRoleDAO userRoleDAO = new UserRoleDAO(session);
 
 
-            //UserEntity user = new UserEntity(login, "MD5:" + DigestUtils.md5Hex(password), internal, firstName, lastName, middleName);
             UserEntity user = new UserEntity(login, CryptoUtil.createPasswordHash("MD5", CryptoUtil.BASE64_ENCODING, null, null, password), internal, firstName, lastName, middleName);
 
             long userId = userDAO.addUser(user);
@@ -575,8 +574,7 @@ public class DBService {
 
         session.close();
 
-        List<UserEntity> list = new ArrayList<>(users);
-        return list;
+        return new ArrayList<>(users);
     }
 
     public List<UserEntity> getUsersByRequestId(long requestId) {
@@ -591,8 +589,7 @@ public class DBService {
 
         session.close();
 
-        List<UserEntity> list = new ArrayList<>(users);
-        return list;
+        return new ArrayList<>(users);
     }
 
     public List<UserEntity> getUsersByTaskId(long taskId) {
@@ -607,8 +604,7 @@ public class DBService {
 
         session.close();
 
-        List<UserEntity> list = new ArrayList<>(users);
-        return list;
+        return new ArrayList<>(users);
     }
 
     private static void dbSetupData(DBService dbService) {
