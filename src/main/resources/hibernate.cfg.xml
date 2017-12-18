@@ -6,7 +6,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="show_sql">false</property>
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">create</property>
         <property name="format_sql">true</property>
 
 
@@ -28,7 +28,8 @@
 
         <!--Mapping-->
         <mapping class="server.dbService.entities.RequestEntity"/>
-        <mapping class="server.dbService.entities.StateEntity"/>
+        <mapping class="server.dbService.entities.RequestStateEntity"/>
+        <mapping class="server.dbService.entities.TaskStateEntity"/>
         <mapping class="server.dbService.entities.ProjectEntity"/>
         <mapping class="server.dbService.entities.UserEntity"/>
         <mapping class="server.dbService.entities.PositionEntity"/>
@@ -38,6 +39,7 @@
         <mapping class="server.dbService.entities.UserRoleEntity"/>
         <mapping class="server.dbService.entities.RoleEntity"/>
         <mapping class="server.dbService.entities.TaskEntity"/>
-        <mapping class="server.dbService.entities.StateTransitionEntity"/>
+        <mapping class="server.dbService.entities.RequestStateTransitionEntity"/>
+        <mapping class="server.dbService.entities.TaskStateTransitionEntity"/>
     </session-factory>
 </hibernate-configuration>

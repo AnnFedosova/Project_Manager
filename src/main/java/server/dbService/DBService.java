@@ -39,8 +39,8 @@ public class DBService {
             synchronized (DBService.class) {
                 if (instance == null) {
                     instance = new DBService();
-                    //dbSetupData(instance);
-                    //fillDB(instance);
+                    dbSetupData(instance);
+                    fillDB(instance);
                 }
             }
         }
@@ -69,12 +69,14 @@ public class DBService {
         configuration.addAnnotatedClass(UserRoleEntity.class);
         configuration.addAnnotatedClass(ProjectEntity.class);
         configuration.addAnnotatedClass(PositionEntity.class);
-        configuration.addAnnotatedClass(StateEntity.class);
+        configuration.addAnnotatedClass(RequestStateEntity.class);
+        configuration.addAnnotatedClass(TaskStateEntity.class);
         configuration.addAnnotatedClass(RequestEntity.class);
         configuration.addAnnotatedClass(PriorityEntity.class);
         configuration.addAnnotatedClass(ProjectPositionEntity.class);
         configuration.addAnnotatedClass(TaskEntity.class);
-        configuration.addAnnotatedClass(StateTransitionEntity.class);
+        configuration.addAnnotatedClass(RequestStateTransitionEntity.class);
+        configuration.addAnnotatedClass(TaskStateTransitionEntity.class);
     }
 
     public void printConnectInfo() {
@@ -199,19 +201,19 @@ public class DBService {
         return projects;
     }
 
-    public long addProject(String title, String description, String creatorLogin) throws DBException {
+    public long addProject(String title, String description, long creatorId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
 
             ProjectDAO projectDAO = new ProjectDAO(session);
-            UserEntity creator = new UserDAO(session).get(creatorLogin);
+            UserEntity creator = new UserDAO(session).get(creatorId);
             long projectId = projectDAO.addProject(title, description, creator);
 
             transaction.commit();
 
             transaction = session.beginTransaction();
-            addProjectPosition(projectId, "Receptionist", creatorLogin);
+            addProjectPosition(projectId, "Receptionist", creator.getLogin());
             transaction.commit();
             session.close();
             return projectId;
@@ -249,7 +251,7 @@ public class DBService {
         return request;
     }
 
-    public long addRequest(String title, String description, String creatorLogin, String customerLogin, String priorityName, long projectId) throws DBException {
+    public long addRequest(String title, String description, long creatorId, long customerId, long priorityid, long projectId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
@@ -257,15 +259,15 @@ public class DBService {
             RequestDAO requestDAO = new RequestDAO(session);
             UserDAO userDAO = new UserDAO(session);
             PriorityDAO priorityDAO = new PriorityDAO(session);
-            StateDAO stateDAO = new StateDAO(session);
+            RequestStateDAO stateDAO = new RequestStateDAO(session);
             ProjectDAO projectDAO = new ProjectDAO(session);
 
             ProjectEntity project = projectDAO.get(projectId);
-            UserEntity creator = userDAO.get(creatorLogin);
-            UserEntity customer = userDAO.get(customerLogin);
+            UserEntity creator = userDAO.get(creatorId);
+            UserEntity customer = userDAO.get(customerId);
 
-            StateEntity state = stateDAO.get("New");
-            PriorityEntity priority = priorityDAO.get(priorityName);
+            RequestStateEntity state = stateDAO.get("New");
+            PriorityEntity priority = priorityDAO.get(priorityid);
 
             RequestEntity request = new RequestEntity(project, title, description, creator, customer, state, priority);
             long requestId = requestDAO.addRequest(request);
@@ -288,14 +290,14 @@ public class DBService {
             RequestDAO requestDAO = new RequestDAO(session);
             UserDAO userDAO = new UserDAO(session);
             PriorityDAO priorityDAO = new PriorityDAO(session);
-            StateDAO stateDAO = new StateDAO(session);
+            RequestStateDAO stateDAO = new RequestStateDAO(session);
             ProjectDAO projectDAO = new ProjectDAO(session);
 
             ProjectEntity project = projectDAO.get(projectId);
             UserEntity creator = userDAO.get(creatorLogin);
             UserEntity customer = userDAO.get(customerId);
 
-            StateEntity state = stateDAO.get("New");
+            RequestStateEntity state = stateDAO.get("New");
             PriorityEntity priority = priorityDAO.get(priorityId);
 
             RequestEntity request = new RequestEntity(project, title, description, creator, customer, state, priority);
@@ -326,26 +328,55 @@ public class DBService {
     }
 
 
-    //States
+    //RequestStates
 
-    public long addState(String stateName, boolean requestAccord, boolean tasksAccord) {
+    public long addRequestState(String stateTitle) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        StateDAO stateDAO = new StateDAO(session);
+        RequestStateDAO stateDAO = new RequestStateDAO(session);
 
-        long id = stateDAO.addState(stateName, requestAccord, tasksAccord);
+        long id = stateDAO.addState(stateTitle);
 
         transaction.commit();
         session.close();
         return id;
     }
 
-    public long addState(StateEntity state) {
+    public long addRequestState(RequestStateEntity state) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        StateDAO stateDAO = new StateDAO(session);
+        RequestStateDAO stateDAO = new RequestStateDAO(session);
+
+        long id = stateDAO.addState(state);
+
+        transaction.commit();
+        session.close();
+        return id;
+    }
+
+
+    //TaskStates
+
+    public long addTaskState(String stateTitle) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        TaskStateDAO stateDAO = new TaskStateDAO(session);
+
+        long id = stateDAO.addState(stateTitle);
+
+        transaction.commit();
+        session.close();
+        return id;
+    }
+
+    public long addTaskState(TaskStateEntity state) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        TaskStateDAO stateDAO = new TaskStateDAO(session);
 
         long id = stateDAO.addState(state);
 
@@ -374,7 +405,7 @@ public class DBService {
         return list;
     }
 
-    public long addTask(String title, String description, String creatorLogin, long executorId, long requestId) throws DBException {
+    public long addTask(String title, String description, long creatorId, long executorId, long requestId) throws DBException {
         try {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
@@ -382,14 +413,14 @@ public class DBService {
             RequestDAO requestDAO = new RequestDAO(session);
             UserDAO userDAO = new UserDAO(session);
             PriorityDAO priorityDAO = new PriorityDAO(session);
-            StateDAO stateDAO = new StateDAO(session);
+            TaskStateDAO stateDAO = new TaskStateDAO(session);
             TaskDAO taskDAO = new TaskDAO(session);
 
             RequestEntity request = requestDAO.get(requestId);
-            UserEntity creator = userDAO.get(creatorLogin);
+            UserEntity creator = userDAO.get(creatorId);
             UserEntity executor = userDAO.get(executorId);
 
-            StateEntity state = stateDAO.get("New");
+            TaskStateEntity state = stateDAO.get("New");
 
             TaskEntity taskEntity = new TaskEntity(title, description, request, creator, executor, state);
             long taskId = taskDAO.addTask(taskEntity);
@@ -509,51 +540,66 @@ public class DBService {
     }
 
 
-    //StateTransitions
+    //RequestStateTransitions
 
-    public List<StateTransitionEntity> getStateTransitions(StateEntity fromState, RequestOrTask requestOrTask) {
+    public List<RequestStateTransitionEntity> getRequestStateTransitions(RequestStateEntity fromState) {
         Session session = sessionFactory.openSession();
-        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
-        List<StateTransitionEntity> transitions = stateTransitionDAO.getStateTransitionsList(fromState);
+        RequestStateTransitionDAO stateTransitionDAO = new RequestStateTransitionDAO(session);
+        List<RequestStateTransitionEntity> transitions = stateTransitionDAO.getStateTransitionsList(fromState);
         session.close();
 
-        if (requestOrTask == RequestOrTask.REQUEST) {
-            for (StateTransitionEntity transition : transitions) {
-                if (!transition.getFromState().getRequestsAccord()) {
-                    transitions.remove(transition);
-                }
-            }
-            return transitions;
-        }
-
-        if (requestOrTask == RequestOrTask.TASK) {
-            for (StateTransitionEntity transition : transitions) {
-                if (!transition.getFromState().getTasksAccord()) {
-                    transitions.remove(transition);
-                }
-            }
-            return transitions;
-        }
-
-        return null;
+        return transitions;
     }
 
-    public void addStateTransition(StateEntity fromState, StateEntity toState) {
+    public void addRequestStateTransition(RequestStateEntity fromState, RequestStateEntity toState) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
+        RequestStateTransitionDAO stateTransitionDAO = new RequestStateTransitionDAO(session);
         stateTransitionDAO.add(fromState, toState);
         transaction.commit();
         session.close();
     }
 
-    public void addStateTransition(String fromState, String toState) {
+    public void addRequestStateTransition(String fromState, String toState) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        StateDAO stateDAO = new StateDAO(session);
-        StateTransitionDAO stateTransitionDAO = new StateTransitionDAO(session);
-        StateEntity state1 = stateDAO.get(fromState);
-        StateEntity state2 = stateDAO.get(toState);
+        RequestStateDAO stateDAO = new RequestStateDAO(session);
+        RequestStateTransitionDAO stateTransitionDAO = new RequestStateTransitionDAO(session);
+        RequestStateEntity state1 = stateDAO.get(fromState);
+        RequestStateEntity state2 = stateDAO.get(toState);
+        stateTransitionDAO.add(state1, state2);
+        transaction.commit();
+        session.close();
+    }
+
+
+    //TaskStateTransitions
+
+    public List<TaskStateTransitionEntity> getTaskStateTransitions(TaskStateEntity fromState) {
+        Session session = sessionFactory.openSession();
+        TaskStateTransitionDAO stateTransitionDAO = new TaskStateTransitionDAO(session);
+        List<TaskStateTransitionEntity> transitions = stateTransitionDAO.getStateTransitionsList(fromState);
+        session.close();
+
+        return transitions;
+    }
+
+    public void addTaskStateTransition(TaskStateEntity fromState, TaskStateEntity toState) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        TaskStateTransitionDAO stateTransitionDAO = new TaskStateTransitionDAO(session);
+        stateTransitionDAO.add(fromState, toState);
+        transaction.commit();
+        session.close();
+    }
+
+    public void addTaskStateTransition(String fromState, String toState) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        TaskStateDAO stateDAO = new TaskStateDAO(session);
+        TaskStateTransitionDAO stateTransitionDAO = new TaskStateTransitionDAO(session);
+        TaskStateEntity state1 = stateDAO.get(fromState);
+        TaskStateEntity state2 = stateDAO.get(toState);
         stateTransitionDAO.add(state1, state2);
         transaction.commit();
         session.close();
@@ -622,57 +668,61 @@ public class DBService {
             dbService.addPosition("Quality assurance");
             dbService.addPosition("Developer");
             dbService.addPosition("Team leader");
-            dbService.addPosition("System architect");
+//            dbService.addPosition("System architect");
             dbService.addPosition("Analyst");
             dbService.addPosition("System administrator");
 
             //RequestStates
-            StateEntity statePostponed = new StateEntity("Postponed", true, false);
-            StateEntity stateComplete = new StateEntity("Complete", true, false);
-            StateEntity stateRejected = new StateEntity("Rejected", true, false);
+            RequestStateEntity requestStatePostponed = new RequestStateEntity("Postponed");
+            RequestStateEntity requestStateComplete = new RequestStateEntity("Complete");
+            RequestStateEntity requestStateRejected = new RequestStateEntity("Rejected");
+            RequestStateEntity requestStateNew = new RequestStateEntity("New");
+            RequestStateEntity requestStateOnTheGo = new RequestStateEntity("On the go");
+            RequestStateEntity requestStateClosed = new RequestStateEntity("Closed");
 
-            dbService.addState(statePostponed);
-            dbService.addState(stateComplete);
-            dbService.addState(stateRejected);
-
-            //RequestAndTaskStates
-            StateEntity stateNew = new StateEntity("New", true, true);
-            StateEntity stateOnTheGo = new StateEntity("On the go", true, true);
-            StateEntity stateClosed = new StateEntity("Closed", true, true);
-
-            dbService.addState(stateNew);
-            dbService.addState(stateOnTheGo);
-            dbService.addState(stateClosed);
+            dbService.addRequestState(requestStateNew);
+            dbService.addRequestState(requestStateOnTheGo);
+            dbService.addRequestState(requestStateClosed);
+            dbService.addRequestState(requestStatePostponed);
+            dbService.addRequestState(requestStateComplete);
+            dbService.addRequestState(requestStateRejected);
 
             //TaskStates
-            StateEntity stateAssigned = new StateEntity("Assigned", false, true);
-            StateEntity stateWaitingForTesting = new StateEntity("Complete, waiting for testing", false, true);
-            StateEntity stateInTesting = new StateEntity("In testing", false, true);
+            TaskStateEntity taskStateAssigned = new TaskStateEntity("Assigned");
+            TaskStateEntity taskStateWaitingForTesting = new TaskStateEntity("Complete, waiting for testing");
+            TaskStateEntity taskStateInTesting = new TaskStateEntity("In testing");
+            TaskStateEntity taskStateNew = new TaskStateEntity("New");
+            TaskStateEntity taskStateOnTheGo = new TaskStateEntity("On the go");
+            TaskStateEntity taskStateClosed = new TaskStateEntity("Closed");
 
-            dbService.addState(stateAssigned);
-            dbService.addState(stateWaitingForTesting);
-            dbService.addState(stateInTesting);
+            dbService.addTaskState(taskStateNew);
+            dbService.addTaskState(taskStateOnTheGo);
+            dbService.addTaskState(taskStateClosed);
+            dbService.addTaskState(taskStateAssigned);
+            dbService.addTaskState(taskStateWaitingForTesting);
+            dbService.addTaskState(taskStateInTesting);
 
-            //StateTransitions
-            dbService.addStateTransition(stateNew, stateOnTheGo);
-            dbService.addStateTransition(stateNew, stateRejected);
-            dbService.addStateTransition(stateNew, statePostponed);
-            dbService.addStateTransition(statePostponed, stateNew);
-            dbService.addStateTransition(stateOnTheGo, statePostponed);
-            dbService.addStateTransition(stateOnTheGo, stateComplete);
-            dbService.addStateTransition(stateComplete, stateOnTheGo);
-            dbService.addStateTransition(statePostponed, stateOnTheGo);
-            dbService.addStateTransition(stateComplete, stateClosed);
-            dbService.addStateTransition(stateComplete, statePostponed);
-            dbService.addStateTransition(statePostponed, stateComplete);
+            //TaskStateTransitions
+            dbService.addTaskStateTransition(taskStateNew, taskStateAssigned);
+            dbService.addTaskStateTransition(taskStateOnTheGo, taskStateAssigned);
+            dbService.addTaskStateTransition(taskStateAssigned, taskStateOnTheGo);
+            dbService.addTaskStateTransition(taskStateOnTheGo, taskStateWaitingForTesting);
+            dbService.addTaskStateTransition(taskStateWaitingForTesting, taskStateInTesting);
+            dbService.addTaskStateTransition(taskStateInTesting, taskStateOnTheGo);
+            dbService.addTaskStateTransition(taskStateInTesting, taskStateClosed);
 
-            dbService.addStateTransition(stateNew, stateAssigned);
-            dbService.addStateTransition(stateAssigned, stateOnTheGo);
-            dbService.addStateTransition(stateOnTheGo, stateAssigned);
-            dbService.addStateTransition(stateOnTheGo, stateWaitingForTesting);
-            dbService.addStateTransition(stateWaitingForTesting, stateInTesting);
-            dbService.addStateTransition(stateInTesting, stateAssigned);
-            dbService.addStateTransition(stateInTesting, stateClosed);
+            //RequestStateTransitions
+            dbService.addRequestStateTransition(requestStateNew, requestStateRejected);
+            dbService.addRequestStateTransition(requestStateNew, requestStateOnTheGo);
+            dbService.addRequestStateTransition(requestStateOnTheGo, requestStateComplete);
+            dbService.addRequestStateTransition(requestStateComplete, requestStateOnTheGo);
+            dbService.addRequestStateTransition(requestStateOnTheGo, requestStatePostponed);
+            dbService.addRequestStateTransition(requestStatePostponed, requestStateOnTheGo);
+            dbService.addRequestStateTransition(requestStateNew, requestStatePostponed);
+            dbService.addRequestStateTransition(requestStatePostponed, requestStateNew);
+            dbService.addRequestStateTransition(requestStatePostponed, requestStateComplete);
+            dbService.addRequestStateTransition(requestStateComplete, requestStatePostponed);
+            dbService.addRequestStateTransition(requestStateComplete, requestStateClosed);
 
             //Priorities
             dbService.addPriority("High");
@@ -694,11 +744,11 @@ public class DBService {
             dbService.addUser("realtrump", "realtrump", false, "Donald", "Trump", null);
 
             //Projects
-            long project1Id = dbService.addProject("Clean-Air Cabin", "Medical-grade air quality is delivered through a HEPA filtration system, specifically designed to prevent viruses and bacteria from entering the cabin. <BR>There are three modes: circulate with outside air, re-circulate inside air, and a bioweapon defense mode – which creates positive pressure inside the cabin to protect occupants.", "leo");
-            long project2Id = dbService.addProject("Tesla autopilot", "All Tesla vehicles produced in our factory, including Model 3, have the hardware needed for full self-driving capability at a safety level substantially greater than that of a human driver.", "musk");
+            long project1Id = dbService.addProject("Clean-Air Cabin", "Medical-grade air quality is delivered through a HEPA filtration system, specifically designed to prevent viruses and bacteria from entering the cabin. <BR>There are three modes: circulate with outside air, re-circulate inside air, and a bioweapon defense mode – which creates positive pressure inside the cabin to protect occupants.", 2);
+            long project2Id = dbService.addProject("Tesla autopilot", "All Tesla vehicles produced in our factory, including Model 3, have the hardware needed for full self-driving capability at a safety level substantially greater than that of a human driver.", 4);
             long project3Id = dbService.addProject("World’s First Orbital-Class Rocket Reflight", "SpaceX believes a fully and rapidly reusable rocket is the pivotal breakthrough needed to substantially reduce the cost of space access.  The majority of the launch cost comes from building the rocket, which flies only once. Compare that to a commercial airliner – each new plane costs about the same as Falcon 9, but can fly multiple times per day, and conduct tens of thousands of flights over its lifetime. Following the commercial model, a rapidly reusable space launch vehicle could reduce the cost of traveling to space by a hundredfold. <BR>" +
                     "<BR>" +
-                    "While most rockets are designed to burn up on reentry, SpaceX rockets can not only withstand reentry, but can also successfuly land back on Earth and refly again. ", "musk");
+                    "While most rockets are designed to burn up on reentry, SpaceX rockets can not only withstand reentry, but can also successfuly land back on Earth and refly again. ", 4);
 
 
             //ProjectPositions
@@ -710,10 +760,10 @@ public class DBService {
             dbService.addProjectPosition(1, "Developer", "belovivan");
 
             //Requests
-            long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", "leo","realtrump", "High", 3);
+            long request1Id = dbService.addRequest("Create something amazing.", "Create something amazing, please.", 2, 5, 1, 3);
 
             //Tasks
-            dbService.addTask("Do it!", "Please", "leo", 2, request1Id);
+            dbService.addTask("Do it!", "Please", 2, 2, request1Id);
         } catch (DBException e) {
             e.printStackTrace();
         }

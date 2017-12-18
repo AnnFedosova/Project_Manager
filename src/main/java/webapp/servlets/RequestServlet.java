@@ -53,7 +53,7 @@ public class RequestServlet extends HttpServlet {
         pageVariables.put("creator", requestEntity.getCreator());
         pageVariables.put("customer", requestEntity.getCustomer());
         pageVariables.put("priority", requestEntity.getPriority().getName());
-        pageVariables.put("state", requestEntity.getState().getName());
+        pageVariables.put("state", requestEntity.getState().getTitle());
         pageVariables.put("tasks", tasks);
 
         return pageVariables;

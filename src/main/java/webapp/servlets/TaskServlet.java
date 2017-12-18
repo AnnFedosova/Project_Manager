@@ -50,7 +50,7 @@ public class TaskServlet extends HttpServlet {
         pageVariables.put("description", task.getDescription());
         pageVariables.put("creator", task.getCreator());
         pageVariables.put("executor", task.getExecutor());
-        pageVariables.put("state", task.getState().getName());
+        pageVariables.put("state", task.getState().getTitle());
 
         return pageVariables;
     }

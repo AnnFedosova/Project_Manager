@@ -28,7 +28,7 @@ public class TaskEntity implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateEntity state;
+    private TaskStateEntity state;
 
     @ManyToOne
     @JoinColumn(name = "creator_id")
@@ -40,7 +40,7 @@ public class TaskEntity implements Serializable{
 
     public TaskEntity() {}
 
-    public TaskEntity(String title, String description, RequestEntity request, UserEntity creator, UserEntity executor, StateEntity state) {
+    public TaskEntity(String title, String description, RequestEntity request, UserEntity creator, UserEntity executor, TaskStateEntity state) {
         this.title = title;
         this.description = description;
         this.request = request;
@@ -90,11 +90,11 @@ public class TaskEntity implements Serializable{
         this.request = request;
     }
 
-    public StateEntity getState() {
+    public TaskStateEntity getState() {
         return state;
     }
 
-    public void setState(StateEntity state) {
+    public void setState(TaskStateEntity state) {
         this.state = state;
     }
 

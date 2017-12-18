@@ -1,7 +1,7 @@
 <HTML>
 <head>
     <meta charset="utf-8">
-    <title>Edit task ${title}</title>
+    <title>Edit task ${task.title}</title>
     <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
@@ -37,12 +37,12 @@
                 </div>
 
                 <form id="login-form" action="/task/edit" method="POST">
-                    <input type="hidden" name="id" value="${id}">
+                    <input type="hidden" name="id" value="${task.id}">
 
                     <div class='form-group'>
                         <div class='input-group input-group-lg'>
                             <span class='input-group-addon'><i class="fa fa-font"></i></span>
-                            <input type="text" name="title" value="${title}" class="form-control"
+                            <input type="text" name="title" value="${task.title}" class="form-control"
                                    required="required"/>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                         <div class='input-group input-group-lg'>
                             <span class='input-group-addon'><i class="fa fa-align-left"></i></span>
                             <textarea name="description"  class="form-control"
-                                      style="resize: vertical" rows="10">${description}</textarea>
+                                      style="resize: vertical" rows="10">${task.description}</textarea>
                         </div>
                     </div>
 

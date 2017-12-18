@@ -10,8 +10,6 @@ In order to run Project Manager you need to have:
 
 Work on younger versions of software is not guaranteed.
 
-It is also possible to work with Microsoft Azure.
-
 ## Installation
 ### 1. Datasource configuration
 You can edit datasource settings in src/main/resources/hibernate.cfg.xml file.

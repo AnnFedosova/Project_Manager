@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "requests", uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "title"}))
 public class RequestEntity implements Serializable {
-    private static final long serialVersionUID = 2_11_2017L;
+    private static final long serialVersionUID = 11_12_2017L;
 
     @Id
     @Column(name = "id", unique = true, updatable = false)
@@ -37,7 +37,7 @@ public class RequestEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateEntity state;
+    private RequestStateEntity state;
 
     @ManyToOne
     @JoinColumn(name = "priority_id")
@@ -48,7 +48,7 @@ public class RequestEntity implements Serializable {
 
     public RequestEntity() {}
 
-    public RequestEntity(ProjectEntity project, String title, String description, UserEntity creator, UserEntity customer, StateEntity state, PriorityEntity priority) {
+    public RequestEntity(ProjectEntity project, String title, String description, UserEntity creator, UserEntity customer, RequestStateEntity state, PriorityEntity priority) {
         this.project = project;
         this.title = title;
         this.description = description;
@@ -114,15 +114,12 @@ public class RequestEntity implements Serializable {
         this.project = project;
     }
 
-    public StateEntity getState() {
+    public RequestStateEntity getState() {
         return state;
     }
 
-    public void setState(StateEntity state) {
+    public void setState(RequestStateEntity state) {
         this.state = state;
     }
 
-    public Set<TaskEntity> getTasks() {
-        return tasks;
-    }
 }
