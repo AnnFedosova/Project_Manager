@@ -22,7 +22,12 @@ public class UserAPI {
     }
 
     public static User getUser(String userLogin) throws Exception {
-        String json = JSONHelper.getJson(URL + "getUser/" + userLogin);
+        String json = JSONHelper.getJson(URL + "getUserByLogin/" + userLogin);
+        return new Gson().fromJson(json, new TypeToken<User>(){}.getType());
+    }
+
+    public static User getUser(long userId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getUser/" + userId);
         return new Gson().fromJson(json, new TypeToken<User>(){}.getType());
     }
 }

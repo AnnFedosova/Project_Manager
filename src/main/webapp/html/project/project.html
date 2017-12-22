@@ -1,7 +1,7 @@
 <HTML>
 <head>
     <meta charset="utf-8">
-    <title>${title}</title>
+    <title>${project.title}</title>
     <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
@@ -30,10 +30,10 @@
     <div class='row'>
         <div class='login'>
             <div class='page-header'>
-                <h2 class='text-left'>${title}</h2>
-                <a class="btn btn-primary" href="/project/edit?id=${id}"><i title="Edit project"
+                <h2 class='text-left'>${project.title}</h2>
+                <a class="btn btn-primary" href="/project/edit?id=${project.id}"><i title="Edit project"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
-                <a class="btn btn-primary" href="/request/new?projectid=${id}"><i title="Create request"
+                <a class="btn btn-primary" href="/request/new?projectid=${project.id}"><i title="Create request"
                                                                                    class="fa fa-plus"></i> Create
                     request</a>
             </div>
@@ -48,7 +48,7 @@
             <br>
             <h3 class="text-left">Description</h3>
             <div style="font-size: medium">
-                ${description}
+                ${project.description}
             </div>
 
             <br>

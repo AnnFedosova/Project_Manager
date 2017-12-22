@@ -24,8 +24,8 @@ public class UserService {
     }
 
     @GET
-    @Path("getUser/{userLogin}")
-    public User getUser(@PathParam("userLogin") String userLogin) {
+    @Path("getUserByLogin/{userLogin}")
+    public User getUserByLogin(@PathParam("userLogin") String userLogin) {
         return new User(dbService.getUser(userLogin));
     }
 

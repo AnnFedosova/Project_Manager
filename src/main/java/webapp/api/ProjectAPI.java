@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import webapp.JSONHelper;
 import webapp.ServerConnection;
 import webapp.entities.Project;
+import webapp.entities.ProjectPosition;
 
 import java.util.List;
 
@@ -14,5 +15,15 @@ public class ProjectAPI {
     public static List<Project> getProjectsList() throws Exception {
         String json = JSONHelper.getJson(URL + "getProjectsList");
         return new Gson().fromJson(json, new TypeToken<List<Project>>(){}.getType());
+    }
+
+    public static Project getProject(long projectId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getProject/" + projectId);
+        return new Gson().fromJson(json, new TypeToken<Project>(){}.getType());
+    }
+
+    public static List<ProjectPosition> getProjectPositions(long projectId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getProjectPositions/" + projectId);
+        return new Gson().fromJson(json, new TypeToken<List<ProjectPosition>>(){}.getType());
     }
 }

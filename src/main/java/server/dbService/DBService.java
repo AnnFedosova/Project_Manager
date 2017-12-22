@@ -233,7 +233,7 @@ public class DBService {
 
 
     //Requests
-    public List<RequestEntity> getRequestssList(long projectId) {
+    public List<RequestEntity> getRequestsList(long projectId) {
         Session session = sessionFactory.openSession();
 
         RequestDAO requestDAO = new RequestDAO(session);

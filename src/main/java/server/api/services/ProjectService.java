@@ -2,9 +2,11 @@ package server.api.services;
 
 import server.api.jwt.Secured;
 import server.apiEntities.Project;
+import server.apiEntities.ProjectPosition;
 import server.dbService.DBException;
 import server.dbService.DBService;
 import server.dbService.entities.ProjectEntity;
+import server.dbService.entities.ProjectPositionEntity;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,5 +45,23 @@ public class ProjectService {
             return Response.serverError().entity(result).build();
         }
 
+    }
+
+    @GET
+    @Path("getProject/{projectId}")
+    public Project getProject(@PathParam("projectId") long projectId) {
+        ProjectEntity project = dbService.getProject(projectId);
+        return new Project(project);
+    }
+
+    @GET
+    @Path("getProjectPositions/{projectId}")
+    public List<ProjectPosition> getProjectPositions(@PathParam("projectId") long projectId) {
+        List<ProjectPositionEntity> positionsDB = dbService.getProjectPositionsList(projectId);
+        List<ProjectPosition> positions = new LinkedList<>();
+        for(ProjectPositionEntity projectPositionEntity : positionsDB) {
+            positions.add(new ProjectPosition(projectPositionEntity));
+        }
+        return positions;
     }
 }
