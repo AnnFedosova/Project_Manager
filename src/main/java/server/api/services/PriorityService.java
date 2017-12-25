@@ -4,10 +4,7 @@ import server.apiEntities.Priority;
 import server.dbService.DBService;
 import server.dbService.entities.PriorityEntity;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,5 +24,11 @@ public class PriorityService {
             projects.add(new Priority(projectEntity));
         }
         return projects;
+    }
+
+    @GET
+    @Path("getPriority/{priorityId}")
+    public Priority getPriority(@PathParam("priorityId") long priorityId) {
+        return new Priority(dbService.getPriority(priorityId));
     }
 }

@@ -26,6 +26,14 @@ public class User implements Serializable, Comparable<User> {
     public User() {
     }
 
+    public User(String login, String firstName, String lastName, String middleName, boolean internal) {
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.internal = internal;
+    }
+
     public User(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.login = userEntity.getLogin();

@@ -5,7 +5,11 @@ import com.google.gson.reflect.TypeToken;
 import webapp.JSONHelper;
 import webapp.ServerConnection;
 import webapp.entities.User;
+import webapp.entities.UserWithPassword;
 
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 public class UserAPI {
@@ -29,5 +33,12 @@ public class UserAPI {
     public static User getUser(long userId) throws Exception {
         String json = JSONHelper.getJson(URL + "getUser/" + userId);
         return new Gson().fromJson(json, new TypeToken<User>(){}.getType());
+    }
+
+    public static Response addUser(UserWithPassword user) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(URL + "addUser");
+        Invocation.Builder builder = target.request();
+        return builder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
     }
 }

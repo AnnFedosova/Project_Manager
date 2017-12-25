@@ -1,6 +1,7 @@
 package server.api.services;
 
 import server.apiEntities.Request;
+import server.apiEntities.State;
 import server.dbService.DBException;
 import server.dbService.DBService;
 import server.dbService.entities.RequestEntity;
@@ -33,8 +34,7 @@ public class RequestService {
 
     @GET
     @Path("getRequestsList/{projectId}")
-    //@Secured
-    public List<Request> getProjectsList(@PathParam("projectId") long projectId) {
+    public List<Request> getRequestsList(@PathParam("projectId") long projectId) {
         List<Request> requests = new LinkedList<>();
         List<RequestEntity> requestEntities = dbService.getRequestsList(projectId);
         for (RequestEntity requestEntity : requestEntities) {
@@ -42,4 +42,18 @@ public class RequestService {
         }
         return requests;
     }
+
+    @GET
+    @Path("getRequest/{requestId}")
+    public Request getRequest(@PathParam("requestId") long requestId) {
+        return new Request(dbService.getRequest(requestId));
+    }
+
+    @GET
+    @Path("getState/{stateId}")
+    public State getState(@PathParam("stateId") long stateId) {
+        return new State(dbService.getTaskState(stateId));
+    }
+
+
 }

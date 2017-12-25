@@ -2,6 +2,8 @@ package webapp.servlets;
 
 import server.dbService.DBService;
 import server.dbService.entities.UserEntity;
+import webapp.api.UserAPI;
+import webapp.entities.User;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -21,33 +23,33 @@ import java.util.Map;
 @WebServlet(name = "User", urlPatterns = "/user")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"admin", "user"}))
 public class UserServlet extends HttpServlet{
-    private DBService dbService = DBService.getInstance();
 
     public UserServlet() {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=utf-8");
         String id = request.getParameter("id");
 
-        Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));
-
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("user/user.html", pageVariables));
+        Map<String, Object> pageVariables = null;
+        try {
+            pageVariables = createPageVariablesMap(request, Long.parseLong(id));
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(PageGenerator.instance().getPage("user/user.html", pageVariables));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Error!  " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long userId) throws Exception {
         Map<String, Object> pageVariables = new HashMap<>();
-        UserEntity user = dbService.getUser(id);
+        User user = UserAPI.getUser(userId);
 
-        Principal userPrincipal = request.getUserPrincipal();
-        pageVariables.put("isAdmin", dbService.isAdmin(userPrincipal.getName()));
-        pageVariables.put("id", user.getId());
-        pageVariables.put("firstName", user.getFirstName());
-        pageVariables.put("lastName", user.getLastName());
+        pageVariables.put("isAdmin", UserAPI.isAdmin(request.getUserPrincipal().getName()));
+        pageVariables.put("user", user);
         pageVariables.put("internal", Boolean.toString(user.getInternal()));
-        pageVariables.put("login", user.getLogin());
 
         return pageVariables;
     }

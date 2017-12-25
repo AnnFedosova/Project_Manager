@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import webapp.JSONHelper;
 import webapp.ServerConnection;
 import webapp.entities.Request;
+import webapp.entities.State;
 
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
@@ -24,5 +25,15 @@ public class RequestAPI {
     public static List<Request> getRequestsList(long projectId) throws Exception {
         String json = JSONHelper.getJson(URL + "getRequestsList/" + projectId);
         return new Gson().fromJson(json, new TypeToken<List<Request>>(){}.getType());
+    }
+
+    public static Request getRequest(long requestId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getRequest/" + requestId);
+        return new Gson().fromJson(json, new TypeToken<Request>(){}.getType());
+    }
+
+    public static State getState(long requestId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getState/" + requestId);
+        return new Gson().fromJson(json, new TypeToken<State>(){}.getType());
     }
 }

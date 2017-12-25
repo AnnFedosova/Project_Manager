@@ -1,7 +1,7 @@
 <HTML>
 <head>
     <meta charset="utf-8">
-    <title>${title}</title>
+    <title>${request.title}</title>
     <link rel="stylesheet" media="all" href="/css/mephi-style.css" data-turbolinks-track="true"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon-32x32.png" sizes="32x32"/>
@@ -30,10 +30,10 @@
     <div class='row'>
         <div class='login'>
             <div class='page-header'>
-                <h2 class='text-left'>${title}</h2>
-                <a class="btn btn-primary" href="/request/edit?id=${id}"><i title="Edit request"
+                <h2 class='text-left'>${request.title}</h2>
+                <a class="btn btn-primary" href="/request/edit?id=${request.id}"><i title="Edit request"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
-                <a class="btn btn-primary" href="/task/new?requestid=${id}"><i title="Create task"
+                <a class="btn btn-primary" href="/task/new?requestid=${request.id}"><i title="Create task"
                                                                                   class="fa fa-plus"></i> Create
                     task</a>
             </div>
@@ -56,19 +56,19 @@
             <br>
             <h3 class="text-left">Description</h3>
             <div style="font-size: medium">
-                ${description}
+                ${request.description}
             </div>
 
             <br>
             <h3 class="text-left">Priority</h3>
             <div style="font-size: medium">
-                ${priority}
+                ${priority.title}
             </div>
 
             <br>
             <h3 class="text-left">State</h3>
             <div style="font-size: medium">
-                ${state}
+                ${state.title}
             </div>
 
             <br>

@@ -4,6 +4,12 @@ package webapp.servlets;
 import server.dbService.DBService;
 import server.dbService.entities.RequestEntity;
 import server.dbService.entities.TaskEntity;
+import webapp.api.PriorityAPI;
+import webapp.api.RequestAPI;
+import webapp.api.TaskAPI;
+import webapp.api.UserAPI;
+import webapp.entities.Request;
+import webapp.entities.Task;
 import webapp.templater.PageGenerator;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
@@ -24,37 +30,38 @@ import java.util.Map;
 @WebServlet(name = "Request", urlPatterns = "/request")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"admin", "user"}))
 public class RequestServlet extends HttpServlet {
-    private DBService dbService = DBService.getInstance();
 
     public RequestServlet() {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("id");
-
-        Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("request/request.html", pageVariables));
+
+        String id = request.getParameter("id");
+        Map<String, Object> pageVariables = null;
+        try {
+            pageVariables = createPageVariablesMap(request, Long.parseLong(id));
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(PageGenerator.instance().getPage("request/request.html", pageVariables));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Error!  " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long requestId) throws Exception {
         Map<String, Object> pageVariables = new HashMap<>();
-        RequestEntity requestEntity = dbService.getRequest(id);
-        List<TaskEntity> tasks = dbService.getTasksList(requestEntity.getId());
+        Request requestEntity = RequestAPI.getRequest(requestId);
 
         Principal user = request.getUserPrincipal();
-        pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
-        pageVariables.put("id", requestEntity.getId());
-        pageVariables.put("title", requestEntity.getTitle());
-        pageVariables.put("description", requestEntity.getDescription());
-        pageVariables.put("creator", requestEntity.getCreator());
-        pageVariables.put("customer", requestEntity.getCustomer());
-        pageVariables.put("priority", requestEntity.getPriority().getName());
-        pageVariables.put("state", requestEntity.getState().getTitle());
-        pageVariables.put("tasks", tasks);
+        pageVariables.put("isAdmin", UserAPI.isAdmin(user.getName()));
+        pageVariables.put("request", requestEntity);
+        pageVariables.put("creator", UserAPI.getUser(requestEntity.getCreatorId()));
+        pageVariables.put("customer", UserAPI.getUser(requestEntity.getCustomerId()));
+        pageVariables.put("priority", PriorityAPI.getPriority(requestEntity.getPriorityId()));
+        pageVariables.put("state", RequestAPI.getState(requestId));
+        pageVariables.put("tasks", TaskAPI.getTasksList(requestId));
 
         return pageVariables;
     }

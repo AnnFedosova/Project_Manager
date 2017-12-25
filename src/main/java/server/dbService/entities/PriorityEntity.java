@@ -17,8 +17,8 @@ public class PriorityEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @Column(name = "title", unique = true)
+    private String title;
 
     @OneToMany(mappedBy = "priority")
     private Set<RequestEntity> requestEntities;
@@ -27,8 +27,8 @@ public class PriorityEntity implements Serializable {
     public PriorityEntity() {
     }
 
-    public PriorityEntity(String name) {
-        this.name = name;
+    public PriorityEntity(String title) {
+        this.title = title;
     }
 
 
@@ -40,19 +40,19 @@ public class PriorityEntity implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     public String toString() {
         return "PriorityEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 

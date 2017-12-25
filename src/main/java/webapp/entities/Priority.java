@@ -11,7 +11,7 @@ public class Priority implements Serializable {
 
     private long id;
 
-    private String name;
+    private String title;
 
     public Priority() {
     }
@@ -24,19 +24,19 @@ public class Priority implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     public String toString() {
         return "Priority {" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 

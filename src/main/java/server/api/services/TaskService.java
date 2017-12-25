@@ -1,8 +1,8 @@
 package server.api.services;
 
+import server.apiEntities.State;
 import server.apiEntities.Task;
-import server.apiEntities.TaskState;
-import server.apiEntities.TaskStateTransition;
+import server.apiEntities.StateTransition;
 import server.dbService.DBException;
 import server.dbService.DBService;
 import server.dbService.entities.TaskEntity;
@@ -31,27 +31,33 @@ public class TaskService {
 
     @GET
     @Path("getStateTransitions/{id}")
-    public List<TaskStateTransition> getStateTransitions(@PathParam("id") long id) {
+    public List<StateTransition> getStateTransitions(@PathParam("id") long id) {
         TaskEntity task = dbService.getTask(id);
-        List<TaskStateTransition> taskStateTransitions = new LinkedList<>();
+        List<StateTransition> stateTransitions = new LinkedList<>();
         List<TaskStateTransitionEntity> list =  dbService.getTaskStateTransitions(task.getState());
 
         for (TaskStateTransitionEntity tste : list) {
-            taskStateTransitions.add(new TaskStateTransition(tste));
+            stateTransitions.add(new StateTransition(tste));
         }
 
-        return taskStateTransitions;
+        return stateTransitions;
+    }
+
+    @GET
+    @Path("getState/{stateId}")
+    public State getState(@PathParam("stateId") long stateId) {
+        return new State(dbService.getRequestState(stateId));
     }
 
     @GET
     @Path("getStates/{id}")
-    public List<TaskState> getStates(@PathParam("id") long id) {
+    public List<State> getStates(@PathParam("id") long id) {
         TaskEntity task = dbService.getTask(id);
-        List<TaskState> states = new LinkedList<>();
+        List<State> states = new LinkedList<>();
         List<TaskStateTransitionEntity> taskStateTransitionEntities =  dbService.getTaskStateTransitions(task.getState());
 
         for (TaskStateTransitionEntity element : taskStateTransitionEntities) {
-            states.add(new TaskState(element.getToState()));
+            states.add(new State(element.getToState()));
         }
 
         return states;
@@ -72,7 +78,7 @@ public class TaskService {
 
     @POST
     @Path("addTask")
-    public Response addRequest(Task task) {
+    public Response addTask(Task task) {
         try {
             long taskId = dbService.addTask(task.getTitle(), task.getDescription(), task.getCreatorId(), task.getExecutorId(), task.getRequestId());
             String result = "Task added with id = " + taskId;
@@ -82,5 +88,16 @@ public class TaskService {
             String result = "Error :(";
             return Response.serverError().entity(result).build();
         }
+    }
+
+    @GET
+    @Path("getTasksList/{requestId}")
+    public List<Task> getTasksList(@PathParam("requestId") long requestId) {
+        List<Task> tasks = new LinkedList<>();
+        List<TaskEntity> taskEntities = dbService.getTasksList(requestId);
+        for (TaskEntity taskEntity : taskEntities) {
+            tasks.add(new Task(taskEntity));
+        }
+        return tasks;
     }
 }

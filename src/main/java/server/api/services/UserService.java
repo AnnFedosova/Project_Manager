@@ -2,10 +2,13 @@ package server.api.services;
 
 
 import server.apiEntities.User;
+import server.apiEntities.UserWithPassword;
+import server.dbService.DBException;
 import server.dbService.DBService;
 import server.dbService.entities.UserEntity;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +59,20 @@ public class UserService {
             users.add(new User(userEntity));
         }
         return users;
+    }
+
+    @POST
+    @Path("addUser")
+    public Response addRequest(UserWithPassword user) {
+        try {
+            long userId = dbService.addUser(user.getLogin(), user.getPassword(), user.getInternal(), user.getFirstName(), user.getLastName(), user.getMiddleName());
+            String result = "User added with id = " + userId;
+            return Response.ok().entity(result).build();
+        } catch (DBException e) {
+            e.printStackTrace();
+            String result = "Error :(";
+            return Response.serverError().entity(result).build();
+        }
     }
 
 }

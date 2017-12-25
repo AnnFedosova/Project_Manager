@@ -5,14 +5,14 @@ import java.io.Serializable;
 /**
  * @author Evgeny Levin
  */
-public class TaskState implements Serializable {
+public class State implements Serializable {
     private static final long serialVersionUID = 11_12_2017L;
 
     private long id;
 
     private String title;
 
-    public TaskState() {
+    public State() {
     }
 
     public long getId() {
@@ -33,7 +33,7 @@ public class TaskState implements Serializable {
 
     @Override
     public String toString() {
-        return "TaskState {" +
+        return "State {" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 '}';

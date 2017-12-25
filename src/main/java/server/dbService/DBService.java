@@ -356,6 +356,14 @@ public class DBService {
         return id;
     }
 
+    public RequestStateEntity getRequestState(long stateId) {
+        Session session = sessionFactory.openSession();
+        RequestStateDAO requestStateDAO = new RequestStateDAO(session);
+        RequestStateEntity state = requestStateDAO.get(stateId);
+        session.close();
+        return state;
+    }
+
 
     //TaskStates
 
@@ -383,6 +391,14 @@ public class DBService {
         transaction.commit();
         session.close();
         return id;
+    }
+
+    public TaskStateEntity getTaskState(long stateId) {
+        Session session = sessionFactory.openSession();
+        TaskStateDAO taskStateDAO = new TaskStateDAO(session);
+        TaskStateEntity state = taskStateDAO.get(stateId);
+        session.close();
+        return state;
     }
 
     //Tasks
@@ -518,6 +534,14 @@ public class DBService {
         List<PriorityEntity> priorities = priorityDAO.selectAll();
         session.close();
         return priorities;
+    }
+
+    public PriorityEntity getPriority(long id) {
+        Session session = sessionFactory.openSession();
+        PriorityDAO priorityDAO = new PriorityDAO(session);
+        PriorityEntity priority = priorityDAO.get(id);
+        session.close();
+        return priority;
     }
 
 

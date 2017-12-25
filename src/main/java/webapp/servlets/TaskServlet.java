@@ -2,6 +2,9 @@ package webapp.servlets;
 
 import server.dbService.DBService;
 import server.dbService.entities.TaskEntity;
+import webapp.api.TaskAPI;
+import webapp.api.UserAPI;
+import webapp.entities.Task;
 import webapp.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -22,35 +25,37 @@ import java.util.Map;
 @WebServlet(name = "Task", urlPatterns = "/task")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"admin", "user"}))
 public class TaskServlet extends HttpServlet {
-    private DBService dbService = DBService.getInstance();
 
     public TaskServlet() {
 
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html;charset=utf-8");
         String id = request.getParameter("id");
 
-        Map<String, Object> pageVariables = createPageVariablesMap(request, Long.parseLong(id));
-
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("task/task.html", pageVariables));
+        Map<String, Object> pageVariables = null;
+        try {
+            pageVariables = createPageVariablesMap(request, Long.parseLong(id));
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println(PageGenerator.instance().getPage("task/task.html", pageVariables));
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().println("Error!  " + HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long id) {
+    private Map<String, Object> createPageVariablesMap(HttpServletRequest request, long taskId) throws Exception {
         Map<String, Object> pageVariables = new HashMap<>();
-        TaskEntity task = dbService.getTask(id);
+        Task task = TaskAPI.getTask(taskId);
 
         Principal user = request.getUserPrincipal();
-        pageVariables.put("isAdmin", dbService.isAdmin(user.getName()));
-        pageVariables.put("id", task.getId());
-        pageVariables.put("title", task.getTitle());
-        pageVariables.put("description", task.getDescription());
-        pageVariables.put("creator", task.getCreator());
-        pageVariables.put("executor", task.getExecutor());
-        pageVariables.put("state", task.getState().getTitle());
+        pageVariables.put("isAdmin", UserAPI.isAdmin(user.getName()));
+        pageVariables.put("task", task);
+        pageVariables.put("creator", UserAPI.getUser(task.getCreatorId()));
+        pageVariables.put("executor", UserAPI.getUser(task.getExecutorId()));
+        pageVariables.put("state", TaskAPI.getState(task.getId()));
 
         return pageVariables;
     }

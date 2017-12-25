@@ -23,6 +23,14 @@ public class User implements Serializable, Comparable<User> {
     public User() {
     }
 
+    public User(String login, String firstName, String lastName, String middleName, boolean internal) {
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.internal = internal;
+    }
+
     public void setInternal(boolean internal) {
         this.internal = internal;
     }

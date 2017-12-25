@@ -1,22 +1,29 @@
 package server.apiEntities;
 
+import server.dbService.entities.RequestEntity;
+import server.dbService.entities.RequestStateEntity;
 import server.dbService.entities.TaskStateEntity;
 
 import java.io.Serializable;
 
-public class TaskState implements Serializable {
+public class State implements Serializable {
     private static final long serialVersionUID = 11_12_2017L;
 
     private long id;
 
     private String title;
 
-    public TaskState() {
+    public State() {
     }
 
-    public TaskState(TaskStateEntity taskStateEntity) {
+    public State(TaskStateEntity taskStateEntity) {
         this.id = taskStateEntity.getId();
         this.title = taskStateEntity.getTitle();
+    }
+
+    public State(RequestStateEntity requestStateEntity) {
+        this.id = requestStateEntity.getId();
+        this.title = requestStateEntity.getTitle();
     }
 
     public long getId() {
@@ -37,7 +44,7 @@ public class TaskState implements Serializable {
 
     @Override
     public String toString() {
-        return "TaskState {" +
+        return "State {" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 '}';

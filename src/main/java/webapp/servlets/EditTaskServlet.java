@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import webapp.JSONHelper;
 import webapp.ServerConnection;
 import webapp.entities.Task;
-import webapp.entities.TaskState;
+import webapp.entities.State;
 import webapp.entities.User;
 import webapp.templater.PageGenerator;
 import javax.servlet.annotation.HttpConstraint;
@@ -127,9 +127,9 @@ public class EditTaskServlet extends HttpServlet {
         return new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
     }
 
-    private List<TaskState> getStates(long stateId) throws Exception {
+    private List<State> getStates(long stateId) throws Exception {
         String json = JSONHelper.getJson(ServerConnection.API_URL + "tasks/getStates/" + stateId);
-        return new Gson().fromJson(json, new TypeToken<List<TaskState>>(){}.getType());
+        return new Gson().fromJson(json, new TypeToken<List<State>>(){}.getType());
     }
 
     private User getUser(long userId) throws Exception {

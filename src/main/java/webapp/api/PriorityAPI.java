@@ -15,4 +15,9 @@ public class PriorityAPI {
         String json = JSONHelper.getJson(URL + "getAllPriorities");
         return new Gson().fromJson(json, new TypeToken<List<Priority>>(){}.getType());
     }
+
+    public static Priority getPriority(long priorityId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getPriority/" + priorityId);
+        return new Gson().fromJson(json, new TypeToken<Priority>(){}.getType());
+    }
 }
