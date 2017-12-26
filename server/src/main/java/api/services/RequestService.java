@@ -74,6 +74,7 @@ public class RequestService {
         String result = "Request updated with id = " + request.getId();
         return Response.ok().entity(result).build();
     }
+
     @GET
     @Path("getStates/{id}")
     public List<State> getStates(@PathParam("id") long id) {

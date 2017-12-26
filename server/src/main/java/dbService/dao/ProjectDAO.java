@@ -37,6 +37,10 @@ public class ProjectDAO {
         return query.uniqueResult();
     }
 
+    public void update(ProjectEntity project) throws HibernateException {
+        session.update(project);
+    }
+
     public long addProject(String title, String description, UserEntity creator) {
         return (long) session.save(new ProjectEntity(title, description, creator));
     }

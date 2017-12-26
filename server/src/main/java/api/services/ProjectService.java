@@ -47,6 +47,20 @@ public class ProjectService {
 
     }
 
+    @POST
+    @Path("editProject")
+    public Response editRequest(Project project) {
+        ProjectEntity projectEntity = dbService.getProject(project.getId());
+        projectEntity.setTitle(project.getTitle());
+        projectEntity.setDescription(project.getDescription());
+        projectEntity.setCreator(dbService.getUser(project.getCreatorId()));
+
+        dbService.updateProject(projectEntity);
+
+        String result = "Project updated with id = " + project.getId();
+        return Response.ok().entity(result).build();
+    }
+
     @GET
     @Path("getProject/{projectId}")
     public Project getProject(@PathParam("projectId") long projectId) {

@@ -230,6 +230,17 @@ public class DBService {
         return projet;
     }
 
+    public void updateProject(ProjectEntity project) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        ProjectDAO projectDAO = new ProjectDAO(session);
+        projectDAO.update(project);
+
+        transaction.commit();
+        session.close();
+    }
+
 
     //Requests
     public List<RequestEntity> getRequestsList(long projectId) {
