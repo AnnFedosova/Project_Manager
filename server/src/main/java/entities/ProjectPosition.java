@@ -1,4 +1,4 @@
-package apiEntities;
+package entities;
 
 import dbService.entities.ProjectPositionEntity;
 

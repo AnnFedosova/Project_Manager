@@ -47,6 +47,10 @@ public class UserDAO {
 //        return ((UserEntity) criteria.add(Restrictions.eq("login", login)).uniqueResult()).getId();
 //    }
 
+    public void update(UserEntity user) throws HibernateException {
+        session.update(user);
+    }
+
     public long addUser(UserEntity user) throws HibernateException {
         return (long) session.save(user);
     }

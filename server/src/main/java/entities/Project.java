@@ -1,14 +1,9 @@
-package apiEntities;
+package entities;
 
 
 import dbService.entities.ProjectEntity;
-import dbService.entities.ProjectPositionEntity;
-import dbService.entities.RequestEntity;
-import dbService.entities.UserEntity;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 /**
  * @author Evgeny Levin

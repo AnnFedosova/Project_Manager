@@ -1,8 +1,7 @@
-package apiEntities;
+package entities;
 
 import dbService.entities.UserEntity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 /**

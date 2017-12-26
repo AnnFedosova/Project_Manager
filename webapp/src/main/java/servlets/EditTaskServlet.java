@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class EditTaskServlet extends HttpServlet {
         String description = request.getParameter("description");
         String executorId = request.getParameter("executors");
         String taskId = request.getParameter("id");
-        //String stateId = request.getParameter("stateId");
+        String stateId = request.getParameter("states");
 
 
         if (title == null || description == null || taskId == null || executorId == null) {
@@ -77,7 +76,7 @@ public class EditTaskServlet extends HttpServlet {
                 "\"id\": " + taskId +
                 ",\"title\": \"" + title + "\"" +
                 ",\"description\": \"" + description + "\"" +
-                //",\"stateId\": \"" + stateId + "\"" +
+                ",\"stateId\": \"" + stateId + "\"" +
                 ",\"executorId\": " + executorId +
                 "}";
         Response restResponse = builder.post(Entity.entity(input, "application/json"));
@@ -107,9 +106,10 @@ public class EditTaskServlet extends HttpServlet {
 
         pageVariables.put("isAdmin", UserAPI.isAdmin(request.getUserPrincipal().getName()));
         pageVariables.put("task", task);
-        pageVariables.put("states", TaskAPI.getStates(task.getStateId()));
+        pageVariables.put("states", TaskAPI.getStates(task.getId()));
         pageVariables.put("executors", users);
         pageVariables.put("currentExecutor", UserAPI.getUser(task.getExecutorId()));
+        pageVariables.put("currentState", TaskAPI.getState(task.getId()));
         return pageVariables;
     }
 

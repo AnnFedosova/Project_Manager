@@ -1,4 +1,4 @@
-package apiEntities;
+package entities;
 
 
 public class UserWithPassword extends User {

@@ -1,6 +1,6 @@
 package api.services;
 
-import apiEntities.Priority;
+import entities.Priority;
 import dbService.DBService;
 import dbService.entities.PriorityEntity;
 

@@ -1,6 +1,5 @@
-package apiEntities;
+package entities;
 
-import dbService.entities.TaskStateEntity;
 import dbService.entities.TaskStateTransitionEntity;
 import java.io.Serializable;
 

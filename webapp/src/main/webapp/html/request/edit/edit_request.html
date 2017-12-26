@@ -56,11 +56,31 @@
                     </div>
 
 
-                    <label for="customers"><h4>customer: &nbsp;</h4></label>
+                    <label for="customers"><h4>Customer: &nbsp;</h4></label>
                     <select id="customers" name="customers" >
                         <option value="${currentCustomer.id}">${currentCustomer.firstName} ${currentCustomer.lastName} (${currentCustomer.login})</option>
                         <#list customers as customer>
                         <option value="${customer.id}">${customer.firstName} ${customer.lastName} (${customer.login})</option>
+                    </#list>
+                    </select>
+
+                    <br>
+
+                    <label for="states"><h4>State: &nbsp;</h4></label>
+                    <select id="states" name="states" >
+                        <option value="${currentState.id}">${currentState.title}</option>
+                        <#list states as state>
+                        <option value="${state.id}">${state.title}</option>
+                    </#list>
+                    </select>
+
+                    <br>
+
+                    <label for="priorities"><h4>Priority: &nbsp;</h4></label>
+                    <select id="priorities" name="priorities" >
+                        <option value="${currentPriority.id}">${currentPriority.title}</option>
+                        <#list priorities as priority>
+                        <option value="${priority.id}">${priority.title}</option>
                     </#list>
                     </select>
 

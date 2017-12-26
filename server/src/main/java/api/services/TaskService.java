@@ -1,8 +1,8 @@
 package api.services;
 
-import apiEntities.State;
-import apiEntities.Task;
-import apiEntities.StateTransition;
+import entities.State;
+import entities.Task;
+import entities.StateTransition;
 import dbService.DBException;
 import dbService.DBService;
 import dbService.entities.TaskEntity;
@@ -44,15 +44,15 @@ public class TaskService {
     }
 
     @GET
-    @Path("getState/{stateId}")
-    public State getState(@PathParam("stateId") long stateId) {
-        return new State(dbService.getRequestState(stateId));
+    @Path("getState/{taskId}")
+    public State getState(@PathParam("taskId") long taskId) {
+        return new State(dbService.getTask(taskId).getState());
     }
 
     @GET
-    @Path("getStates/{id}")
-    public List<State> getStates(@PathParam("id") long id) {
-        TaskEntity task = dbService.getTask(id);
+    @Path("getStates/{taskId}")
+    public List<State> getStates(@PathParam("taskId") long taskId) {
+        TaskEntity task = dbService.getTask(taskId);
         List<State> states = new LinkedList<>();
         List<TaskStateTransitionEntity> taskStateTransitionEntities =  dbService.getTaskStateTransitions(task.getState());
 
@@ -70,6 +70,7 @@ public class TaskService {
         taskEntity.setTitle(task.getTitle());
         taskEntity.setDescription(task.getDescription());
         taskEntity.setExecutor(dbService.getUser(task.getExecutorId()));
+        taskEntity.setState(dbService.getTaskState(task.getStateId()));
         dbService.updateTask(taskEntity);
 
         String result = "Task updated with id = " + task.getId();

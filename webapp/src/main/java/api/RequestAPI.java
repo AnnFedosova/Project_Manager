@@ -2,6 +2,7 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import entities.Priority;
 import entities.Request;
 import entities.State;
 
@@ -46,4 +47,15 @@ public class RequestAPI {
         String json = JSONHelper.getJson(URL + "getStates/" + requestId);
         return new Gson().fromJson(json, new TypeToken<List<State>>(){}.getType());
     }
+
+    public static Priority getPriority(long requestId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getPriority/" + requestId);
+        return new Gson().fromJson(json, new TypeToken<Priority>(){}.getType());
+    }
+
+    public static List<Priority> getAllPriorities() throws Exception {
+        String json = JSONHelper.getJson(URL + "getAllPriorities");
+        return new Gson().fromJson(json, new TypeToken<List<Priority>>(){}.getType());
+    }
 }
+

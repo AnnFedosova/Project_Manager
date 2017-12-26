@@ -1,14 +1,15 @@
 package api.services;
 
-import apiEntities.Request;
-import apiEntities.State;
+import dbService.entities.PriorityEntity;
+import entities.Priority;
+import entities.Request;
+import entities.State;
 import dbService.DBException;
 import dbService.DBService;
 import dbService.entities.RequestEntity;
 import dbService.entities.RequestStateTransitionEntity;
 
 import javax.ws.rs.*;
-import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.LinkedList;
@@ -52,9 +53,15 @@ public class RequestService {
     }
 
     @GET
-    @Path("getState/{stateId}")
-    public State getState(@PathParam("stateId") long stateId) {
-        return new State(dbService.getTaskState(stateId));
+    @Path("getState/{requestId}")
+    public State getState(@PathParam("requestId") long requestId) {
+        return new State(dbService.getRequest(requestId).getState());
+    }
+
+    @GET
+    @Path("getPriority/{requestId}")
+    public Priority getPriority(@PathParam("requestId") long requestId) {
+        return new Priority(dbService.getRequest(requestId).getPriority());
     }
 
     @POST
@@ -89,6 +96,18 @@ public class RequestService {
         return states;
     }
 
+    @GET
+    @Path("getAllPriorities")
+    public List<Priority> getAllPriorities() {
+        List<Priority> priorities = new LinkedList<>();
+        List<PriorityEntity> priorityEntities =  dbService.getAllPriorities();
+
+        for (PriorityEntity element : priorityEntities) {
+            priorities.add(new Priority(element));
+        }
+
+        return priorities;
+    }
 
 
 }

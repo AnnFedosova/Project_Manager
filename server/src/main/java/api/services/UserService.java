@@ -1,8 +1,8 @@
 package api.services;
 
 
-import apiEntities.User;
-import apiEntities.UserWithPassword;
+import entities.User;
+import entities.UserWithPassword;
 import dbService.DBException;
 import dbService.DBService;
 import dbService.entities.UserEntity;
@@ -84,6 +84,22 @@ public class UserService {
             String result = "Error :(";
             return Response.serverError().entity(result).build();
         }
+    }
+
+    @POST
+    @Path("editUser")
+    public Response editTask(UserWithPassword user) {
+        UserEntity userEntity = dbService.getUser(user.getId());
+        userEntity.setLogin(user.getLogin());
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+        userEntity.setMiddleName(user.getMiddleName());
+        userEntity.setPassword(user.getPassword());
+        userEntity.setInternal(user.getInternal());
+        dbService.updateUser(userEntity);
+
+        String result = "User updated with id = " + user.getId();
+        return Response.ok().entity(result).build();
     }
 
 }

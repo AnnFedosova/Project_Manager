@@ -64,6 +64,16 @@
                         </#list>
                     </select>
 
+                    <br>
+
+                    <label for="states"><h4>State: &nbsp;</h4></label>
+                    <select id="states" name="states" >
+                        <option value="${currentState.id}">${currentState.title}</option>
+                        <#list states as state>
+                        <option value="${state.id}">${state.title}</option>
+                    </#list>
+                    </select>
+
                     <br><br>
 
                     <div class='form-actions'>

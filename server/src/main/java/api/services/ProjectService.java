@@ -1,8 +1,7 @@
 package api.services;
 
-import api.jwt.Secured;
-import apiEntities.Project;
-import apiEntities.ProjectPosition;
+import entities.Project;
+import entities.ProjectPosition;
 import dbService.DBException;
 import dbService.DBService;
 import dbService.entities.ProjectEntity;

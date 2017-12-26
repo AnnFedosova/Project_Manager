@@ -1,6 +1,5 @@
-package apiEntities;
+package entities;
 
-import dbService.entities.RequestEntity;
 import dbService.entities.RequestStateEntity;
 import dbService.entities.TaskStateEntity;
 

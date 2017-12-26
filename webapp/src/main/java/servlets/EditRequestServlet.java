@@ -4,6 +4,7 @@ import api.APIActions;
 import api.RequestAPI;
 import api.ServerConnection;
 import api.UserAPI;
+import entities.Priority;
 import entities.Request;
 import entities.User;
 import templater.PageGenerator;
@@ -50,9 +51,10 @@ public class EditRequestServlet extends HttpServlet {
         String title = httpRequest.getParameter("title");
         String description = httpRequest.getParameter("description");
         String customerId = httpRequest.getParameter("customers");
-        //String stateId = request.getParameter("stateId");
+        String stateId = httpRequest.getParameter("states");
+        String priorityId = httpRequest.getParameter("priorities");
 
-        if (title == null || description == null || requestId == null || customerId == null) {
+        if (title == null || description == null || requestId == null || customerId == null || stateId == null || priorityId == null) {
             httpResponse.getWriter().println("Not created");
             httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -63,6 +65,8 @@ public class EditRequestServlet extends HttpServlet {
             request.setTitle(title);
             request.setDescription(description);
             request.setCustomerId(Long.parseLong(customerId));
+            request.setStateId(Long.parseLong(stateId));
+            request.setPriorityId(Long.parseLong(priorityId));
             Response response = RequestAPI.editRequest(request);
             APIActions.checkResponseStatus(response, httpResponse);
         } catch (Exception e) {
@@ -81,12 +85,22 @@ public class EditRequestServlet extends HttpServlet {
                 break;
             }
         }
+        List<Priority> priorities = RequestAPI.getAllPriorities();
+        for (Priority priority : priorities) {
+            if (priority.getId() == request.getPriorityId()) {
+                priorities.remove(priority);
+                break;
+            }
+        }
 
         pageVariables.put("isAdmin", UserAPI.isAdmin(httpRequest.getUserPrincipal().getName()));
         pageVariables.put("request", request);
-        pageVariables.put("states", RequestAPI.getStates(request.getStateId()));
+        pageVariables.put("states", RequestAPI.getStates(request.getId()));
         pageVariables.put("customers", users);
         pageVariables.put("currentCustomer", UserAPI.getUser(request.getCustomerId()));
+        pageVariables.put("currentState", RequestAPI.getState(request.getId()));
+        pageVariables.put("currentPriority", RequestAPI.getPriority(request.getId()));
+        pageVariables.put("priorities", priorities);
         return pageVariables;
     }
 }

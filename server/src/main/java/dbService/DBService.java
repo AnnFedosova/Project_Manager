@@ -190,6 +190,17 @@ public class DBService {
         return users;
     }
 
+    public void updateUser(UserEntity user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        UserDAO userDAO = new UserDAO(session);
+        userDAO.update(user);
+
+        transaction.commit();
+        session.close();
+    }
+
 
     //Projects
     public List<ProjectEntity>  getProjectsList() {
