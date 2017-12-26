@@ -2,7 +2,6 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
 import entities.Project;
 import entities.ProjectPosition;
 

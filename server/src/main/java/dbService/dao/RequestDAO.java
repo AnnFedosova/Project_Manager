@@ -38,6 +38,10 @@ public class RequestDAO {
         return query.uniqueResult();
     }
 
+    public void update(RequestEntity request) throws HibernateException {
+        session.update(request);
+    }
+
     public long addRequest(RequestEntity request) {
         return (long) session.save(request);
     }

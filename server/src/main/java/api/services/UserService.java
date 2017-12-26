@@ -51,6 +51,17 @@ public class UserService {
     }
 
     @GET
+    @Path("getUsersByRequestId/{requestId}")
+    public List<User> getUsersByRequestId(@PathParam("requestId") long id) {
+        List<UserEntity> userEntities = dbService.getUsersByRequestId(id);
+        List<User> users = new LinkedList<>();
+        for (UserEntity userEntity : userEntities) {
+            users.add(new User(userEntity));
+        }
+        return users;
+    }
+
+    @GET
     @Path("getAllUsers")
     public List<User> getAllUsers() {
         List<UserEntity> userEntities = dbService.getAllUsers();

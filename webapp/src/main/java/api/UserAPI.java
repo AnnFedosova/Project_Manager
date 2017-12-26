@@ -2,7 +2,6 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
 import entities.User;
 import entities.UserWithPassword;
 
@@ -39,5 +38,15 @@ public class UserAPI {
         WebTarget target = client.target(URL + "addUser");
         Invocation.Builder builder = target.request();
         return builder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
+    }
+
+    public static List<User> getUsersByTaskId(long taskId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getUsersByTaskId/" + taskId);
+        return new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
+    }
+
+    public static List<User> getUsersByRequestId(long taskId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getUsersByRequestId/" + taskId);
+        return new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
     }
 }

@@ -12,7 +12,7 @@ Work on younger versions of software is not guaranteed.
 
 ## Installation
 ### 1. Datasource configuration
-You can edit datasource settings in src/main/resources/hibernate.cfg.xml file.
+You can edit datasource settings in server/src/main/resources/hibernate.cfg.xml file.
 
 ### 2. WildFly configuration
 1. Install JDBC driver to Wildfly.

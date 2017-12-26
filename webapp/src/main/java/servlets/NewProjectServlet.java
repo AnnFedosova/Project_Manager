@@ -2,7 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
+import api.JSONHelper;
 import api.ServerConnection;
 import api.UserAPI;
 import templater.PageGenerator;

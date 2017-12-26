@@ -2,7 +2,6 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
 import entities.Request;
 import entities.State;
 
@@ -34,5 +33,17 @@ public class RequestAPI {
     public static State getState(long requestId) throws Exception {
         String json = JSONHelper.getJson(URL + "getState/" + requestId);
         return new Gson().fromJson(json, new TypeToken<State>(){}.getType());
+    }
+
+    public static Response editRequest(Request request) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(URL + "editRequest");
+        Invocation.Builder builder = target.request();
+        return builder.post(Entity.entity(request, MediaType.APPLICATION_JSON));
+    }
+
+    public static List<State> getStates(long requestId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getStates/" + requestId);
+        return new Gson().fromJson(json, new TypeToken<List<State>>(){}.getType());
     }
 }

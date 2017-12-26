@@ -363,6 +363,17 @@ public class DBService {
         return state;
     }
 
+    public void updateRequest(RequestEntity request) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        RequestDAO requestDAO = new RequestDAO(session);
+        requestDAO.update(request);
+
+        transaction.commit();
+        session.close();
+    }
+
 
     //TaskStates
 

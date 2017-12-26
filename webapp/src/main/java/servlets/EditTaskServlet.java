@@ -1,11 +1,9 @@
 package servlets;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
+import api.TaskAPI;
+import api.UserAPI;
 import api.ServerConnection;
 import entities.Task;
-import entities.State;
 import entities.User;
 import templater.PageGenerator;
 import javax.servlet.annotation.HttpConstraint;
@@ -98,9 +96,8 @@ public class EditTaskServlet extends HttpServlet {
 
     private Map<String, Object> createPageVariablesMap(HttpServletRequest request, String id) throws Exception {
         Map<String, Object> pageVariables = new HashMap<>();
-        Principal user = request.getUserPrincipal();
-        Task task = getTask(Long.parseLong(id));
-        List<User> users = getUsers(Long.parseLong(id));
+        Task task = TaskAPI.getTask(Long.parseLong(id));
+        List<User> users = UserAPI.getUsersByTaskId(Long.parseLong(id));
         for (User userEntity : users) {
             if (userEntity.getId() == task.getExecutorId()) {
                 users.remove(userEntity);
@@ -108,37 +105,12 @@ public class EditTaskServlet extends HttpServlet {
             }
         }
 
-        pageVariables.put("isAdmin", isAdmin(user.getName()));
+        pageVariables.put("isAdmin", UserAPI.isAdmin(request.getUserPrincipal().getName()));
         pageVariables.put("task", task);
-        pageVariables.put("states", getStates(task.getStateId()));
+        pageVariables.put("states", TaskAPI.getStates(task.getStateId()));
         pageVariables.put("executors", users);
-        pageVariables.put("currentExecutor", getUser(task.getExecutorId()));
+        pageVariables.put("currentExecutor", UserAPI.getUser(task.getExecutorId()));
         return pageVariables;
-    }
-
-    private Task getTask(long id) throws Exception {
-        String json = JSONHelper.getJson(ServerConnection.API_URL + "tasks/getTask/" + id);
-        return new Gson().fromJson(json, new TypeToken<Task>(){}.getType());
-    }
-
-    private List<User> getUsers(long taskId) throws Exception {
-        String json = JSONHelper.getJson(ServerConnection.API_URL + "users/getUsersByTaskId/" + taskId);
-        return new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
-    }
-
-    private List<State> getStates(long stateId) throws Exception {
-        String json = JSONHelper.getJson(ServerConnection.API_URL + "tasks/getStates/" + stateId);
-        return new Gson().fromJson(json, new TypeToken<List<State>>(){}.getType());
-    }
-
-    private User getUser(long userId) throws Exception {
-        String json = JSONHelper.getJson(ServerConnection.API_URL + "users/getUser/" + userId);
-        return new Gson().fromJson(json, new TypeToken<User>(){}.getType());
-    }
-
-    private boolean isAdmin(String userLogin) throws Exception {
-        String json = JSONHelper.getJson(ServerConnection.API_URL + "users/isAdmin/" + userLogin);
-        return new Gson().fromJson(json, new TypeToken<Boolean>(){}.getType());
     }
 
 }

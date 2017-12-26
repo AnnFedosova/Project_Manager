@@ -1,4 +1,4 @@
-package webapp;
+package api;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

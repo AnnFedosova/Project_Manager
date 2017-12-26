@@ -2,7 +2,6 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import webapp.JSONHelper;
 import entities.State;
 import entities.Task;
 
@@ -34,5 +33,10 @@ public class TaskAPI {
     public static State getState(long taskId) throws Exception {
         String json = JSONHelper.getJson(URL + "getState/" + taskId);
         return new Gson().fromJson(json, new TypeToken<State>(){}.getType());
+    }
+
+    public static List<State> getStates(long stateId) throws Exception {
+        String json = JSONHelper.getJson(URL + "getStates/" + stateId);
+        return new Gson().fromJson(json, new TypeToken<List<State>>(){}.getType());
     }
 }
