@@ -6,6 +6,7 @@ import entities.UserWithPassword;
 import dbService.DBException;
 import dbService.DBService;
 import dbService.entities.UserEntity;
+import org.jboss.crypto.CryptoUtil;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -94,7 +95,7 @@ public class UserService {
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setMiddleName(user.getMiddleName());
-        userEntity.setPassword(user.getPassword());
+        userEntity.setPassword(CryptoUtil.createPasswordHash("MD5", CryptoUtil.BASE64_ENCODING, null, null, user.getPassword()));
         userEntity.setInternal(user.getInternal());
         dbService.updateUser(userEntity);
 

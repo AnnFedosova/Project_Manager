@@ -11,7 +11,12 @@ public class UserWithPassword extends User {
         this.password = password;
     }
 
-   public UserWithPassword() {}
+    public UserWithPassword() {}
+
+    public UserWithPassword(User user) {
+        super(user);
+        this.password = "";
+    }
 
     public UserWithPassword(String login, String firstName, String lastName, String middleName, boolean internal, String password) {
         super(login, firstName, lastName, middleName, internal);

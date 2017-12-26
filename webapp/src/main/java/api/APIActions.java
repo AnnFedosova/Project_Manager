@@ -20,7 +20,7 @@ public class APIActions {
             servletResponse.getWriter().println("Successfully!");
         }
         else {
-            servletResponse.getWriter().println("Not created");
+            servletResponse.getWriter().println("Error :(");
             servletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }

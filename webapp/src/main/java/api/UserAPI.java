@@ -49,4 +49,11 @@ public class UserAPI {
         String json = JSONHelper.getJson(URL + "getUsersByRequestId/" + taskId);
         return new Gson().fromJson(json, new TypeToken<List<User>>(){}.getType());
     }
+
+    public static Response editUser(UserWithPassword user) {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(URL + "editUser");
+        Invocation.Builder builder = target.request();
+        return builder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
+    }
 }
