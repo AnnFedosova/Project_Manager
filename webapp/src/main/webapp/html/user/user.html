@@ -31,8 +31,10 @@
         <div class='login'>
             <div class='page-header'>
                 <h2 class='text-left'>${user.firstName} ${user.lastName}</h2>
-                <a class="btn btn-primary" href="/user/edit?id=${user.id}"><i title="Edit user"
+                <#if isAdmin>
+                    <a class="btn btn-primary" href="/user/edit?id=${user.id}"><i title="Edit user"
                                                                             class="fa fa-pencil-square-o"></i> Edit</a>
+                </#if>
             </div>
 
             <h3 class="text-left">Login</h3>
